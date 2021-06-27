@@ -3,12 +3,8 @@ module PagesHelper
    
    # <- module method (self) => called with PagesHelper.count
    def self.count
-      Rails.logger.debug "REDIS CONF: ...#{ENV['REDIS_HOST']} .#{ENV['REDIS_PASSWORD']}"
-      redis = Redis.new(host: ENV['REDIS_HOST'], password: ENV['REDIS_PASSWORD'])
-      redis.ping     #<- test redis
-      compteur = redis.get("compteur") || 0
-      redis.incr('compteur')
-      # need to specify Rails.logger in the module method
+      compteur = $redis.get("compteur") || 0
+      $redis.incr('compteur')
       # Rails.logger.debug "REDIS_DB: ...............#{redis.get('compteur')}"
       @compteur = compteur.to_i + 1
    end
