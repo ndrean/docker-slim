@@ -18,6 +18,7 @@
 !/tmp/pids/
 !/tmp/pids/.keep
 
+/vendor
 
 /public/assets
 .byebug_history
