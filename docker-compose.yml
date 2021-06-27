@@ -18,7 +18,7 @@ services:
     ports:
       - 5432
     environment:
-      - POSTGRES_PASSWORD=cyberdyne
+      - POSTGRES_PASSWORD=bobpwd
       - PG_DATA=/var/lib/postgresql/data
     volumes:
       - pg_data:/var/lib/postgresql/data
