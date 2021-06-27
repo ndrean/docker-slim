@@ -4,7 +4,7 @@ Create a Rails app running only Webpack, without using Sprockets: `rails new my-
 
 ## Initialize the PostgreSQL database
 
-- modifiy **/config/database.yml** (or **.env**) to pass to the Postrgres adapter the desired user/password: `POSTGRES_URL=postgresql://bob:bobpwd@localhost:5432/k8_development`
+- modifiy **/config/database.yml** (or **.env**) to pass to the Postgres adapter the desired user/password: `POSTGRES_URL=postgresql://bob:bobpwd@localhost:5432/k8_development`
 
 - run in a terminal:
 
@@ -38,12 +38,45 @@ worker:  bundle exec sidekiq -C config/sidekiq.yml
 
 ## The Redis database
 
-Modify **/usr/local/etc/redis/redis.conf** with `requirespass secretpwd`.
+We initialize a Redis database with:
 
-Once the app is running (ie **redis-server** is up), we can check that Redis is protected by the password by connecting to the redis-cli:
+```yml
+#/config/redis.yml
+development: &default
+  url: redis://user:secretpwd@redisdb:6379
+```
+
+```rb
+#/config/initializers/redis.rb
+$redis = Redis.new(Rails.application.config_for(:redis))
+# .env
+REDIS_URL = redis://user:secretpwd@redisdb:6379
+```
+
+and use it for the background processor Sidekiq with:
+
+```rb
+# sidekiq.rb
+redis_conf = {
+  url: ENV['REDIS_URL'],
+  network_timeout: 5
+}
+Sidekiq.configure_server { |cfg| cfg.redis = redis_conf }
+Sidekiq.configure_client{ |cfg| cfg.redis = redis.conf }
+```
+
+and use the Redis database in the Rails app by calling `$redis.get("key")`.
+
+We define a service **redisdb**. We secure the database with a password, `requirepass secretpwd` definded in **/usr/local/etc/redis/redis.conf** for Linux (or **/usr/local/etc/redis.conf** for OSX). We then pass it with an environment variable that contains the password and an anonymous user: `REDIS_URL=redis://user:secretpwd@redisdb:6379` to:
+
+- to the background processor Sidekiq
+
+- to the Rails app
+
+To connect to the containerized Redis database, and check that the database is protected with the defined password, run:
 
 ```sh
-redis-cli
+docker-compose run --rm redisdb redis-cli -h redisdb -p 6379
 127.0.0.1:6379> GET counter
 (error) NOAUTH Authentication required
 127.0.0.1:6379> AUTH secretpwd
@@ -52,7 +85,7 @@ OK
 23
 ```
 
-We can setup Redis with AOF and RDB.
+We can also setup Redis persistance with AOF and RDB.
 
 ## Docker
 
@@ -62,3 +95,7 @@ We can setup Redis with AOF and RDB.
 
 Example: change a text in "views/pages/home.html.erb", refresh, and insert or remove an image in "views/layouts/application.html.erb" and refresh.
 Size is 715 Mb.
+
+## Sidekiq
+
+We define a worker and an ActiveJob. Both will use Sidekiq. The actions will be a remote FETCH action.

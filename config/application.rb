@@ -33,6 +33,9 @@ module DockerSlim
     # config.eager_load_paths << Rails.root.join("extras")
     config.active_job.queue_adapter = :sidekiq #<- ONLY FOR ACTIVE_JOB
 
+    # Redis:
+    # config.autoload_paths += Dir[File.join(Rails.root, "config/initializers", "redis.rb")].each {|l| require l }
+    
     # Don't generate system test files.
     config.generators.system_tests = nil
 
