@@ -25,7 +25,7 @@ CREATE ROLE bob WITH SUPERUSER CREATEDB LOGIN PASSWORD 'bobpwd';
 
 ## Run `overmind`
 
-Run `overmind start` to start the four processes _rails_, _webpack-dev-server_, _redis_ and _sidekiq_:
+The app is running locally with hot static assets replacement and Rails running in dev mode (page refresh will update the app). Run `overmind start` to start the four processes _rails_, _webpack-dev-server_, _redis_ and _sidekiq_:
 
 The following runs on OSX (use "redis-server /usr/local/etc/redis.conf" on OSX, and "/usr/local/etc/redis/redis.conf" on Linux ):
 
