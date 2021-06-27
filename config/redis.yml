@@ -1,9 +1,5 @@
-default: &default
-  url: redis://user:secretpwd@localhost:6379
-
-development: &default
+development: &dev
   url: redis://user:secretpwd@redisdb:6379
 
-
 production:
-  <<: *default
+  <<: *dev

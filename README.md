@@ -42,13 +42,16 @@ We initialize a Redis database with:
 
 ```yml
 #/config/redis.yml
-development: &default
+development: &dev
   url: redis://user:secretpwd@redisdb:6379
 ```
 
 ```rb
 #/config/initializers/redis.rb
 $redis = Redis.new(Rails.application.config_for(:redis))
+```
+
+```sh
 # .env
 REDIS_URL = redis://user:secretpwd@redisdb:6379
 ```

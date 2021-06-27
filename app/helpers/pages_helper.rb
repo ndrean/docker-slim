@@ -3,8 +3,6 @@ module PagesHelper
    
    # <- module method (self) => called with PagesHelper.count
    def self.count
-      # redis = Redis.new(url: ENV['REDIS_URL']) <- initializer instead
-      # $redis.ping     #<- test redis
       compteur = $redis.get("compteur") || 0
       $redis.incr('compteur')
       # need to specify Rails.logger in the module method
