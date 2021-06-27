@@ -53,3 +53,12 @@ OK
 ```
 
 We can setup Redis with AOF and RDB.
+
+## Docker
+
+- running \*_webpack-dev-server_
+
+- code is cached with a bind mount `.:/app:cached`
+
+Example: change a text in "views/pages/home.html.erb", refresh, and insert or remove an image in "views/layouts/application.html.erb" and refresh.
+Size is 715 Mb.
