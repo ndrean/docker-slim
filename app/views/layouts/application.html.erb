@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DockerSlim</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <%= image_pack_tag 'media/images/Rails.png', height:'10%', width:'10%' %>
+    <%= image_pack_tag 'media/images/docker2.png', height:'10%', width:'10%' %>
+    <%= image_pack_tag 'media/images/Redis.png',height:'20%', width:'20%' %> 
+    <%= image_pack_tag 'media/images/sidekiq.png', height:'10%', width:'10%' %> 
+    <%= image_pack_tag 'media/images/Postgres.png', height:'20%', width:'20%' %>
+    
+    <%= yield %>
+  </body>
+</html>
