@@ -5,24 +5,27 @@ x-app: &common
   env_file: .env
   build:
     context: .
+    dockerfile: _alpine.Dockerfile
     args:
       - RUBY_VERSION=3.0.1-alpine
       - BUNDLER_VERSION=2.2.21
       - NODE_VERSION=14
       - NODE_ENV=production
       - RAILS_ENV=production
+      - USER_ID=${USER_ID:-501}
+      - GROUP_ID=${GROUP_ID:-20}
 
 services:
   pg:
     image: postgres:13.3-alpine
     ports:
       - 5432
-    environment:
-      - POSTGRES_PASSWORD=bobpwd
-      - PG_DATA=/var/lib/postgresql/data
+    # <- the env file contains the URL with the password
+    env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
       - ./pg/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      # - ./pg/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh:ro
 
   redisdb:
     image: redis:6.2.4-alpine
@@ -32,7 +35,7 @@ services:
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
     volumes:
       - redis_data:/data
-      - ./redis/config:/usr/local/etc/redis:ro
+      - ./redis/config/redis.conf:/usr/local/etc/redis/redis.conf:ro
 
   sidekiq:
     <<: *common

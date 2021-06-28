@@ -1,11 +1,7 @@
-
 redis_conf = { 
-  password: ENV['REDIS_PASSWORD'],
-  port: 6379,
-  host: ENV['REDIS_HOST'],
+  url: ENV.fetch('REDIS_URL',""),
   network_timeout: 5
 }
-# redis_url = { url: "redis://redis_db:6379/" }
 
 Sidekiq.configure_server do |config|
   config.redis = redis_conf

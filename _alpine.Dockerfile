@@ -4,13 +4,15 @@ FROM ruby:${RUBY_VERSION:-3.0.1-alpine} AS builder
 ARG BUNDLER_VERSION
 ARG NODE_ENV
 ARG RAILS_ENV
+ARG USER_ID
+ARG GROUP_ID
 
 ENV RAILS_ENV=${RAILS_ENV:-production} \
    NODE_ENV=${NODE_ENV:-production} \
    BUNDLER_VERSION=${BUNDLER_VERSION:-2.2.21}
 
 RUN apk -U upgrade && apk add --no-cache \
-   postgresql-dev nodejs yarn build-base tzdata
+   postgresql-dev nodejs yarn build-base tzdata gettext
 
 WORKDIR /app
 
@@ -26,7 +28,7 @@ RUN gem install bundler:${BUNDLER_VERSION} --no-document \
    && bundle config set --without 'development test' \
    && bundle install --quiet 
 
-RUN yarn --check-files --silent
+RUN yarn --check-files --silent --production
 
 COPY . ./
 
@@ -43,14 +45,17 @@ ARG NODE_ENV
 RUN apk -U upgrade && apk add libpq netcat-openbsd tzdata\
    && rm -rf /var/cache/apk/*
 
-COPY --from=builder  /app /app
+RUN adduser -D app-user
+USER app-user
 
-# ENTRYPOINT ["./docker-entrypoint.sh"]
+COPY --from=builder --chown=app-user /app /app
+
+ENTRYPOINT ["./docker-entrypoint.sh"]
 
 ENV RAILS_ENV=$RAILS_ENV \
    NODE_ENV=$NODE_ENV \
    RAILS_LOG_TO_STDOUT=true \
-   RAILS_SERVE_STATIC_FILES=true \
+   RAILS_SERVE_STATIC_FILES=true  \
    BUNDLE_PATH='vendor/bundle'
 
 WORKDIR /app

@@ -99,7 +99,7 @@ ENV RAILS_ENV=production \
    BUNDLE_PATH='vendor/bundle'
 
 WORKDIR /app
-# RUN rm -rf node_modules tmp/cache  /vendor lib/assets
+RUN rm -rf node_modules tmp/cache  lib/assets
 
 EXPOSE 3000
 

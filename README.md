@@ -1,24 +1,9 @@
-# README
+`docker-compose run --rm app bundle exec rails db:create db:migrate`
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Self certificate
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```sh
+openssl genrsa 2048 > host.key
+chmod 600 host.key
+openssl req -new -x509 -nodes -sha256 -days 365 -key host.key -out host.cert
+```

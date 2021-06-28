@@ -1,12 +1,9 @@
 class HardJob < ApplicationJob
+    include PagesHelper
+    require "net/http"
+    queue_as :default
   class Error < StandardError
   end
-
-  require "net/http"
-  
-
-  queue_as :default
-  include PagesHelper
 
   def perform(*args)
     puts Rails.logger.info ' !!!!!!!! I am a job, doing a heavy job: curl to Google ......!!!!!!!'

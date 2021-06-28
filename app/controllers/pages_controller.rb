@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
 
-  # include PagesHelper
+  include PagesHelper
 
   def home
     # <- check ENV vars
@@ -26,7 +26,7 @@ class PagesController < ApplicationController
     
      
     # UI -> execute an increment counter on page refresh, retrieved from a Redis db
-    @compteur = PagesHelper.count
+    @compteur = PagesHelper.increment
     
   end
 end
