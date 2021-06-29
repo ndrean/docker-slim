@@ -9,23 +9,24 @@ x-app: &common
     args:
       - RUBY_VERSION=3.0.1-alpine
       - BUNDLER_VERSION=2.2.21
-      - NODE_VERSION=14
       - NODE_ENV=production
       - RAILS_ENV=production
-      - USER_ID=${USER_ID:-501}
-      - GROUP_ID=${GROUP_ID:-20}
 
 services:
   pg:
     image: postgres:13.3-alpine
     ports:
       - 5432
-    # <- the env file contains the URL with the password
-    env_file: .env
+    environment:
+      - POSTGRES_PASSWORD=dockerpassword
     volumes:
       - pg_data:/var/lib/postgresql/data
-      - ./pg/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-      # - ./pg/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh:ro
+      - ./pg/init-user.sql:/docker-entrypoint-initdb.d/init-user.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   redisdb:
     image: redis:6.2.4-alpine
@@ -36,21 +37,34 @@ services:
     volumes:
       - redis_data:/data
       - ./redis/config/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   sidekiq:
     <<: *common
+    entrypoint: ["./app-pid.sh"]
     command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
     depends_on:
-      - redisdb
-      - app
+      redisdb:
+        condition: service_healthy
+      # app:
+      #   condition: service_healthy
 
   app:
     <<: *common
     depends_on:
-      - pg
-      - redisdb
+      pg:
+        condition: service_healthy
+      redisdb:
+        condition: service_healthy
+    # healthcheck:
+    #   test: ["CMD", "curl", "-I", "http://app:3000/"]
     ports:
       - 4000:3000
+    entrypoint: [./manage-db.sh]
     command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
     tmpfs:
       - /tmp

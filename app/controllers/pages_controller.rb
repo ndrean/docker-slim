@@ -2,6 +2,9 @@ class PagesController < ApplicationController
 
   include PagesHelper
 
+  class Error < StandardError
+  end
+
   def home
     # <- check ENV vars
     # Rails.logger.debug "........................... #{ENV['REDIS_URL']}"
@@ -13,7 +16,8 @@ class PagesController < ApplicationController
     HardJob.perform_later 
 
     # PSQL <- connection test
-    ActiveRecord::Base.connection.execute("SELECT 1") 
+    res = ActiveRecord::Base.connection.execute("SELECT 1")
+    raise PagesController.error.new("Connection error") if res.getvalue(0,0)!= 1
 
     @nb = 0
     if (Counter.last == nil)

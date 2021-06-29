@@ -6,5 +6,6 @@
 <h2> REDIS DB: <%= @compteur  %></h2>
 <h2> PG    DB: <%=  @nb %></h2>
 <p>
-   <%= Rails.application.credentials.secret_key_base %>
+   SECRET_KEY_BASE: <%= Rails.application.credentials.secret_key_base %>
 </p>
+<p>Sidekiq is connected to Redis: <%= Sidekiq.redis { |conn| p conn.connection[:id] } %></p>
