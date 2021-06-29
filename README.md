@@ -27,6 +27,10 @@ CREATE TABLE COUNTERS (id serial PRIMARY KEY, nb integer, created_at TIMESTAMP, 
 
 where the user and database name is "ortkcbqt" followed by the password.
 
+## Remote Redis with Sidekiq
+
+<https://app.redislabs.com/#/bdbs>
+
 ## Note on K8
 
 You to create a namespace "test" for testing when doing this kind of things. You just do `kubectl create ns test`, then you do all your tests in this namespace (by adding `-n test`). Once you have finished, you just do `kubectl delete ns test`, and you are done.

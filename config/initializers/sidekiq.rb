@@ -1,5 +1,8 @@
 redis_conf = { 
-  url: ENV.fetch('REDIS_URL',""),
+  # host: ENV.fetch('REDISLABS_URL',""),
+  # password: ENV.fetch('REDISLABS_PWD',""),
+  # port: ENV.fetch('REDISLABS_PORT',""),
+  url: ENV.fetch('REDISLABS_URL',''),
   network_timeout: 5
 }
 

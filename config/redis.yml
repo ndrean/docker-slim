@@ -1,6 +1,6 @@
-development: &dev
-  url: <%= ENV.fetch('REDIS_URL',"") %>
-  db: 0
-
 production:
-  <<: *dev
+  # host: <%= ENV.fetch('REDISLABS_HOST',"") %>
+  # password: <%= ENV.fetch('REDISLABS_PWD','') %>
+  # port: <%= ENV.fetch('REDISLABS_PORT','') %>
+  url: <%= ENV.fetch('REDIS_URL','') %>
+  db: 0

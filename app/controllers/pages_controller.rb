@@ -7,10 +7,10 @@ class PagesController < ApplicationController
 
   def home
     # <- check ENV vars
-    # Rails.logger.debug "........................... #{ENV['REDIS_URL']}"
+    # Rails.logger.debug ".... #{ENV['REDIS_URL']}"
 
     # background worker with Sidekiq: console.log the curl to Google
-    HardWorker.perform_async
+    # HardWorker.perform_async
 
     # ACTIVE_JOB with Sidekiq (intializer with REDIS_URL, config.active_job.queue_adapter)
     HardJob.perform_later 
