@@ -1,0 +1,9 @@
+DO $$
+BEGIN
+  CREATE ROLE ortkcbqt WITH SUPERUSER CREATEDB LOGIN PASSWORD 'fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd';
+
+  
+  EXCEPTION WHEN DUPLICATE_OBJECT THEN
+  RAISE NOTICE 'not creating role my_role -- it already exists';
+END
+$$;
