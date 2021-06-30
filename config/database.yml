@@ -6,12 +6,10 @@ default: &default
 
 development:
   <<: *default
-  database: k8_development
-  
-
+  database: k8_dev
 
 production:
   <<: *default
-  database: k8_production
+  database: k8_prod
   username: k8
   password: <%= ENV['K8_DATABASE_PASSWORD'] %>

@@ -4,7 +4,6 @@ class HardJob < ApplicationJob
 
   require "net/http"
   
-
   queue_as :default
   include PagesHelper
 

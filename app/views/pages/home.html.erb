@@ -1,10 +1,9 @@
-<h1>Dockerized Rails app with local database with protected Redis database</h1>
+<h1 class="title"> Rails app with React sprinkle with local PGSL database and Redis protected Redis database</h1>
 <br>
 
+<div id='root'></div>
 
-<br>
-<h2> REDIS DB: <%= @compteur  %></h2>
-<h2> PG    DB: <%=  @nb %></h2>
-<p>
-   <%= Rails.application.credentials.secret_key_base %>
-</p>
+
+<code>
+   SECRET_KEY_BASE: <%= Rails.application.credentials.secret_key_base %>
+</code>
