@@ -10,14 +10,16 @@ import startWorkers from "./startWorkers.js";
 const Button = () => {
   const [counters, setCounters] = React.useState({});
 
-  React.useEffect(async () => {
+  React.useEffect(() => {
     console.log("init");
-    return fetchCounters("getCounters").then(({ countPG, countRedis }) => {
+    async function counter() {
+      const { countPG, countRedis } = await fetchCounters("getCounters");
       setCounters({
         countPG,
         countRedis,
       });
-    });
+    }
+    return counter();
   }, []);
 
   const handleClick = async (e) => {
@@ -41,8 +43,9 @@ const Button = () => {
 
         {counters && (
           <div>
-            <h2>PG counter: {counters.countPG}</h2>
-            <h2>Redis counter: {counters.countRedis}</h2>
+            <h1>PG counter: {counters.countPG}</h1>
+            <br />
+            <h1>Redis counter: {counters.countRedis}</h1>
           </div>
         )}
       </div>
