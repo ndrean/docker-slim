@@ -1,5 +1,5 @@
 require_relative "boot"
-
+require 'active_support/time'
 require "rails"
 # Pick the frameworks you want:
 require "active_model/railtie"
@@ -29,9 +29,17 @@ module DockerSlim
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
+
+    ############
+    # config.active_record.database_selector = { delay: 2.seconds }
+    # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
+    # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+    #############
+
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-    config.active_job.queue_adapter = :sidekiq #<- ONLY FOR ACTIVE_JOB
+    
+    config.active_job.queue_adapter = :sidekiq
 
     # Don't generate system test files.
     config.generators.system_tests = nil

@@ -23,6 +23,19 @@ psql -U postgres
 CREATE ROLE bob WITH SUPERUSER CREATEDB LOGIN PASSWORD 'bobpwd';
 ```
 
+Same database name for `primary` and `replica`:
+
+Initialize ElephantSQL database:
+
+```sql
+CREATE TABLE counters (
+  id bigserial PRIMARY KEY,
+  nb integer,
+  created_at timestamp,
+  updated_at timestamp
+);
+```
+
 ## Run `overmind`
 
 The app is running locally with hot static assets replacement and Rails running in dev mode (page refresh will update the app). Run `overmind start` to start the four processes _rails_, _webpack-dev-server_, _redis_ and _sidekiq_:

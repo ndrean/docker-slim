@@ -1,12 +1,19 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  url: <%= ENV['POSTGRES_URL'] %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
+  # primary:
   <<: *default
-  database: k8_dev
+  database: ortkcbqt
+  url: <%= ENV.fetch('POSTGRES_URL','') %>
+  #   migrations_path: db/migrate
+  # replica:
+  #   <<: *default
+  #   database: ortkcbqt
+  #   url: <%= ENV.fetch('REPLICA_URL','') %>
+  #   replica: true
 
 production:
   <<: *default

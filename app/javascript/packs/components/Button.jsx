@@ -4,34 +4,57 @@
 
 import React from "react";
 
-import fetchCounters from "./fetchCounters.js";
-import startWorkers from "./startWorkers.js";
+import fetchCounters from "../utils/fetchCounters.js";
+import postCounters from "../utils/postCounters.js";
+import startWorkers from "../utils/startWorkers.js";
 
 const Button = () => {
   const [counters, setCounters] = React.useState({});
 
   React.useEffect(() => {
-    console.log("init");
     async function counter() {
-      const { countPG, countRedis } = await fetchCounters("getCounters");
-      setCounters({
-        countPG,
-        countRedis,
-      });
+      try {
+        const { countPG, countRedis } = await fetchCounters("/getCounters");
+        console.log("init", countPG, countRedis);
+        setCounters({
+          countPG: Number(countPG),
+          countRedis: Number(countRedis),
+        });
+      } catch {
+        (err) => console.warn(err);
+      }
     }
-    return counter();
+    counter();
   }, []);
 
   const handleClick = async (e) => {
     e.preventDefault;
-    await fetchCounters("incrCounters").then(({ countRedis, countPG }) => {
-      setCounters({
-        countPG,
-        countRedis,
-      });
-      console.log("click");
+    setCounters((prev) => {
+      for (const key in prev) {
+        prev[key] = Number.parseInt(prev[key]) + 1;
+      }
+      return prev;
     });
-    await startWorkers();
+
+    try {
+      let { countPG, countRedis } = counters;
+      countPG += 1;
+      countRedis = Number(countRedis) + 1;
+      postCounters("/incrCounters", { countPG, countRedis }).then(() => {
+        setCounters({ countPG, countRedis });
+      });
+      await fetch("/startWorkers");
+    } catch {
+      (err) => console.log(err);
+    }
+
+    // await fetchCounters("incrCounters").then(({ countRedis, countPG }) => {
+    //   setCounters({
+    //     countPG,
+    //     countRedis,
+    //   }).catch((err) => console.warn(err));
+    //   console.log("insert: ", counters);
+    // });
   };
 
   return (

@@ -19,10 +19,16 @@
     <%= image_pack_tag 'media/images/sidekiq.png', class: "img" %> 
     <%= image_pack_tag 'media/images/Postgres.png', class: "img-large" %>
     <%= image_pack_tag 'media/images/Elephantsql.jpeg', class: "img" %>
-    <%= image_pack_tag 'media/images/React.png', class: "img-med" %>
+    <%= image_pack_tag 'media/images/FrontReact.png', class: "img-med" %>
 
     </div>
     
     <%= yield %>
+    <p>POSTGRES_URL: <%= ENV['POSTGRES_URL'] %></p>
+    <p>REMOTE_POSTGRES_URL: <%= ENV['REPLICA_URL']%></p>
+    <p>SIDEKIQ_REDIS_URL: <%= Sidekiq.redis { |conn| conn.connection[:id] } %></p>
+    <code>
+      SECRET_KEY_BASE: <%= Rails.application.credentials.secret_key_base %>
+    </code>
   </body>
 </html>
