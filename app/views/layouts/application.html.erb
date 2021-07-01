@@ -27,8 +27,6 @@
     <p>POSTGRES_URL: <%= ENV['POSTGRES_URL'] %></p>
     <p>REMOTE_POSTGRES_URL: <%= ENV['REPLICA_URL']%></p>
     <p>SIDEKIQ_REDIS_URL: <%= Sidekiq.redis { |conn| conn.connection[:id] } %></p>
-    <code>
-      SECRET_KEY_BASE: <%= Rails.application.credentials.secret_key_base %>
-    </code>
+    
   </body>
 </html>
