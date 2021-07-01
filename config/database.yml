@@ -1,17 +1,14 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  url: <%= ENV['POSTGRES_URL'] %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
   database: k8_development
-  
-
+  url: <%= ENV['POSTGRES_URL'] %>
 
 production:
   <<: *default
   database: k8_production
-  username: k8
   password: <%= ENV['K8_DATABASE_PASSWORD'] %>

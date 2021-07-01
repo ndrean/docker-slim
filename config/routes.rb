@@ -6,4 +6,10 @@ Rails.application.routes.draw do
   #end
 
   root to: 'pages#home'
+
+  # React endpoints
+  # get '/incrCounters', to: 'pages#incr_counters'
+  get '/startWorkers', to: 'pages#start_workers'
+  get '/getCounters', to: 'pages#get_counters'
+  post '/incrCounters', to: "pages#create"
 end

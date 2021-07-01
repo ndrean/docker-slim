@@ -8,7 +8,7 @@ x-app: &common
     args:
       - RUBY_VERSION=3.0.1-alpine
       - BUNDLER_VERSION=2.2.21
-      - NODE_VERSION=14
+      # - NODE_VERSION=14
       - NODE_ENV=development
       - RAILS_ENV=development
 
@@ -22,7 +22,12 @@ services:
       - PG_DATA=/var/lib/postgresql/data
     volumes:
       - pg_data:/var/lib/postgresql/data
-      - ./pg/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./pg/init-user.sql:/docker-entrypoint-initdb.d/init-user.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   redisdb:
     image: redis:6.2.4-alpine
@@ -33,6 +38,11 @@ services:
     volumes:
       - redis_data:/data
       - ./redis/config:/usr/local/etc/redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   webpacker:
     <<: *common
@@ -47,21 +57,25 @@ services:
 
   sidekiq:
     <<: *common
+    entrypoint: ["./app-pid.sh"]
     command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
     depends_on:
-      - redisdb
-      - app
+      redisdb:
+        condition: service_healthy
 
   app:
     <<: *common
     depends_on:
-      - pg
-      - redisdb
+      pg:
+        condition: service_healthy
+      redisdb:
+        condition: service_healthy
     environment:
       YARN_CACHE_FOLDER: /app/node_modules/.yarn-cache
       WEBPACKER_DEV_SERVER_HOST: webpacker
     ports:
       - 4000:3000
+    entrypoint: [./manage-db.sh]
     command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
     volumes:
       - bundle_cache:/usr/local/bundle
