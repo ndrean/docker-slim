@@ -7,16 +7,12 @@ class HardWorker
   end
 
   def perform(*args)
-    p Rails.logger.info ' !!!!!!! I am a worker, doing a heavy work: curl to Google ......!!!!!!!'
+    p Rails.logger.info ' !!!!!!! I am a WORKER, doing a heavy work: fetching an API ......!!!!!!!'
 
-    obj = PagesHelper.scrap(1)
+    obj = PagesHelper.get_api(1) || nil
     puts Rails.logger.info "WORKER:..#{obj}..||..#{obj["title"]}...is...#{obj["completed"]}"
 
-    # system('curl -I http://google.com')
-    uri = URI('https://google.com')
-    res = Net::HTTP.get_response(uri)
-    puts res.body
-    raise HardJob::Error.new('could not get Google') if (res.code != '301')
+    raise HardWorker::Error.new('could not fetch the API') if obj == nil
 
     
   end

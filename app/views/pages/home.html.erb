@@ -1,11 +1,4 @@
-<h1>Dockerized Rails app with local database with protected Redis database</h1>
+<h1>Dockerized Rails app in production mode with local (or remote)  PostgreSQL database with protected Redis database and running background jobs</h1>
 <br>
 
-
-<br>
-<h2> REDIS DB: <%= @compteur  %></h2>
-<h2> PG    DB: <%=  @nb %></h2>
-<p>
-   SECRET_KEY_BASE: <%= Rails.application.credentials.secret_key_base %>
-</p>
-<p>Sidekiq is connected to Redis: <%= Sidekiq.redis { |conn| p conn.connection[:id] } %></p>
+<div id='root'></div>

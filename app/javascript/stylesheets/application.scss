@@ -1,0 +1,41 @@
+.title {
+   border: 1px solid;
+   padding: 2px;
+   text-align: center;
+}
+
+.button {
+   font-size: 40px;
+   height: auto;
+   width: auto;
+   padding: 15px;
+   margin: 100px;
+   color: blue;
+   border-radius: 5px;
+   /* box-shadow */
+   box-shadow: rgba(0, 0, 0, 0.8) 0 0 10px;
+}
+
+.flexed {
+   display: flex;
+   flex-flow: row wrap;
+   align-items: center;
+}
+
+.img {
+   height: 80px;
+   width: 80px;
+   padding: 20px;
+}
+
+.img-med {
+   height: 80px;
+   width: 120px;
+   padding: 20px;
+}
+
+.img-large {
+   height: 80px;
+   width: 160px;
+   padding: 20px;
+}

@@ -6,9 +6,10 @@ default: &default
 development:
   <<: *default
   database: k8_development
-  url: <%= ENV.fetch('POSTGRES_URL', 'postgresql://postgres@localhost:5432') %>
+  url: <%= ENV.fetch('POSTGRES_URL', '') %>
 
 production:
   <<: *default
   database: k8_production
-  url: <%= ENV.fetch('ELEPHANT_URL', '') %>
+  url: <%= ENV.fetch('POSTGRES_URL', '') %>
+  # url: <%= ENV.fetch('ELEPHANT_URL', '') %>

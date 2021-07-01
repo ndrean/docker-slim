@@ -17,10 +17,11 @@ services:
     ports:
       - 5432
     environment:
-      - POSTGRES_PASSWORD=fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd
+      - POSTGRES_PASSWORD=dockerpassword
+      # - POSTGRES_PASSWORD=fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd
     volumes:
       - pg_data:/var/lib/postgresql/data
-      - ./pg/init-remote-user.sql:/docker-entrypoint-initdb.d/init-remote-user.sql:ro
+      - ./pg/init-user.sql:/docker-entrypoint-initdb.d/init-user.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -49,8 +50,6 @@ services:
     depends_on:
       redisdb:
         condition: service_healthy
-      # app:
-      #   condition: service_healthy
 
   app:
     <<: *common
@@ -63,8 +62,8 @@ services:
     #   test: ["CMD", "curl", "-I", "http://app:3000/"]
     ports:
       - 4000:3000
-    # <- don't run the entrypoint for create/migrate if remote database
-    # entrypoint: [./manage-db.sh]
+    # <- entrypoint for idempotent create/migrate
+    entrypoint: [./manage-db.sh]
     command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
     tmpfs:
       - /tmp
