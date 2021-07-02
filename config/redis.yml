@@ -1,5 +1,5 @@
 development: &dev
-  url: <%= ENV.fetch('REDIS_URL',"") %>
+  url: <%= ENV.fetch('REDISLABS_URL',"") %>
   db: 0
 
 production:
