@@ -34,3 +34,5 @@ You to create a namespace "test" for testing when doing this kind of things. You
 ## Note on Rails errors
 
 <https://github.com/rails/rails/search?utf8=%E2%9C%93&q=standarderror&type=Code>
+
+<https://github.com/rails/rails/issues/41492>
