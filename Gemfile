@@ -18,6 +18,7 @@ gem 'turbolinks', '~> 5'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 gem 'redis'
+gem 'hiredis'
 gem 'sidekiq'
 gem 'sidekiq-failures', '~> 1.0'
 

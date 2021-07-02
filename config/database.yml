@@ -5,5 +5,5 @@ default: &default
 
 production:
   <<: *default
-  url: <%= ENV.fetch('ELEPHANT_URL', '') %>
+  url: <%= ENV.fetch('POSTGRES_URL', '') %>
   # url: <%= ENV.fetch('ELEPHANT_URL', '') %>
