@@ -25,8 +25,8 @@
     
     <%= yield %>
     <p>POSTGRES_URL: <%= ENV['POSTGRES_URL'] %></p>
-    <p>REMOTE_POSTGRES_URL: <%= ENV['REPLICA_URL']%></p>
+    <p>REMOTE_POSTGRES_URL: <%= ENV['ELEPHANT_URL']%></p>
     <p>SIDEKIQ_REDIS_URL: <%= Sidekiq.redis { |conn| conn.connection[:id] } %></p>
-    
+    <code> RAILS MASTER KEY:  <%= ENV['RAILS_MASTER_KEY'] %> </code>
   </body>
 </html>
