@@ -24,9 +24,9 @@ RUN apt-get update \
    && truncate -s 0 /var/log/*log
 
 
-RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash  && \
-   curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-   echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
+RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
+   && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+   && echo 'deb https://dl.yarnpkg.com/debian/ stable main' > /etc/apt/sources.list.d/yarn.list
 
 RUN apt-get  update  \
    # && DEBIAN_FRONTEND=noninteractive 
@@ -69,8 +69,11 @@ RUN bundle exec rake assets:precompile
 # ENV RAILS_SERVE_STATIC_FILES true
 
 ###########################################
-
+ARG RUBY_VERSION
 FROM ruby:${RUBY_VERSION}
+
+ARG NODE_ENV
+ARG RAILS_ENV
 
 RUN apt-get  update  \
    && apt-get install -y --no-install-recommends \
@@ -83,17 +86,20 @@ RUN apt-get  update  \
    && rm -rf /var/cache/apt/archives/* \
    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
    && truncate -s 0 /var/log/*log
-# && useradd -u 1000 -Um rails
+
 
 #<- we copy the host bundle folder if not flag BUNBLER_PATH='vendor/bundle' in which case it's local
 # COPY --from=builder /usr/local/bundle/ /usr/local/bundle/
 
-COPY --from=builder  /app /app
+RUN adduser --disabled-password app-user
+USER app-user
 
-ENTRYPOINT ["./docker-entrypoint.sh"]
+COPY --from=builder  --chown=app-user /app /app
 
-ENV RAILS_ENV=production \
-   NODE_ENV=production \
+ENTRYPOINT ["./app-pid.sh"]
+
+ENV RAILS_ENV=$RAILS_ENV\
+   NODE_ENV=$NODE_ENV \
    RAILS_LOG_TO_STDOUT=true \
    RAILS_SERVE_STATIC_FILES=true \
    BUNDLE_PATH='vendor/bundle'
