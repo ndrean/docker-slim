@@ -4,10 +4,5 @@ BEGIN
   EXCEPTION WHEN DUPLICATE_OBJECT THEN
   RAISE NOTICE 'not creating role my_role -- it already exists';
 
-  CREATE ROLE replicant WITH REPLICATION ;
-  EXCEPTION WHEN DUPLICATE_OBJECT THEN
-  RAISE NOTICE 'not creating role my_role -- it already exists';
-
-
 END
 $$;

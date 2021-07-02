@@ -58,8 +58,6 @@ services:
         condition: service_healthy
       redisdb:
         condition: service_healthy
-    # healthcheck:
-    #   test: ["CMD", "curl", "-I", "http://app:3000/"]
     ports:
       - 4000:3000
     # <- entrypoint for idempotent create/migrate
