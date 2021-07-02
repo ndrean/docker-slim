@@ -17,8 +17,8 @@ services:
     ports:
       - 5432
     environment:
-      - POSTGRES_PASSWORD=dockerpassword
-      # - POSTGRES_PASSWORD=fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd
+      # - POSTGRES_PASSWORD=dockerpassword
+      - POSTGRES_PASSWORD=fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd
     volumes:
       - pg_data:/var/lib/postgresql/data
       - ./pg/init-user.sql:/docker-entrypoint-initdb.d/init-user.sql:ro
