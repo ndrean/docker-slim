@@ -15,7 +15,7 @@ const Button = () => {
     async function counter() {
       try {
         const { countPG, countRedis } = await fetchCounters("/getCounters");
-        console.log("init", countPG, countRedis);
+        // console.log("init", countPG, countRedis);
         setCounters({
           countPG: Number(countPG),
           countRedis: Number(countRedis),
@@ -29,13 +29,6 @@ const Button = () => {
 
   const handleClick = async (e) => {
     e.preventDefault;
-    setCounters((prev) => {
-      for (const key in prev) {
-        prev[key] = Number.parseInt(prev[key]) + 1;
-      }
-      return prev;
-    });
-
     try {
       let { countPG, countRedis } = counters;
       countPG += 1;
@@ -44,16 +37,8 @@ const Button = () => {
       setCounters({ countPG, countRedis });
       await fetch("/startWorkers");
     } catch {
-      (err) => console.log(err);
+      console.error;
     }
-
-    // await fetchCounters("incrCounters").then(({ countRedis, countPG }) => {
-    //   setCounters({
-    //     countPG,
-    //     countRedis,
-    //   }).catch((err) => console.warn(err));
-    //   console.log("insert: ", counters);
-    // });
   };
 
   return (
