@@ -3,6 +3,7 @@
   <head>
     <title>DockerSlim</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Slim Rails image ">
    
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -12,12 +13,12 @@
   </head>
 
   <body>
-    <%= image_pack_tag 'media/images/Rails.png', class: "img-large" %>
-    <%= image_pack_tag 'media/images/docker2.png', class: "img" %>
-    <%= image_pack_tag 'media/images/Redis.png',class: "img-large" %> 
-    <%= image_pack_tag 'media/images/sidekiq.png', class: "img" %> 
-    <%= image_pack_tag 'media/images/Postgres.png', class: "img-large" %>
-    <%= image_pack_tag 'media/images/Elephantsql.jpg', class: "img" %>
+    <%= image_pack_tag 'media/images/Rails.png', class: "img-large", alt:"logo" %>
+    <%= image_pack_tag 'media/images/docker2.png', class: "img", alt:"logo" %>
+    <%= image_pack_tag 'media/images/Redis.png',class: "img-large", alt:"logo" %> 
+    <%= image_pack_tag 'media/images/sidekiq.png', class: "img", alt:"logo" %> 
+    <%= image_pack_tag 'media/images/Postgres.png', class: "img-large", alt:"logo" %>
+    <%= image_pack_tag 'media/images/Elephantsql.jpg', class: "img", alt:"logo" %>
     <%# image_pack_tag 'media/images/FrontReact.png', class: "img-med"  %>
     <img src="<%= asset_pack_path 'media/images/FrontReact.png' %>" class="img-med" alt="logo"></img>
     
