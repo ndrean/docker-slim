@@ -85,6 +85,11 @@ services:
       - rails_cache:/app/tmp/cache
     tmpfs:
       - /tmp
+    healthcheck:
+      test: ["CMD", "./check-sidekiq.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   redis_data: {}

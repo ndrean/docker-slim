@@ -1,0 +1,17 @@
+Sidekiq 6.2.1
+2021-07-03 17:36:36 UTC
+
+---- Overview ----
+  Processed: 556
+     Failed: 0
+       Busy: 0
+   Enqueued: 0
+    Retries: 0
+  Scheduled: 0
+       Dead: 0
+
+---- Processes (0) ----
+
+---- Queues (1) ----
+NAME       SIZE  LATENCY
+default       0     0.00
