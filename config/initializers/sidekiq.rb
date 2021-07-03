@@ -1,10 +1,4 @@
 
-# redis_conf = { 
-#   password: ENV['REDIS_PASSWORD'],
-#   port: 6379,
-#   host: ENV['REDIS_HOST'],
-#   network_timeout: 5
-# }
 redis_conf = { 
   url: ENV['REDIS_URL'],
   password: ENV['REDIS_PASSWORD'],

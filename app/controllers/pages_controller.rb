@@ -1,6 +1,7 @@
 class PagesController < ApplicationController
 
   include PagesHelper
+  include SidekiqHelper
 
   
 
@@ -10,7 +11,9 @@ class PagesController < ApplicationController
     # <- test Sidekiq/Redis connection
     p "Redis-Sidekiq: #{Sidekiq.redis { |conn| conn.connection[:id] }}"
     # PSQL <- test PG connection
-    # ActiveRecord::Base.connection.execute("SELECT 1") 
+    ActiveRecord::Base.connection.execute("SELECT 1") 
+    #<- check Sidekiq
+    SidekiqHelper.run
       
   end
 
