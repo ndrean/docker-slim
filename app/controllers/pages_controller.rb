@@ -61,25 +61,12 @@ class PagesController < ApplicationController
   end
 
 
-  # def incr_counters
-  #   nb = 0
-  #   # select * from counters order by id desc limit 1;
-  #   if (Counter.last == nil)
-  #     Counter.create!(nb: 1)
-  #     nb = 1
-  #   else
-  #     nb = Counter.last.nb + 1
-  #     Counter.create!(nb: nb)
-  #   end
-
-  #   compteur = PagesHelper.incr_redis
-    
-  #   render json: {countPG: nb, countRedis: compteur.to_i}
-  # end
-
   def create
+    # console
+    # p params
     Counter.create!(nb: params[:countPG])
     REDIS.set("compteur", params[:countRedis])
+    # end
     render json: {
         status: :created,
     }

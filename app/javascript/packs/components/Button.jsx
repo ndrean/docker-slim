@@ -40,9 +40,8 @@ const Button = () => {
       let { countPG, countRedis } = counters;
       countPG += 1;
       countRedis = Number(countRedis) + 1;
-      postCounters("/incrCounters", { countPG, countRedis }).then(() => {
-        setCounters({ countPG, countRedis });
-      });
+      await postCounters("/incrCounters", { countPG, countRedis });
+      setCounters({ countPG, countRedis });
       await fetch("/startWorkers");
     } catch {
       (err) => console.log(err);
