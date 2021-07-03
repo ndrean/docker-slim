@@ -43,7 +43,12 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   config.cache_store = :redis_cache_store, { url: ENV['SIDEKIQ_REDIS'] }
-                         
+
+  config.public_file_server.headers = {
+    'Cache-Control' => 'public, s-maxage=31536000, max-age=15552000',
+    'Expires' => "#{1.year.from_now.to_formatted_s(:rfc822)}"
+  }
+  
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque

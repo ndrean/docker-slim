@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>DockerSlim</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+   
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -17,7 +18,8 @@
     <%= image_pack_tag 'media/images/sidekiq.png', class: "img" %> 
     <%= image_pack_tag 'media/images/Postgres.png', class: "img-large" %>
     <%= image_pack_tag 'media/images/Elephantsql.jpg', class: "img" %>
-    <%= image_pack_tag 'media/images/FrontReact.png', class: "img-med" %>
+    <%# image_pack_tag 'media/images/FrontReact.png', class: "img-med"  %>
+    <img src="<%= asset_pack_path 'media/images/FrontReact.png' %>" class="img-med" alt="logo"></img>
     
     <%= yield %>
 
