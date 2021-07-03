@@ -29,13 +29,6 @@ const Button = () => {
 
   const handleClick = async (e) => {
     e.preventDefault;
-    setCounters((prev) => {
-      for (const key in prev) {
-        prev[key] = Number.parseInt(prev[key]) + 1;
-      }
-      return prev;
-    });
-
     try {
       let { countPG, countRedis } = counters;
       countPG += 1;
@@ -47,14 +40,6 @@ const Button = () => {
     } catch {
       (err) => console.log(err);
     }
-
-    // await fetchCounters("incrCounters").then(({ countRedis, countPG }) => {
-    //   setCounters({
-    //     countPG,
-    //     countRedis,
-    //   }).catch((err) => console.warn(err));
-    //   console.log("insert: ", counters);
-    // });
   };
 
   return (
