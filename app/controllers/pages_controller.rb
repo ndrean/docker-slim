@@ -25,38 +25,14 @@ class PagesController < ApplicationController
     cPG = Counter.last
     cRed = REDIS.get('compteur')
 
-    if (cPG == nil )
-      countPG = 0
-    end
-    
-    if (cRed == "")
-      countRedis = 0
-    end
+    countPG = (cPG == nil) ? 0 : cPG.nb
+    countRedis = (cRed == '') ? 0 : cRed
 
-    if (cPG != nil && cRed != "")
-      render json: {
-        countPG: cPG.nb,
-        countRedis: cRed,
-        status: :ok
-      }
-    end
-
-    if (cPG != nil && cRed == "")
-      render json: {
-        countPG: cPG.nb,
-        countRedis: countRedis,
-        status: :ok
-      }
-    end
-
-    if (cPG == nil && cRed != "")
-      render json: {
-        countPG: countPG,
-        countRedis: cRed,
-        status: :ok
-      }
-    end
-
+    render json: {
+      countPG: countPG,
+      countRedis: countRedis,
+      status: :created
+    }
   end
 
   def create

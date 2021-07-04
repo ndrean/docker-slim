@@ -1,6 +1,5 @@
 version: "3"
 
-# see https://stackoverflow.com/questions/45805380/meaning-of-ampersand-in-docker-compose-yml-file
 x-app: &common
   env_file: .env
   build:
@@ -18,11 +17,11 @@ services:
     ports:
       - 5432
     environment:
-      - POSTGRES_PASSWORD=cyberdyne
+      - POSTGRES_PASSWORD=dockerpassword
       - PG_DATA=/var/lib/postgresql/data
     volumes:
       - pg_data:/var/lib/postgresql/data
-      - ./pg/init-user.sql:/docker-entrypoint-initdb.d/init-user.sql
+      - ./pg/init-user.sql:/docker-entrypoint-initdb.d/init-user.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -37,7 +36,7 @@ services:
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
     volumes:
       - redis_data:/data
-      - ./redis/config:/usr/local/etc/redis
+      - ./redis/config:/usr/local/etc/redis:ro
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 30s

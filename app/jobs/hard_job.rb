@@ -9,7 +9,7 @@ class HardJob < ApplicationJob
   include PagesHelper
 
   def perform(*args)
-    puts Rails.logger.info ' !!!!!!!! I am a job, doing a heavy job: curl to Google ......!!!!!!!'
+    puts Rails.logger.info ' !!!!!!!! I am a JOB, doing a heavy job: CURLs to Google ......!!!!!!!'
     
     obj = PagesHelper.scrap(2)
     puts Rails.logger.info "JOB:.#{obj}..||..#{obj["title"]}...is...#{obj["completed"]}"
