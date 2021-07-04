@@ -4,3 +4,4 @@ development: &dev
 
 production:
   <<: *dev
+  driver: :hiredis

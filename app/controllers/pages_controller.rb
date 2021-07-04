@@ -1,6 +1,7 @@
 class PagesController < ApplicationController
 
   include PagesHelper
+  include SidekiqHelper
 
   def home    
     # <- test Redis database
@@ -8,7 +9,9 @@ class PagesController < ApplicationController
     # <- test Sidekiq/Redis connection
     p "Redis-Sidekiq: #{Sidekiq.redis { |conn| conn.connection[:id] }}"
     # PSQL <- test PG connection
-    # ActiveRecord::Base.connection.execute("SELECT 1") 
+    ActiveRecord::Base.connection.execute("SELECT 1") 
+    #<- check Sidekiq
+    SidekiqHelper.run
       
   end
 
@@ -27,38 +30,14 @@ class PagesController < ApplicationController
     cPG = Counter.last
     cRed = REDIS.get('compteur')
 
-    if (cPG == nil )
-      countPG = 0
-    end
-    
-    if (cRed == "")
-      countRedis = 0
-    end
+    countPG = (cPG == nil) ? 0 : cPG.nb
+    countRedis = (cRed == '') ? 0 : cRed
 
-    if (cPG != nil && cRed != "")
-      render json: {
-        countPG: cPG.nb,
-        countRedis: cRed,
-        status: :ok
-      }
-    end
-
-    if (cPG != nil && cRed == "")
-      render json: {
-        countPG: cPG.nb,
-        countRedis: countRedis,
-        status: :ok
-      }
-    end
-
-    if (cPG == nil && cRed != "")
-      render json: {
-        countPG: countPG,
-        countRedis: cRed,
-        status: :ok
-      }
-    end
-
+    render json: {
+      countPG: countPG,
+      countRedis: countRedis,
+      status: :created
+    }
   end
 
   def create
