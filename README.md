@@ -1,6 +1,20 @@
-# Create Rails app without Sprockets
+# 3 branches
 
-Create a Rails app running only Webpack, without using Sprockets: `rails new my-app --skip-sprockets`. It's much easier to start an app with this flag than change an app already using Sprockets.
+- master <=> run with `overmind start`
+
+- dock-dev <=> run `docker-compose up --build`
+
+- docker-prod <=> run `docker-compose up --build`
+
+## Create Rails app without Sprockets
+
+Create a Rails app running "Webpack only", without using Sprockets:
+
+```sh
+> rails new my-app --skip-sprockets
+```
+
+It's much easier to start an app with this flag than change an app already using Sprockets.
 
 ## Initialize the PostgreSQL database
 
@@ -42,7 +56,7 @@ The app is running locally with hot static assets replacement and Rails running 
 
 The following runs on OSX (use "redis-server /usr/local/etc/redis.conf" on OSX, and "/usr/local/etc/redis/redis.conf" on Linux ):
 
-```
+```txt
 assets:  ./bin/webpack-dev-server
 web:     bundle exec rails server
 redis-server:   redis-server /usr/local/etc/redis.conf
@@ -66,3 +80,11 @@ OK
 ```
 
 We can setup Redis with AOF and RDB.
+
+## Gem **sidekiq_alive**
+
+<https://github.com/arturictus/sidekiq_alive_example>
+
+<https://github.com/mhfs/sidekiq-failures>
+
+<https://github.com/mperham/sidekiq/wiki>

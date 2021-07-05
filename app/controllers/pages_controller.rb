@@ -3,7 +3,8 @@ class PagesController < ApplicationController
   include PagesHelper
   include SidekiqHelper
 
-  
+  class Error < StandardError
+  end
 
   def home    
     # <- test Redis database
@@ -18,12 +19,20 @@ class PagesController < ApplicationController
   end
 
   def start_workers
-    # background WORKER with Sidekiq
-    HardWorker.perform_async
-    # ACTIVE_JOB with Sidekiq (intializer with REDIS_URL, config.active_job.queue_adapter)
-    HardJob.perform_later 
+    begin
+      if (Sidekiq::Stats.new().processes_size > 0)
+        # background WORKER with Sidekiq
+        HardWorker.perform_async
+        # ACTIVE_JOB with Sidekiq (intializer with REDIS_URL, config.active_job.queue_adapter)
+        HardJob.perform_later 
+        return render json: { status: 200 }
+      end
+      raise PagesController::Error.new('Workers Sidekiq down')
     
-    head :no_content
+    rescue => e
+      STDERR.puts e.message
+      return render json: { status: 500}
+    end
   end
 
   def get_counters

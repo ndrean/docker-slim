@@ -1,1 +1,1 @@
-export default async () => fetch("/startWorkers");
+export default async () => fetch("/startWorkers").then((res) => res.json());

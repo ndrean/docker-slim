@@ -139,6 +139,8 @@ GEM
       redis (>= 4.2.0)
     sidekiq-failures (1.0.0)
       sidekiq (>= 4.0.0)
+    sidekiq_alive (2.0.6)
+      sidekiq
     spring (2.1.1)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
@@ -182,6 +184,7 @@ DEPENDENCIES
   redis
   sidekiq
   sidekiq-failures (~> 1.0)
+  sidekiq_alive
   spring
   turbolinks (~> 5)
   tzinfo-data
