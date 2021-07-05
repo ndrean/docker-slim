@@ -16,14 +16,13 @@ class PagesController < ApplicationController
   end
 
   def start_workers
-    # background WORKER with Sidekiq
+    # background WORKER with Sidekiq, config.active_job.queue_adapter
     HardWorker.perform_async
     CurlWorker.perform_async
-
-    # ACTIVE_JOB with Sidekiq (intializer with REDIS_URL, config.active_job.queue_adapter)
+    # ACTIVE_JOB with Sidekiq
     HardJob.perform_later 
     CurlJob.perform_later
-    render json: {status: :ok}
+    head :no_content
   end
 
   def get_counters
@@ -36,7 +35,7 @@ class PagesController < ApplicationController
     render json: {
       countPG: countPG,
       countRedis: countRedis,
-      status: :created
+      status: :ok
     }
   end
 
