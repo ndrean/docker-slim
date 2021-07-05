@@ -1,7 +1,7 @@
 import { csrfToken } from "@rails/ujs";
 
 export default async (path, object) => {
-  fetch(path, {
+  return fetch(path, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -9,5 +9,5 @@ export default async (path, object) => {
       "X-CSRF-Token": csrfToken(),
     },
     body: JSON.stringify(object),
-  });
+  }).then((resp) => resp.json());
 };

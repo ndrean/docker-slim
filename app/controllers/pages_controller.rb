@@ -22,57 +22,31 @@ class PagesController < ApplicationController
     HardWorker.perform_async
     # ACTIVE_JOB with Sidekiq (intializer with REDIS_URL, config.active_job.queue_adapter)
     HardJob.perform_later 
-    render json: {status: :ok}
+    
+    head :no_content
   end
 
   def get_counters
     cPG = Counter.last
     cRed = REDIS.get('compteur')
 
-    if (cPG == nil )
-      countPG = 0
-    end
-    
-    if (cRed == "")
-      countRedis = 0
-    end
+    countPG = (cPG == nil) ? 0 : cPG.nb
+    countRedis = (cRed == '') ? 0 : cRed
 
-    if (cPG != nil && cRed != "")
-      render json: {
-        countPG: cPG.nb,
-        countRedis: cRed,
-        status: :ok
-      }
-    end
-
-    if (cPG != nil && cRed == "")
-      render json: {
-        countPG: cPG.nb,
-        countRedis: countRedis,
-        status: :ok
-      }
-    end
-
-    if (cPG == nil && cRed != "")
-      render json: {
-        countPG: countPG,
-        countRedis: cRed,
-        status: :ok
-      }
-    end
-
+    render json: {
+      countPG: countPG,
+      countRedis: countRedis,
+      status: :ok
+    }
   end
-
 
   def create
     # console
     # p params
     Counter.create!(nb: params[:countPG])
     REDIS.set("compteur", params[:countRedis])
-    # end
-    render json: {
-        status: :created,
-    }
+    
+    render json: { status: :created }
   end
 
 end
