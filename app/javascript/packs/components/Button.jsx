@@ -28,7 +28,7 @@ const Button = () => {
   }, []);
 
   const handleClick = async (e) => {
-    e.preventDefault;
+    e.preventDefault();
     try {
       let { countPG, countRedis } = counters;
       countPG += 1;
