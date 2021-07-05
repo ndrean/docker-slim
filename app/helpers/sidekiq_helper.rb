@@ -4,11 +4,10 @@ module SidekiqHelper
    end
 
    def self.check
-      Sidekiq::Monitor::Status.new.display(section="all")
-      # cf gtihub/lib/sidekiq/Sidekiq/api.rb
-      size = Sidekiq::Stats.new().processes_size
-
       begin
+         Sidekiq::Monitor::Status.new.display(section="all")
+         # cf gtihub/lib/sidekiq/Sidekiq/api.rb
+         size = Sidekiq::Stats.new().processes_size
          raise SidekiqHelper::Error.new("Sidekiq down") if size == 0
       rescue => e
          STDERR.puts e.message
