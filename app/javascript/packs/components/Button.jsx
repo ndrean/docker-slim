@@ -22,6 +22,7 @@ const Button = () => {
         });
       } catch {
         (err) => console.warn(err);
+        throw new Error(err);
       }
     }
     counter();
@@ -48,6 +49,7 @@ const Button = () => {
       ]);
     } catch {
       (err) => console.log(err);
+      throw new Error(err);
     }
   };
 
