@@ -28,14 +28,21 @@ const Button = () => {
   }, []);
 
   const handleClick = async (e) => {
-    e.preventDefault;
+    e.preventDefault();
     try {
       let { countPG, countRedis } = counters;
       countPG += 1;
       countRedis = Number(countRedis) + 1;
-      await postCounters("/incrCounters", { countPG, countRedis });
-      setCounters({ countPG, countRedis });
-      await startWorkers();
+      let [req1, _] = await Promise.all([
+        postCounters("/incrCounters", {
+          countPG,
+          countRedis,
+        }),
+        startWorkers(),
+      ]);
+      if (req1.status === "created") {
+        setCounters({ countPG, countRedis });
+      }
     } catch {
       (err) => console.log(err);
     }

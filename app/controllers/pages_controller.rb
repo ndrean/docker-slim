@@ -1,6 +1,8 @@
 class PagesController < ApplicationController
   include SidekiqHelper
 
+  # skip_before_action :verify_authenticity_token
+
   def home    
     # <- test Redis database
     p "Redis db:  #{REDIS.ping}"
@@ -18,7 +20,8 @@ class PagesController < ApplicationController
     HardWorker.perform_async
     # ACTIVE_JOB with Sidekiq (intializer with REDIS_URL, config.active_job.queue_adapter)
     HardJob.perform_later 
-    render json: {status: :ok}
+    
+    render json: { status: :ok}
   end
 
   def get_counters
@@ -31,16 +34,15 @@ class PagesController < ApplicationController
     render json: {
       countPG: countPG,
       countRedis: countRedis,
-      status: :created
+      status: :ok
     }
   end
 
   def create
     Counter.create!(nb: params[:countPG])
     REDIS.set("compteur", params[:countRedis])
-    render json: {
-        status: :created,
-    }
+    render json:  {
+      status: :created
+    }       
   end
-
 end
