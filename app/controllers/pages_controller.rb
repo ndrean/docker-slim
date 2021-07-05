@@ -13,11 +13,10 @@ class PagesController < ApplicationController
     STDOUT.puts "Redis-Sidekiq: #{Sidekiq.redis { |conn| conn.connection[:id] }}"
     
     begin
-      # PSQL <- test PG connection
-      ActiveRecord::Base.connection.execute("SELECT 1") 
-      
-      
-      raise PagesController::Error.new("database down")
+      # PSQL <- test PG connection, https://www.rubydoc.info/gems/pg/PG/Result
+      res = ActiveRecord::Base.connection.execute("SELECT 1") .getvalue(0,0)
+      raise PagesController::Error.new("PG down") if (res != 1)
+      STDOUT.puts "PG up"
     rescue => e
       STDERR.puts e.message
     end
@@ -46,7 +45,7 @@ class PagesController < ApplicationController
       countPG = (cPG == nil) ? 0 : cPG.nb
       countRedis = (cRed == '') ? 0 : cRed
 
-      if (cPG || CRed)
+      if (countPG || countRedis)
         return render json: {
           countPG: countPG,
           countRedis: countRedis,

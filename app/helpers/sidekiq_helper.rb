@@ -6,8 +6,10 @@ module SidekiqHelper
 
    def self.check
       begin
-         Sidekiq::Monitor::Status.new.display(section="all")
+         STDOUT.puts Sidekiq::Monitor::Status.new.display(section="all")
          # github/sidekiq/lib/sidekiq.rb
+         # https://github.com/mhfs/sidekiq-failures
+         STDOUT.puts Sidekiq::Failures.count
          STDOUT.puts Sidekiq.redis { |con| con.connection[:id] }
          # cf gtihub/lib/sidekiq/Sidekiq/api.rb
          size = Sidekiq::Stats.new().processes_size
