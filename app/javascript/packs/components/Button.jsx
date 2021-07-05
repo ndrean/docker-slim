@@ -43,6 +43,7 @@ const Button = () => {
       ]);
     } catch {
       console.error;
+      throw error;
     }
   };
 

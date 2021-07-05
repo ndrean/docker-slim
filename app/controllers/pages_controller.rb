@@ -13,7 +13,7 @@ class PagesController < ApplicationController
     # PSQL <- test PG connection
     ActiveRecord::Base.connection.execute("SELECT 1") 
     #<- check Sidekiq
-    SidekiqHelper.run
+    SidekiqHelper.check
       
   end
 

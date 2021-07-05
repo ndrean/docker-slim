@@ -18,7 +18,12 @@ class HardJob < ApplicationJob
     uri = URI('https://google.com')
     res = Net::HTTP.get_response(uri)
     puts res.body
-    raise HardJob::Error.new('could not get Google') if (res.code != '301')
+    
+    begin
+      raise HardJob::Error.new('could not get Google') if (res.code != '301')
+    rescue => e
+      puts e.message
+    end
 
   end
 end
