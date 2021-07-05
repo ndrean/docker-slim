@@ -21,7 +21,7 @@ class PagesController < ApplicationController
     # ACTIVE_JOB with Sidekiq (intializer with REDIS_URL, config.active_job.queue_adapter)
     HardJob.perform_later 
     
-    render json: { status: :ok}
+    head :no_content
   end
 
   def get_counters
@@ -41,6 +41,7 @@ class PagesController < ApplicationController
   def create
     Counter.create!(nb: params[:countPG])
     REDIS.set("compteur", params[:countRedis])
+    
     render json:  {
       status: :created
     }       

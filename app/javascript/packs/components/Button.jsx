@@ -33,16 +33,19 @@ const Button = () => {
       let { countPG, countRedis } = counters;
       countPG += 1;
       countRedis = Number(countRedis) + 1;
-      let [req1, _] = await Promise.all([
+      await Promise.all([
         postCounters("/incrCounters", {
           countPG,
           countRedis,
-        }),
+        })
+          .then((res) => {
+            if (res.status === "created") {
+              setCounters({ countPG, countRedis });
+            }
+          })
+          .catch((err) => console.log(err)),
         startWorkers(),
       ]);
-      if (req1.status === "created") {
-        setCounters({ countPG, countRedis });
-      }
     } catch {
       (err) => console.log(err);
     }
