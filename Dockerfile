@@ -1,13 +1,13 @@
 ARG RUBY_VERSION
-FROM ruby:${RUBY_VERSION} AS builder
+FROM ruby:${RUBY_VERSION:-3.0.1-alpine} AS builder
 
 ARG BUNDLER_VERSION
 ARG NODE_ENV
 ARG RAILS_ENV
 
-ENV RAILS_ENV=${RAILS_ENV} \
-   NODE_ENV=${NODE_ENV} \
-   BUNDLER_VERSION=${BUNDLER_VERSION}
+ENV RAILS_ENV=${RAILS_ENV:-development} \
+   NODE_ENV=${NODE_ENV:-development} \
+   BUNDLER_VERSION=${BUNDLER_VERSION:-2.2.21}
 
 RUN apk update && apk add --no-cache \
    postgresql-dev nodejs yarn build-base tzdata curl\
@@ -23,7 +23,7 @@ ENV LANG=C.UTF-8 \
 # BUNDLE_PATH='vendor/bundle'
 # <- to bundle only the gems needed from Gemfile into local folder /vendor/bundle
 
-RUN gem install bundler:${BUNDLER_VERSION} --no-document \
+RUN gem install bundler:$BUNDLER_VERSION --no-document \
    # && bundle config set --without 'development test' \
    && bundle install --quiet \
    && rm -rf /usr/local/bundle/cache/*.gem \
@@ -33,26 +33,3 @@ RUN gem install bundler:${BUNDLER_VERSION} --no-document \
 RUN yarn --check-files --silent
 
 COPY . ./
-
-# RUN bundle exec rake assets:precompile
-
-###########################################################################
-
-# FROM ruby:${RUBY_VERSION}
-
-# RUN apk update  && apk add --no-cache libpq netcat-openbsd tzdata\
-#    && rm -rf /var/cache/apk/*
-
-# COPY --from=builder  /app /app
-
-# ENTRYPOINT ["./docker-entrypoint.sh"]
-
-# ENV RAILS_ENV=production \
-#    NODE_ENV=production \
-#    RAILS_LOG_TO_STDOUT=true \
-#    RAILS_SERVE_STATIC_FILES=true \
-#    BUNDLE_PATH='vendor/bundle'
-
-# WORKDIR /app
-# RUN rm -rf node_modules
-

@@ -20,8 +20,9 @@ const Button = () => {
           countPG: Number(countPG),
           countRedis: Number(countRedis),
         });
-      } catch {
-        (err) => console.warn(err);
+      } catch (err) {
+        console.warn(err);
+        throw new Error(err);
       }
     }
     counter();
@@ -46,8 +47,9 @@ const Button = () => {
           .catch((err) => console.log(err)),
         startWorkers(),
       ]);
-    } catch {
-      (err) => console.log(err);
+    } catch (err) {
+      console.log(err);
+      throw new Error(err);
     }
   };
 

@@ -7,3 +7,4 @@
   # https://mikerogers.io/2019/06/06/rails-6-sidekiq-queues
   - default
   - sidekiq_alive
+pidfile: "./tmp/pids/sidekiq_alive.pid"

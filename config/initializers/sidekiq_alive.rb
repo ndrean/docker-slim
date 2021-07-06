@@ -3,8 +3,9 @@ SidekiqAlive.setup do |config|
   # Port to bind the server
    #   default: 7433
   #
-  #   config.port = 7433
 
+  config.port = 7433
+  config.host = '0.0.0.0'
   # ==> Liveness key
   # Key to be stored in Redis as probe of liveness
   # default: "SIDEKIQ::LIVENESS_PROBE_TIMESTAMP"
