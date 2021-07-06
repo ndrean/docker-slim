@@ -53,7 +53,7 @@ ENV RAILS_ENV=$RAILS_ENV \
    BUNDLE_PATH='vendor/bundle'
 
 WORKDIR /app
-RUN rm -rf node_modules
+RUN rm -rf node_modules tmp/cache tmp/miniprofiler tmp/sockets
 
 
 

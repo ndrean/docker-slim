@@ -6,7 +6,9 @@
 .bundle
 .byebug_history
 .rspec
-tmp
+tmp/cache
+tmp/miniprofiler
+tmp/sockets
 log
 test
 config/deploy

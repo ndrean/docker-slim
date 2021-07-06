@@ -8,24 +8,21 @@ class PagesController < ApplicationController
 
   def home    
     # <- test Redis database: to be rescued
-    STDOUT.puts "Redis db:  #{REDIS.ping}"
-    # <- test Sidekiq/Redis connection
-    STDOUT.puts "Redis-Sidekiq: #{Sidekiq.redis { |conn| conn.connection[:id] }}"
-    
+    STDOUT.puts "Redis db is UP" if (REDIS.ping == 'PONG')
+    # <- test Sidekiq/Redis connection (github/sidekiq/lib/sidekiq.rb)
+    STDOUT.puts "Redis-Sidekiq @  #{Sidekiq.redis { |con| con.connection[:id] }}"
+
+    # PSQL <- test PG connection
     begin
-      # PSQL <- test PG connection
-      ActiveRecord::Base.connection.execute("SELECT 1") 
-      
-      
-      raise PagesController::Error.new("database down")
+      ActiveRecord::Base.connection.execute("SELECT 1").getvalue(0,0)
+      # raise PagesController::Error.new("PG is down") if (one != 1)
+      STDOUT.puts "PG is UP"
     rescue => e
       STDERR.puts e.message
     end
 
     # <- rescued Sidekiq test
     SidekiqHelper.check
-    
-      
   end
 
   def start_workers
@@ -42,22 +39,21 @@ class PagesController < ApplicationController
     begin
       cPG = Counter.last
       cRed = REDIS.get('compteur')
+      raise PagesController::Error.new("database down") if (!cPG)
 
       countPG = (cPG == nil) ? 0 : cPG.nb
       countRedis = (cRed == '') ? 0 : cRed
 
-      if (countPG || countRedis)
-        return render json: {
-          countPG: countPG,
-          countRedis: countRedis,
-          status: :ok
-        }
-      end
-      raise PagesController::Error.new("database down")
+      return render json: {
+        countPG: countPG,
+        countRedis: countRedis,
+        status: :ok
+      }
     rescue => e
       STDERR.puts e.message
     end
-    return render json: { status: 500}
+
+    return render json: { status: 500 }
   end
 
   def create
