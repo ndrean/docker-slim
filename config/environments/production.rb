@@ -42,7 +42,7 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
 
   # Use a different cache store in production.
-  config.cache_store = :redis_cache_store, { :driver => :hiredis, url: ENV['SIDEKIQ_REDIS'] }
+  # config.cache_store = :redis_cache_store, { :driver => :hiredis, url: ENV['SIDEKIQ_REDIS'] }
 
   config.public_file_server.headers = {
     'Cache-Control' => 'public, s-maxage=31536000, max-age=15552000',
@@ -51,7 +51,7 @@ Rails.application.configure do
   
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
-  config.active_job.queue_adapter = :sidekiq
+  # config.active_job.queue_adapter = :sidekiq
   # config.active_job.queue_name_prefix = "docker_slim_production"
 
   config.action_mailer.perform_caching = false

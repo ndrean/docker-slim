@@ -1,5 +1,5 @@
 class HardWorker
-  include Sidekiq::Worker
+  # include Sidekiq::Worker
   include PagesHelper
   require "net/http"
   

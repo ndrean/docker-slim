@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k8-rails-app
+      tier: cache
+  template:
+    metadata:
+      name: redis
+      labels:
+        app: k8-rails-app
+        tier: cache
+    spec:
+      containers:
+        - name: redis-db
+          image: redis:6.2.4-alpine
+          ports:
+            - containerPort: 6379

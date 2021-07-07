@@ -44,7 +44,7 @@ USER app-user
 
 COPY --from=builder --chown=app-user /app /app
 
-# ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["./app-pid.sh"]
 
 ENV RAILS_ENV=$RAILS_ENV \
    NODE_ENV=$NODE_ENV \
@@ -54,6 +54,8 @@ ENV RAILS_ENV=$RAILS_ENV \
 
 WORKDIR /app
 RUN rm -rf node_modules tmp/cache tmp/miniprofiler tmp/sockets
+
+# CMD ["bundle","exec"," rails","s", "-p","3000","-b","0.0.0.0"]
 
 
 

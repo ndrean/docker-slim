@@ -31,7 +31,7 @@ module DockerSlim
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-    config.active_job.queue_adapter = :sidekiq #<- ONLY FOR ACTIVE_JOB
+    # config.active_job.queue_adapter = :sidekiq 
 
     # Don't generate system test files.
     config.generators.system_tests = nil

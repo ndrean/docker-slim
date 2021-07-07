@@ -6,7 +6,7 @@ import React from "react";
 
 import fetchCounters from "../utils/fetchCounters.js";
 import postCounters from "../utils/postCounters.js";
-import startWorkers from "../utils/startWorkers.js";
+// import startWorkers from "../utils/startWorkers.js";
 
 const Button = () => {
   const [counters, setCounters] = React.useState({});
@@ -15,10 +15,10 @@ const Button = () => {
     async function counter() {
       try {
         const { countPG, countRedis } = await fetchCounters("/getCounters");
-        console.log("init", countPG, countRedis);
+        // console.log("init", countPG, countRedis);
         setCounters({
           countPG: Number(countPG),
-          countRedis: Number(countRedis),
+          // countRedis: Number(countRedis),
         });
       } catch (err) {
         console.warn(err);
@@ -33,11 +33,11 @@ const Button = () => {
     try {
       let { countPG, countRedis } = counters;
       countPG += 1;
-      countRedis = Number(countRedis) + 1;
+      // countRedis = Number(countRedis) + 1;
       await Promise.all([
         postCounters("/incrCounters", {
           countPG,
-          countRedis,
+          // countRedis,
         })
           .then((res) => {
             if (res.status === "created") {
@@ -45,7 +45,7 @@ const Button = () => {
             }
           })
           .catch((err) => console.log(err)),
-        startWorkers(),
+        // startWorkers(),
       ]);
     } catch (err) {
       console.log(err);
@@ -64,7 +64,7 @@ const Button = () => {
           <div>
             <h1>PG counter: {counters.countPG}</h1>
             <br />
-            <h1>Redis counter: {counters.countRedis}</h1>
+            {/* <h1>Redis counter: {counters.countRedis}</h1> */}
           </div>
         )}
       </div>
@@ -73,10 +73,3 @@ const Button = () => {
 };
 
 export default Button;
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   ReactDOM.render(
-//     <Hello name="React" />,
-//     document.body.appendChild(document.createElement("div"))
-//   );
-// });

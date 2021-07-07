@@ -17,12 +17,12 @@ gem 'turbolinks', '~> 5'
 # gem 'jbuilder', '~> 2.7'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-gem 'redis'
-gem 'hiredis'
+# gem 'redis'
+# gem 'hiredis'
 
-gem 'sidekiq'
-gem 'sidekiq-failures', '~> 1.0'
-gem 'sidekiq_alive'
+# gem 'sidekiq'
+# gem 'sidekiq-failures', '~> 1.0'
+# gem 'sidekiq_alive'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false

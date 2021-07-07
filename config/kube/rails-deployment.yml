@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rails-deployment
+  labels:
+    app: rails
+spec:
+  replicas: 0
+  # strategy:
+  #   type: RollingUpdate
+  #   rollingUpdate:
+  #     maxSurge: 1
+  #     maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: k8-app
+      tier: app
+  template:
+    metadata:
+      labels:
+        app: k8-app
+        tier: app
+    spec:
+      containers:
+        - name: rails
+          image: ndrean/k8-rails:v0
+          command: ["bundle"]
+          args: ["exec", "rails", "s", "-b", "0.0.0.0"]
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: env
