@@ -4,7 +4,12 @@ Create a Rails app running only Webpack, without using Sprockets: `rails new my-
 
 ## Initialize the PostgreSQL database
 
-- modifiy **/config/database.yml** (or **.env**) to pass to the Postgres adapter the desired user/password: `POSTGRES_URL=postgresql://bob:bobpwd@localhost:5432/k8_development`
+- in "/pg", `init-user.sql` with credentials shoud match `DATABASE_URL`.
+
+- two Dockefiles
+- "slim.Dockerfile" with "buster" (mod "docker-compose" with "3.0.1-slim-buster" and add "NODE_VERSION=14")
+- alpine (change "docker-compose ARG RUBY_VERSION)
+- modifiy **/config/database.yml** (or **.env**) to pass to the Postgres adapter the desired user/password: `POSTGRES_URL=postgresql://docker:dockerpassword@localhost:5432/k8_development`
 
 - run in a terminal:
 
@@ -20,7 +25,7 @@ psql -U postgres
 \l
 # connect to the desired database
 \c k8_development
-CREATE ROLE bob WITH SUPERUSER CREATEDB LOGIN PASSWORD 'bobpwd';
+CREATE ROLE docker WITH SUPERUSER CREATEDB LOGIN PASSWORD 'dockerpassword';
 ```
 
 ## Run `overmind`
@@ -48,7 +53,7 @@ development: &dev
 
 ```rb
 #/config/initializers/redis.rb
-$redis = Redis.new(Rails.application.config_for(:redis))
+REDIS = Redis.new(Rails.application.config_for(:redis))
 ```
 
 ```sh
@@ -68,7 +73,7 @@ Sidekiq.configure_server { |cfg| cfg.redis = redis_conf }
 Sidekiq.configure_client{ |cfg| cfg.redis = redis.conf }
 ```
 
-and use the Redis database in the Rails app by calling `$redis.get("key")`.
+and use the Redis database in the Rails app by calling `REDIS.get("key")`.
 
 We define a service **redisdb**. We secure the database with a password, `requirepass secretpwd` definded in **/usr/local/etc/redis/redis.conf** for Linux (or **/usr/local/etc/redis.conf** for OSX). We then pass it with an environment variable that contains the password and an anonymous user: `REDIS_URL=redis://user:secretpwd@redisdb:6379` to:
 
