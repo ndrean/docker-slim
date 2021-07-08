@@ -85,7 +85,6 @@ services:
     entrypoint: [./manage-db.sh]
     command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
     volumes:
-      - bundle_cache:/usr/local/bundle
       - node_modules:/app/node_modules
       - .:/app:cached
       - packs:/app/public/packs
@@ -98,5 +97,4 @@ volumes:
   pg_data: {}
   node_modules:
   packs:
-  bundle_cache:
   rails_cache:
