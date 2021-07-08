@@ -21,7 +21,7 @@ RUN gem install bundler:${BUNDLER_VERSION} --no-document \
    && bundle config set --without 'development test' \
    && bundle install --quiet 
 
-RUN yarn --check-files --silent --production
+RUN yarn --check-files --silent --production && yarn cache clean
 
 COPY . ./
 

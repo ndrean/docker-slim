@@ -8,6 +8,7 @@ x-app: &common
     args:
       - RUBY_VERSION=3.0.1-alpine
       - BUNDLER_VERSION=2.2.21
+      # - NODE_VERSION=14
       - NODE_ENV=production
       - RAILS_ENV=production
 

@@ -37,9 +37,10 @@ RUN apt-get  update  \
    nodejs \
    yarn \
    && apt-get clean \
-   && rm -rf /var/cache/apt/archives/* \
-   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-   && truncate -s 0 /var/log/*log
+   && apt-get autoremove
+# && rm -rf /var/cache/apt/archives/* \
+# && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+# && truncate -s 0 /var/log/*log
 
 
 # RUN mkdir -p /app
@@ -59,7 +60,7 @@ RUN gem install bundler:${BUNDLER_VERSION} --no-document \
    && find /usr/local/bundle/gems/ -name "*.c" -delete \
    && find /usr/local/bundle/gems/ -name "*.o" -delete
 
-RUN yarn --check-files --silent
+RUN yarn --check-files --silent && yarn cache clean
 
 COPY . ./
 
@@ -83,9 +84,10 @@ RUN apt-get  update  \
    libpq-dev \
    # postgresql-client \
    && apt-get clean \
-   && rm -rf /var/cache/apt/archives/* \
-   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-   && truncate -s 0 /var/log/*log
+   apt-get autoremove
+# && rm -rf /var/cache/apt/archives/* \
+# && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+# && truncate -s 0 /var/log/*log
 
 
 #<- we copy the host bundle folder if not flag BUNBLER_PATH='vendor/bundle' in which case it's local

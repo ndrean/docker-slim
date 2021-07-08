@@ -18,3 +18,4 @@ node_modules
 yarn-error.log
 .env
 *.rdb
+*.log
