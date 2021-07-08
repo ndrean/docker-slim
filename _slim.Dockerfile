@@ -34,6 +34,7 @@ RUN apt-get  update  \
    && apt-get install -y --no-install-recommends \
    # comm with PG with gem 'pg'
    libpq-dev \ 
+   netcat-openbsd \
    # compile assets
    nodejs \
    yarn \

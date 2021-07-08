@@ -4,13 +4,13 @@ x-app: &common
   env_file: .env
   build:
     context: .
-    dockerfile: _slim.Dockerfile
+    dockerfile: _.Dockerfile
     # or _.Dockerfile for alpine
     args:
-      - RUBY_VERSION=3.0.1-slim-buster
+      - RUBY_VERSION=3.0.1-alpine
       # or 3.0.1-alpine
       - BUNDLER_VERSION=2.2.21
-      - NODE_VERSION=14
+      # - NODE_VERSION=14
       # rm this for alpine
       - NODE_ENV=development
       - RAILS_ENV=development

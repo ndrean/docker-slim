@@ -10,7 +10,7 @@ ENV RAILS_ENV=${RAILS_ENV:-development} \
    BUNDLER_VERSION=${BUNDLER_VERSION:-2.2.21}
 
 RUN apk update && apk add --no-cache \
-   postgresql-dev nodejs yarn build-base tzdata curl\
+   postgresql-dev nodejs yarn build-base tzdata curl netcat-openbsd \
    && rm -rf /var/cache/apk/*
 
 WORKDIR /app
