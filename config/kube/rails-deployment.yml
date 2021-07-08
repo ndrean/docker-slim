@@ -3,31 +3,28 @@ kind: Deployment
 metadata:
   name: rails-deployment
   labels:
-    app: rails
+    app: k8-rails
 spec:
-  replicas: 0
-  # strategy:
-  #   type: RollingUpdate
-  #   rollingUpdate:
-  #     maxSurge: 1
-  #     maxUnavailable: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: k8-app
-      tier: app
+      app: k8-rails
   template:
     metadata:
       labels:
-        app: k8-app
-        tier: app
+        app: k8-rails
     spec:
       containers:
-        - name: rails
-          image: ndrean/k8-rails:v0
+        - name: k8-rails
+          image: ndrean/k8-rails:latest
           command: ["bundle"]
           args: ["exec", "rails", "s", "-b", "0.0.0.0"]
           ports:
             - containerPort: 3000
-          envFrom:
-            - configMapRef:
-                name: env
+          env:
+            - name: ELEPHANT_URL
+              value: "postgres://ortkcbqt:fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd@batyr.db.elephantsql.com/ortkcbqt"
+            - name: RAILS_ENV
+              value: "production"
+            - name: NODE_ENV
+              value: "production"

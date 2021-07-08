@@ -2,7 +2,7 @@ class HardJob < ApplicationJob
 
     include PagesHelper
     require "net/http"
-    queue_as :default
+    # queue_as :default
 
   class Error < StandardError
   end
