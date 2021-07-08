@@ -8,6 +8,7 @@ ARG RAILS_ENV
 RUN apk -U upgrade && apk add --no-cache \
    postgresql-dev nodejs yarn build-base tzdata
 
+ENV PATH /app/bin:$PATH
 WORKDIR /app
 
 COPY Gemfile Gemfile.lock package.json yarn.lock ./
@@ -15,9 +16,10 @@ COPY Gemfile Gemfile.lock package.json yarn.lock ./
 ENV LANG=C.UTF-8 \
    BUNDLE_JOBS=4 \
    BUNDLE_RETRY=3 \
-   BUNDLE_PATH='vendor/bundle'
+   BUNDLE_PATH='vendor/bundle' 
 
 RUN gem install bundler:${BUNDLER_VERSION} --no-document \
+   # && bundle config set deployment 'true' \
    && bundle config set --without 'development test' \
    && bundle install --quiet 
 
