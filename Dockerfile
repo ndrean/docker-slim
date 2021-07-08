@@ -30,6 +30,6 @@ RUN gem install bundler:$BUNDLER_VERSION --no-document \
    && find /usr/local/bundle/gems/ -name "*.c" -delete \
    && find /usr/local/bundle/gems/ -name "*.o" -delete
 
-RUN yarn --check-files --silent
+RUN yarn --check-files --silent && yarn cache clean
 
 COPY . ./

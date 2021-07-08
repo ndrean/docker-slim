@@ -4,6 +4,7 @@ x-app: &common
   env_file: .env
   build:
     context: .
+    dockerfile: Dockerfile
     args:
       - RUBY_VERSION=3.0.1-alpine
       - BUNDLER_VERSION=2.2.21

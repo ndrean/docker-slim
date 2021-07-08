@@ -1,0 +1,17 @@
+vars:
+  DB_PASSWORD: zW+LyF77MYKfCxGGXY+h+Nbo8Zqvht72YrXv81VMsZyP5G+ZZwANQpSJF5n8ifeIZhLzkO80V9Sut+Ii
+  DEVSPACE_USERNAME: bWvowxUbSLgcFP5bIdHqxpmNptaa87jV7s07uvGPKihRRQ==
+varsEncrypted: true
+profiles:
+  "":
+    deployments:
+      app:
+        deploymentConfigHash: b0f112667a2707540b384ecda49f3be28da6ff957273438e1a955e4755f4e3ad
+        helmChartHash: 5b26a8911fbb3a67ecb7ae4e5edd6b23633ec174f50e6ef7c6fb41c9f3a4a18c
+        helmReleaseRevision: "2"
+      database:
+        deploymentConfigHash: 4570bbaed3b5915598b3a583fb3fc7dff1bac5877280e79be82e624e9e33f235
+        helmReleaseRevision: "1"
+    lastContext:
+      namespace: myns
+      context: minikube

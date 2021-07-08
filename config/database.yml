@@ -7,8 +7,7 @@ development:
   <<: *default
   database: k8_development
   url: <%= ENV['POSTGRES_URL'] %>
-
-production:
-  <<: *default
-  database: k8_production
-  password: <%= ENV['K8_DATABASE_PASSWORD'] %>
+# production:
+#   <<: *default
+#   database: k8_production
+#   password: <%= ENV['K8_DATABASE_PASSWORD'] %>

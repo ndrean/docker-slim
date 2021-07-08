@@ -12,12 +12,12 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-
+*.log
 # Ignore pidfiles, but keep the directory.
 /tmp/pids/*
 !/tmp/pids/
 !/tmp/pids/.keep
-
+.DS_Store
 /vendor
 
 /public/assets

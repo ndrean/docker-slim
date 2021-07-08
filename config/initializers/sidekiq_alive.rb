@@ -18,7 +18,7 @@ SidekiqAlive.setup do |config|
   # Time unit: seconds
   # default: 10 * 60 # 10 minutes
   #
-  config.time_to_live = 10
+  config.time_to_live = 10 * 60
 
   # ==> Callback
   # After the key is stored in redis you can perform anything.
