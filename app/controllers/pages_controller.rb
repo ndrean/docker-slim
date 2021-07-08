@@ -8,15 +8,13 @@ class PagesController < ApplicationController
 
   def home    
     # <- test Redis database: to be rescued
-    STDOUT.puts "Redis db:  #{REDIS.ping}"
-    # <- test Sidekiq/Redis connection
-    STDOUT.puts "Redis-Sidekiq: #{Sidekiq.redis { |conn| conn.connection[:id] }}"
+    STDOUT.puts "- Redis db is UP" if (REDIS.ping == 'PONG')
     
     begin
       # PSQL <- test PG connection, https://www.rubydoc.info/gems/pg/PG/Result
       res = ActiveRecord::Base.connection.execute("SELECT 1") .getvalue(0,0)
       raise PagesController::Error.new("PG down") if (res != 1)
-      STDOUT.puts "PG up"
+      STDOUT.puts "- PG up"
     rescue => e
       STDERR.puts e.message
     end

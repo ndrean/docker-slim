@@ -4,11 +4,11 @@ x-app: &common
   env_file: .env
   build:
     context: .
-    dockerfile: Dockerfile
+    dockerfile: slim.Dockerfile
     args:
-      - RUBY_VERSION=3.0.1-alpine
+      - RUBY_VERSION=3.0.1-slim-buster
       - BUNDLER_VERSION=2.2.21
-      # - NODE_VERSION=14
+      - NODE_VERSION=14
       - NODE_ENV=development
       - RAILS_ENV=development
 
@@ -75,8 +75,8 @@ services:
         condition: service_healthy
       redisdb:
         condition: service_healthy
-      sidekiq:
-        condition: service_healthy
+      # sidekiq:
+      #   condition: service_healthy
     environment:
       YARN_CACHE_FOLDER: /app/node_modules/.yarn-cache
       WEBPACKER_DEV_SERVER_HOST: webpacker
