@@ -88,3 +88,9 @@ We can setup Redis with AOF and RDB.
 <https://github.com/mhfs/sidekiq-failures>
 
 <https://github.com/mperham/sidekiq/wiki>
+
+## Example Rackup
+
+Declared a controller "Example_Controller" inheriting from ApplicationController::Base
+Then "config.ex.ru" and launched with:
+"bundle exec puma -b tcp://0.0.0.0:3001 config.ex.ru"
