@@ -37,7 +37,7 @@ You to create a namespace "test" for testing when doing this kind of things. You
 
 <https://github.com/rails/rails/issues/41492>
 
-## Kubernets
+## Kubernetes
 
 ```sh
 docker run --rm -p 4000:3000 -e ELEPHANT_URL=postgres://ortkcbqt:fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd@batyr.db.elephantsql.com/ortkcbqt -e RAILS_ENV=production -e NODE_ENV=production  ndrean/k8-rails:latest  bundle exec rails s -p 3000 -b 0.0.0.0
@@ -119,4 +119,57 @@ kind create cluster
 kind delete cluster --name kind #<- default is "kind"
 
 kind load ndrean/k8-rails:v0
+```
+
+## Ansible - Create EC2
+
+- need AWS credentials,
+- Boto, Boto3 is a Python package which provides an interface to AWS (`pip install boto boto3`)
+
+Then run the playbook locally on our localhost:
+
+`ansible-playbook -v ./create-aws-ec2-ansible/launch.yml -vv`
+
+<https://github.com/ansible-community/molecule/issues/1229>
+<https://github.com/boto/boto/issues/3783>
+
+```sh
+sudo -H pip install virtualenv
+virtualenv molecule
+source molecule/bin/activate
+pip install ansible molecule boto boto3
+export BOTO_USE_ENDPOINT_HEURISTICS=True
+pip install --update boto boto3
+```
+
+and exit vitualenv with `exit``
+
+<https://stackoverflow.com/questions/36447118/ansible-amazon-ec2-the-key-pair-does-not-exist>
+
+The key parameter for the ec2 module is looking for the key pair name that has been already uploaded to AWS, not a local key.
+
+If you want to get Ansible to upload a public key you can use the ec2_key module.
+
+```yml
+tasks:
+  - name: Provision instance
+    ec2:
+      aws_access_key: "{{ aws_access_key_id }}"
+      aws_secret_key: "{{ aws_secret_access_key }}"
+      key_name: "aws-ec2"
+      # <- existing on AWS, not "~/.ssh/aws-ec2.pem"
+      instance_type: t2.micro
+      image: ami-0f7cd40eac2214b37
+```
+
+`ansible-galaxy install geerlingguy.docker `
+
+## AWS - EC2
+
+Create a key/value in the console, then:
+
+```sh
+mv ~/Downloads/aws-ec2.pem ~/.ssh/
+chmod 400 ~/.ssh/aws-ec2.pem
+ssh -i "~/.ssh/aws-ec2.pem" ubuntu@ec2-15-236-179-33.eu-west-3.compute.amazonaws.com
 ```

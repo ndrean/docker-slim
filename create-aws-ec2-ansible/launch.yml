@@ -1,0 +1,26 @@
+- name: create EC2 instance
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Provision instance
+      ec2:
+        region: "{{ region }}"
+        aws_access_key: "{{ aws_access_key_id }}"
+        aws_secret_key: "{{ aws_secret_access_key }}"
+        key_name: "aws-ec2"
+        instance_type: t2.micro
+        image: ami-0f7cd40eac2214b37
+        wait: yes
+        count: 1
+
+- name: install docker
+  vars:
+    pip_install_packages:
+      - name: docker
+  roles:
+    - geerlingguy.pip
+    - geerlingguy.docker

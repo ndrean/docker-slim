@@ -28,3 +28,9 @@ spec:
               value: "production"
             - name: NODE_ENV
               value: "production"
+        # - name: nginx
+        #   image: ndrean/webpodserver:v0
+        #   command: ["nginx"]
+        #   args: ["-g", "daemon off;"]
+        #   ports:
+        #     - containerPort: 8000
