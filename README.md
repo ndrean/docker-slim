@@ -94,3 +94,10 @@ We can setup Redis with AOF and RDB.
 Declared a controller "Example_Controller" inheriting from ApplicationController::Base
 Then "config.ex.ru" and launched with:
 "bundle exec puma -b tcp://0.0.0.0:3001 config.ex.ru"
+
+## Nginx
+
+```sh
+ cp nginx/k8nginx.conf /usr/local/etc/nginx/servers/
+ nginx -s stop && nginx
+```
