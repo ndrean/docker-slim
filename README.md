@@ -110,3 +110,13 @@ env:
   - name: RAILS_ENV
       value: "production"
 ```
+
+## Kind
+
+```sh
+kind create cluster
+# defaults to "name: kind"
+kind delete cluster --name kind #<- default is "kind"
+
+kind load ndrean/k8-rails:v0
+```

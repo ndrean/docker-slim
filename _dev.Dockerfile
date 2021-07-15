@@ -26,7 +26,7 @@ RUN gem install bundler:${BUNDLER_VERSION} --no-document \
    && bundle config set --without 'development test' \
    && bundle install --quiet 
 
-RUN yarn --check-files --silent --production
+RUN yarn --check-files --silent --production && yarn cache clean
 
 COPY . ./
 
@@ -41,6 +41,7 @@ FROM ruby:${RUBY_VERSION:-3.0.1-alpine}
 
 ARG RAILS_ENV
 ARG NODE_ENV
+
 
 RUN apk -U upgrade && apk add --no-cache  libpq tzdata netcat-openbsd \
    && rm -rf /var/cache/apk/*
@@ -57,7 +58,8 @@ ENV RAILS_ENV=${RAILS_ENV:-production} \
    NODE_ENV=${NODE_ENV:-production} \
    RAILS_LOG_TO_STDOUT=true \
    RAILS_SERVE_STATIC_FILES=true  \
-   BUNDLE_PATH='vendor/bundle'
+   BUNDLE_PATH='vendor/bundle' 
+
 
 WORKDIR /app
 RUN rm -rf node_modules tmp/cache tmp/miniprofiler tmp/sockets

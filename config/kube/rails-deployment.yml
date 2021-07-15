@@ -5,7 +5,7 @@ metadata:
   labels:
     app: k8-rails
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: k8-rails
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: k8-rails
-          image: ndrean/k8-rails:latest
+          image: ndrean/k8-rails:v0
           command: ["bundle"]
           args: ["exec", "rails", "s", "-b", "0.0.0.0"]
           ports:
