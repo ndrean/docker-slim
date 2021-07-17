@@ -1,7 +1,7 @@
 ARG RUBY_VERSION=3.0.1-alpine
 FROM ruby:${RUBY_VERSION:-3.0.1-alpine} AS builder
 
-ARG BUNDLER_VERSION=2.2.21
+ARG BUNDLER_VERSION=2.2.24
 ARG NODE_ENV=production
 ARG RAILS_ENV=production
 

@@ -2,8 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rails-deployment
-  labels:
-    app: k8-rails
+  # labels:
+  #   app: k8-rails
 spec:
   replicas: 1
   selector:
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: k8-rails
-          image: ndrean/k8-rails:v0
+          image: ndrean/app:v0
           command: ["bundle"]
           args: ["exec", "rails", "s", "-b", "0.0.0.0"]
           ports:
@@ -28,9 +28,9 @@ spec:
               value: "production"
             - name: NODE_ENV
               value: "production"
-        # - name: nginx
-        #   image: ndrean/webpodserver:v0
-        #   command: ["nginx"]
-        #   args: ["-g", "daemon off;"]
-        #   ports:
-        #     - containerPort: 8000
+        - name: nginx
+          image: ndrean/podserver:v0
+          command: ["nginx"]
+          args: ["-g", "daemon off;"]
+          ports:
+            - containerPort: 8080

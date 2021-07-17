@@ -11,7 +11,7 @@ spec:
       # port exposed by the container
       port: 80
       # the port the app is listening on targetPort
-      targetPort: 3000
+      targetPort: 8080
       name: http
 # listens on the default port 8080 and forwards the requests on port 3000 of the pods that have the label rails-app.
 
