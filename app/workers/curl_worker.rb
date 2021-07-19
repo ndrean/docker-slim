@@ -1,5 +1,5 @@
 class CurlWorker
-  # include Sidekiq::Worker
+  include Sidekiq::Worker
   require "net/http"
   
 

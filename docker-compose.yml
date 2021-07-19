@@ -4,9 +4,12 @@ x-app: &common
   env_file: .env
   build:
     context: .
-    dockerfile: _dev.Dockerfile
+    # dockerfile: _buster.prod.Dockerfile
+    dockerfile: _alpine.prod.Dockerfile
     args:
-      - RUBY_VERSION=3.0.1-alpine
+      # - RUBY_VERSION=3.0.2-slim-buster
+      # - NODE_VERSION=14
+      - RUBY_VERSION=3.0.2-alpine
       - BUNDLER_VERSION=2.2.24
       - NODE_ENV=production
       - RAILS_ENV=production
@@ -44,21 +47,21 @@ services:
   #     timeout: 10s
   #     retries: 3
 
-  # sidekiq:
-  #   <<: *common
-  #   entrypoint: ["./app-pid.sh"]
-  #   command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
-  #   depends_on:
-  #     redisdb:
-  #       condition: service_healthy
+  sidekiq:
+    <<: *common
+    entrypoint: ["./app-pid.sh"]
+    command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
+    # depends_on:
+    #   redisdb:
+    #     condition: service_healthy
 
-  webserver:
-    build:
-      context: .
-      dockerfile: ./_ws.Dockerfile
-    ports:
-      - 8080:8080
-    command: ["nginx", "-g", "daemon off;"]
+  # webserver:
+  #   build:
+  #     context: .
+  #     dockerfile: ./_ws.Dockerfile
+  #   ports:
+  #     - 8080:8080
+  #   command: ["nginx", "-g", "daemon off;"]
 
   app:
     <<: *common
@@ -75,7 +78,6 @@ services:
     command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
     tmpfs:
       - /tmp
-
-volumes:
-  redis_data: {}
-  pg_data: {}
+# volumes:
+#   redis_data: {}
+#   pg_data: {}

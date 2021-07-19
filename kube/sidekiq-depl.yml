@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sidekiq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rails
+  template:
+    metadata:
+      labels:
+        app: rails
+    spec:
+      containers:
+        - name: sidekiq
+          image: ndrean/app:v5
+          command: ["bundle"]
+          args: ["exec", "sidekiq", "-C", "./config/sidekiq.yml"]
+          env:
+            - name: ELEPHANT_URL
+              value: "postgres://ortkcbqt:fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd@batyr.db.elephantsql.com/ortkcbqt"
+            - name: REDIS_URL
+              value: redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424
+              #value: redis://redis.default.svc.cluster.local:6379/
+            - name: RAILS_ENV
+              value: "production"
+            - name: NODE_ENV
+              value: "production"
+          ports:
+            - name: sidekiqalive
+              containerPort: 7433
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 7433
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 7433
+            initialDelaySeconds: 30 # app specific. Time your sidekiq takes to start processing.
+#     spec:
+#       containers:
+#         - name: rails-example-app-web
+#           image: docker.io/janjedrychowski/rails-example-app-production:v1
+#           command:
+#             - bin/docker/worker_start
+#           env:
+#             - name: DB_HOST
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: production-database
+#                   key: host
+#             - name: DB_PASSWORD
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: production-database
+#                   key: password
+#             - name: RAILS_MASTER_KEY
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: master.key
+#                   key: master.key
+#             - name: REDIS_URL
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: redis
+#                   key: url

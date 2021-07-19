@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+    - host: k8local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rails
+                port:
+                  number: 80
+          - path: /sidekiq
+            pathType: Prefix
+            backend:
+              service:
+                name: sidekiq
+                port:
+                  number: 80

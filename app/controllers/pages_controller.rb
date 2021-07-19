@@ -1,5 +1,8 @@
+# frozen_string_literal: true
 class PagesController < ApplicationController
-  # include SidekiqHelper
+  include SidekiqHelper
+  # include HardWorker
+  # include HardJob
 
   class Error < StandardError
   end
@@ -22,18 +25,18 @@ class PagesController < ApplicationController
     end
 
     # <- rescued Sidekiq test
-    # SidekiqHelper.check
+    SidekiqHelper.check
   end
 
-  # def start_workers
-  #   #<- to be rescued
-  #   # background WORKER with Sidekiq: 
-  #   HardWorker.perform_async
-  #   # ACTIVE_JOB with Sidekiq (intializer with REDIS_URL, config.active_job.queue_adapter)
-  #   HardJob.perform_later 
+  def start_workers
+    #<- to be rescued
+    # background WORKER with Sidekiq: 
+    HardWorker.perform_async
+    # ACTIVE_JOB with Sidekiq (intializer with REDIS_URL, config.active_job.queue_adapter)
+    HardJob.perform_later 
     
-  #   head :no_content
-  # end
+    head :no_content
+  end
 
   def get_counters
     begin

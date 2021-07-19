@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 class HardWorker
-  # include Sidekiq::Worker
+  include Sidekiq::Worker
   include PagesHelper
   require "net/http"
   

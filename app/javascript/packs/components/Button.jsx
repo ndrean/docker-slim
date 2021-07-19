@@ -6,7 +6,7 @@ import React from "react";
 
 import fetchCounters from "../utils/fetchCounters.js";
 import postCounters from "../utils/postCounters.js";
-// import startWorkers from "../utils/startWorkers.js";
+import startWorkers from "../utils/startWorkers.js";
 
 const Button = () => {
   const [counters, setCounters] = React.useState({});
@@ -45,7 +45,7 @@ const Button = () => {
             }
           })
           .catch((err) => console.log(err)),
-        // startWorkers(),
+        startWorkers(),
       ]);
     } catch (err) {
       console.log(err);

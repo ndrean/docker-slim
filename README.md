@@ -111,6 +111,10 @@ env:
       value: "production"
 ```
 
+## Nginx & Rails in same pod
+
+Use `localhost` in nginx.conf as Nginx & Rails simply communicate
+
 ## Kind
 
 ```sh

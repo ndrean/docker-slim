@@ -82,6 +82,7 @@ RUN apt-get  update  \
    # communicate with PG with gem 'pg'
    libpq-dev \
    # postgresql-client \
+   libjemalloc2 \
    && apt-get clean \
    && rm -rf /var/cache/apt/archives/* \
    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
@@ -102,6 +103,7 @@ ENV RAILS_ENV=$RAILS_ENV\
    NODE_ENV=$NODE_ENV \
    RAILS_LOG_TO_STDOUT=true \
    RAILS_SERVE_STATIC_FILES=true \
+   LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
    BUNDLE_PATH='vendor/bundle'
 
 WORKDIR /app

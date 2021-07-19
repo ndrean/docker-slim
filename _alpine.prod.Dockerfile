@@ -1,9 +1,9 @@
-ARG RUBY_VERSION=3.0.1-alpine
-FROM ruby:${RUBY_VERSION:-3.0.1-alpine} AS builder
+ARG RUBY_VERSION
+FROM ruby:${RUBY_VERSION:-3.0.2-alpine} AS builder
 
-ARG BUNDLER_VERSION=2.2.24
-ARG NODE_ENV=production
-ARG RAILS_ENV=production
+ARG BUNDLER_VERSION
+ARG NODE_ENV
+ARG RAILS_ENV
 
 RUN apk -U upgrade && apk add --no-cache \
    postgresql-dev nodejs yarn build-base tzdata
@@ -53,7 +53,7 @@ ENV RAILS_ENV=$RAILS_ENV \
    BUNDLE_PATH='vendor/bundle'
 
 WORKDIR /app
-RUN rm -rf node_modules tmp/cache tmp/miniprofiler tmp/sockets
+RUN rm -rf node_modules tmp/cache tmp/miniprofiler tmp/sockets /public
 
 # CMD ["bundle","exec"," rails","s", "-p","3000","-b","0.0.0.0"]
 
