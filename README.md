@@ -1,13 +1,3 @@
-`docker-compose run --rm app bundle exec rails db:create db:migrate`
-
-## Self certificate
-
-```sh
-openssl genrsa 2048 > host.key
-chmod 600 host.key
-openssl req -new -x509 -nodes -sha256 -days 365 -key host.key -out host.cert
-```
-
 ## Remote PostgreSQL database: ElephantSQL
 
 No migration needed:
@@ -36,3 +26,22 @@ You to create a namespace "test" for testing when doing this kind of things. You
 <https://github.com/rails/rails/search?utf8=%E2%9C%93&q=standarderror&type=Code>
 
 <https://github.com/rails/rails/issues/41492>
+
+## Minikube
+
+```sh
+rails assets:precompile
+rails assets:clean
+docker build -t ndrean/ws:v0 . -f _nginx.Dockerfile
+
+docker build -t ndrean/app:v0 . -f _alpine.prod.Dockerfile
+
+minikube start
+kubectl create namespace myns
+kubens myns
+kubectl apply -f ./kube-sidecar
+kubectl get pods -w
+kubectl logs -f <pod>
+kubectl get svc
+minikube service rails-svc
+```

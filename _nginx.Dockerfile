@@ -32,7 +32,7 @@
 #######################################
 
 FROM nginx:1.21.1-alpine
-COPY ./webserver/prod.conf /etc/nginx/conf.d/nginx.conf
+COPY ./webserver/prod.conf /etc/nginx/conf.d/prod.conf
 
 # RUN adduser --disabled-password app-user
 # USER app-user
