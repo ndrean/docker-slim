@@ -42,9 +42,9 @@ class PagesController < ApplicationController
     begin
       cPG = Counter.last
       # cRed = REDIS.get('compteur')
-      raise PagesController::Error.new("database down") if (!cPG)
+      # raise PagesController::Error.new("database down") if (!cPG)
 
-      countPG = (cPG == nil) ? 0 : cPG.nb
+      countPG = (cPG.nil?) ? 0 : cPG.nb
       # countRedis = (cRed == '') ? 0 : cRed
 
       return render json: {
