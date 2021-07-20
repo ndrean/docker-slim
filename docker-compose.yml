@@ -6,8 +6,8 @@ x-app: &common
     context: .
     dockerfile: _alpine.prod.Dockerfile
     args:
-      - RUBY_VERSION=3.0.1-alpine
-      - BUNDLER_VERSION=2.2.21
+      - RUBY_VERSION=3.0.2-alpine
+      - BUNDLER_VERSION=2.2.24
       # - NODE_VERSION=14
       - NODE_ENV=production
       - RAILS_ENV=production
@@ -52,6 +52,16 @@ services:
     depends_on:
       redisdb:
         condition: service_healthy
+
+  webserver:
+    build:
+      context: .
+      dockerfile: ./_nginx.Dockerfile
+    ports:
+      - 9000:9000
+    command: ["nginx", "-g", "daemon off;"]
+    depends_on:
+      - app
 
   app:
     <<: *common

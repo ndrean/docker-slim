@@ -1,3 +1,3 @@
 export default async (path) => {
-  return fetch(path).then((res) => res.json());
+  return fetch(path, { cache: "no-store" }).then((res) => res.json());
 };

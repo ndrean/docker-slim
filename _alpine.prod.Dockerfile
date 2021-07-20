@@ -51,11 +51,11 @@ COPY --from=builder --chown=app-user /app /app
 ENV RAILS_ENV=$RAILS_ENV \
    NODE_ENV=$NODE_ENV \
    RAILS_LOG_TO_STDOUT=true \
-   RAILS_SERVE_STATIC_FILES=true  \
+   RAILS_SERVE_STATIC_FILES=false  \
    BUNDLE_PATH='vendor/bundle'
 
 WORKDIR /app
-RUN rm -rf node_modules tmp/cache tmp/miniprofiler tmp/sockets
+RUN rm -rf node_modules tmp/cache tmp/miniprofiler tmp/sockets /public
 
 
 

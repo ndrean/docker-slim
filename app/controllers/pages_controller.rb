@@ -36,24 +36,15 @@ class PagesController < ApplicationController
   end
 
   def get_counters
-    begin
-      cPG = Counter.last
-      cRed = REDIS.get('compteur')
-      raise PagesController::Error.new("database down") if (!cPG)
-
-      countPG = (cPG == nil) ? 0 : cPG.nb
-      countRedis = (cRed == '') ? 0 : cRed
-
-      return render json: {
-        countPG: countPG,
-        countRedis: countRedis,
-        status: :ok
-      }
-    rescue => e
-      STDERR.puts e.message
-    end
-
-    return render json: { status: 500 }
+    cPG = Counter.last
+    cRed = REDIS.get('compteur')
+    countPG = (cPG.nil?) ? 0 : cPG.nb
+    countRedis = cRed
+    return render json: {
+      countPG: countPG,
+      countRedis: countRedis,
+      status: :ok
+    }
   end
 
   def create
