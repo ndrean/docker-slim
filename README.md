@@ -1,35 +1,67 @@
-`docker-compose run --rm app bundle exec rails db:create db:migrate`
+# 3 branches
 
-## Self certificate
+- master <=> run with `overmind start`
+
+- dock-dev <=> run `docker-compose up --build`
+
+- docker-prod <=> run `docker-compose up --build`
+
+## Create Rails app without Sprockets
+
+Create a Rails app running "Webpack only", without using Sprockets:
 
 ```sh
-openssl genrsa 2048 > host.key
-chmod 600 host.key
-openssl req -new -x509 -nodes -sha256 -days 365 -key host.key -out host.cert
+> rails new my-app --skip-sprockets
 ```
 
-## Remote PostgreSQL database: ElephantSQL
+It's much easier to start an app with this flag than change an app already using Sprockets.
 
-No migration needed:
+## Initialize the PostgreSQL database
 
-- create a PG instance:
-  <https://api.elephantsql.com/console/19d1af1d-e34a-4a3c-9359-3637e53748b7/details?>
+- modifiy **/config/database.yml** (or **.env**) to pass to the Postrgres adapter the desired user/password: `POSTGRES_URL=postgresql://bob:bobpwd@localhost:5432/k8_development`
 
-- create a table by running:
+- run in a terminal:
+
+```sh
+RAILS_ENV=development rails rails db:drop rails:create rails:migrate
+```
+
+- connect to PostgreSQL to create ROLE 'bob' with password "bobpwd"
 
 ```sql
-CREATE TABLE COUNTERS (id serial PRIMARY KEY, nb integer, created_at TIMESTAMP, updated_at TIMESTAMP);
+psql -U postgres
+# get list of databases
+\l
+# connect to the desired database
+\c k8_development
+CREATE ROLE bob WITH SUPERUSER CREATEDB LOGIN PASSWORD 'bobpwd';
 ```
 
-- connect Rails to the db with the url:
+Same database name for `primary` and `replica`:
 
-`REMOTE_URL=postgres://ortkcbqt:fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd@batyr.db.elephantsql.com/ortkcbqt`
+Initialize ElephantSQL database:
 
-where the user and database name is "ortkcbqt" followed by the password.
+```sql
+CREATE TABLE counters (
+  id bigserial PRIMARY KEY,
+  nb integer,
+  created_at timestamp,
+  updated_at timestamp
+);
+```
 
-## Note on K8
+## Run `overmind`
 
-You to create a namespace "test" for testing when doing this kind of things. You just do `kubectl create ns test`, then you do all your tests in this namespace (by adding `-n test`). Once you have finished, you just do `kubectl delete ns test`, and you are done.
+The app is running locally with hot static assets replacement and Rails running in dev mode (page refresh will update the app). Run `overmind start` to start the four processes _rails_, _webpack-dev-server_, _redis_ and _sidekiq_:
+
+The following runs on OSX (use "redis-server /usr/local/etc/redis.conf" on OSX, and "/usr/local/etc/redis/redis.conf" on Linux ):
+
+```txt
+assets:  ./bin/webpack-dev-server
+web:     bundle exec rails server
+redis-server:   redis-server /usr/local/etc/redis.conf
+worker:  bundle exec sidekiq -C config/sidekiq.yml
+```
 
 ## Note on Rails errors
 
@@ -37,93 +69,64 @@ You to create a namespace "test" for testing when doing this kind of things. You
 
 <https://github.com/rails/rails/issues/41492>
 
-## Kubernetes
+## The Redis database
+
+Modify **/usr/local/etc/redis/redis.conf** with `requirespass secretpwd`.
+
+Once the app is running (ie **redis-server** is up), we can check that Redis is protected by the password by connecting to the redis-cli:
 
 ```sh
-docker run --rm -p 4000:3000 -e ELEPHANT_URL=postgres://ortkcbqt:fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd@batyr.db.elephantsql.com/ortkcbqt -e RAILS_ENV=production -e NODE_ENV=production  ndrean/k8-rails:latest  bundle exec rails s -p 3000 -b 0.0.0.0
+redis-cli
+127.0.0.1:6379> GET counter
+(error) NOAUTH Authentication required
+127.0.0.1:6379> AUTH secretpwd
+OK
+127.0.0.1:6379> GET counter
+23
 ```
+
+We can setup Redis with AOF and RDB.
+
+## Gem **sidekiq_alive**
+
+<https://github.com/arturictus/sidekiq_alive_example>
+
+<https://github.com/mhfs/sidekiq-failures>
+
+<https://github.com/mperham/sidekiq/wiki>
+
+## Example Rackup
+
+Declared a controller "Example_Controller" inheriting from ApplicationController::Base
+Then "config.ex.ru" and launched with:
+"bundle exec puma -b tcp://0.0.0.0:3001 config.ex.ru"
+
+## Nginx
 
 ```sh
-➜  docker-slim git:(kube) ✗ kubectl get pods
-
-NAME                                READY   STATUS             RESTARTS   AGE
-rails-deployment-6fbcd94c58-hrd7n   0/1     ImagePullBackOff   0          56m
-rails-deployment-cbd9f7f99-zjp4v    1/1     Running            0          102m
-
-➜  docker-slim git:(kube) ✗ kubectl logs rails-deployment-cbd9f7f99-zjp4v -f
-
-=> Booting Puma
-=> Rails 6.1.4 application starting in production
-=> Run `bin/rails server --help` for more startup options
-Puma starting in single mode...
-...
-```
-
-```sh
-➜  docker-slim git:(kube) ✗ kubectl create ns myns
-➜  docker-slim git:(kube) ✗ kubectl config set-context --current --namespace=myns
-➜  docker-slim git:(kube) ✗ minikube service list
-|-------------|-------------|--------------|-----|
-|  NAMESPACE  |    NAME     | TARGET PORT  | URL |
-|-------------|-------------|--------------|-----|
-| default     | kubernetes  | No node port |
-| kube-system | kube-dns    | No node port |
-| myns        | k8-rails-lb | http/80      |     |
-|-------------|-------------|--------------|-----|
-➜  docker-slim git:(kube) ✗ kubectl apply -f ./config/kube/
-service/k8-rails-lb unchanged
-deployment.apps/rails-deployment unchanged
-➜  docker-slim git:(kube) ✗ minikube service --namespace=myns k8-rails-lb --url
-🏃  Starting tunnel for service k8-rails-lb.
-|-----------|-------------|-------------|------------------------|
-| NAMESPACE |    NAME     | TARGET PORT |          URL           |
-|-----------|-------------|-------------|------------------------|
-| myns      | k8-rails-lb |             | http://127.0.0.1:58613 |
-|-----------|-------------|-------------|------------------------|
-http://127.0.0.1:58613
-```
-
-### Pass ENV varaibles
-
-> secrets
-
-```yml
-env:
-  - name: DATABASE_URL
-    valueFrom:
-      secretKeyRef:
-        name: railsapp-secrets
-        key: database-url
-  - name: SECRET_KEY_BASE
-    valueFrom:
-      secretKeyRef:
-        name: railsapp-secrets
-        key: secret-key-base
-```
-
-> ConfigMap
-
-> nane/value
-
-```yml
-- env:
-  - name: RAILS_ENV
-      value: "production"
+ cp nginx/k8nginx.conf /usr/local/etc/nginx/servers/
+ nginx -s stop && nginx
 ```
 
 ## Nginx & Rails in same pod
 
 Use `localhost` in nginx.conf as Nginx & Rails simply communicate
 
-## Kind
+## Postgres
 
 ```sh
-kind create cluster
-# defaults to "name: kind"
-kind delete cluster --name kind #<- default is "kind"
-
-kind load ndrean/k8-rails:v0
+pg_ctl -D /usr/local/var/postgres start
+pg_ctl -D /usr/local/var/postgres stop
 ```
+
+## AWS - EC2
+
+Create a key/value in the console, then:
+
+````sh
+mv ~/Downloads/aws-ec2.pem ~/.ssh/
+chmod 400 ~/.ssh/aws-ec2.pem
+ssh -i "~/.ssh/aws-ec2.pem" ubuntu@ec2-15-236-179-33.eu-west-3.compute.amazonaws.com
 
 ## Ansible - Create EC2
 
@@ -144,7 +147,7 @@ source molecule/bin/activate
 pip install ansible molecule boto boto3
 export BOTO_USE_ENDPOINT_HEURISTICS=True
 pip install --update boto boto3
-```
+````
 
 and exit vitualenv with `exit``
 
@@ -167,13 +170,3 @@ tasks:
 ```
 
 `ansible-galaxy install geerlingguy.docker `
-
-## AWS - EC2
-
-Create a key/value in the console, then:
-
-```sh
-mv ~/Downloads/aws-ec2.pem ~/.ssh/
-chmod 400 ~/.ssh/aws-ec2.pem
-ssh -i "~/.ssh/aws-ec2.pem" ubuntu@ec2-15-236-179-33.eu-west-3.compute.amazonaws.com
-```

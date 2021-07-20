@@ -30,7 +30,7 @@ RUN yarn --check-files --silent --production && yarn cache clean
 
 COPY . ./
 
-RUN bundle exec rake assets:precompile
+RUN bundle exec rails assets:precompile
 RUN rm -rf node_modules tmp/cache tmp/miniprofiler tmp/sockets
 
 

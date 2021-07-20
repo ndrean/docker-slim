@@ -55,13 +55,13 @@ services:
     #   redisdb:
     #     condition: service_healthy
 
-  # webserver:
-  #   build:
-  #     context: .
-  #     dockerfile: ./_ws.Dockerfile
-  #   ports:
-  #     - 8080:8080
-  #   command: ["nginx", "-g", "daemon off;"]
+  webserver:
+    build:
+      context: .
+      dockerfile: ./_nginx-sdcr.Dockerfile
+    ports:
+      - 8080:8080
+    command: ["nginx", "-g", "daemon off;"]
 
   app:
     <<: *common

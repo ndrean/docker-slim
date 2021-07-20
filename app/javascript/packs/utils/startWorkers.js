@@ -1,2 +1,2 @@
-export default async () => fetch("/startWorkers");
-// .then((res) => res.json());
+export default async () =>
+  fetch("/startWorkers", { cache: "no-cache" }).then((res) => res.json());
