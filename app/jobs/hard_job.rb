@@ -1,8 +1,11 @@
-class HardJob < ApplicationJob
+#  frozen_string_literal: true
+
+# curl to Google
+class HardJob < ApplicationJob 
   class Error < StandardError
   end
 
-  require "net/http"
+  require 'net/http'
   
   queue_as :default
   include PagesHelper

@@ -3,21 +3,18 @@ SidekiqAlive.setup do |config|
   # Host to bind the server.
   # Can also be set with the environment variable SIDEKIQ_ALIVE_HOST.
   # default: 0.0.0.0
-  #
    config.host = '0.0.0.0'
 
   # ==> Server port
   # Port to bind the server.
   # Can also be set with the environment variable SIDEKIQ_ALIVE_PORT.
   # default: 7433
-  #
    config.port = 7433
 
   # ==> Server path
   # HTTP path to respond to.
   # Can also be set with the environment variable SIDEKIQ_ALIVE_PATH.
   # default: '/'
-  #
    config.path = '/'
 
   # ==> Custom Liveness Probe
@@ -30,15 +27,13 @@ SidekiqAlive.setup do |config|
   # ==> Liveness key
   # Key to be stored in Redis as probe of liveness
   # default: "SIDEKIQ::LIVENESS_PROBE_TIMESTAMP"
-  #
-   config.liveness_key = "SIDEKIQ::LIVENESS_PROBE_TIMESTAMP"
+   config.liveness_key = 'SIDEKIQ::LIVENESS_PROBE_TIMESTAMP'
 
   # ==> Time to live
   # Time for the key to be kept by Redis.
   # Here is where you can set de periodicity that the Sidekiq has to probe it is working
   # Time unit: seconds
   # default: 10 * 60 # 10 minutes
-  #
    config.time_to_live = 10
 
   # ==> Callback
@@ -53,14 +48,13 @@ SidekiqAlive.setup do |config|
   # SidekiqAlive will run in a independent queue for each instance/replica
   # This queue name will be generated with: "#{queue_prefix}-#{hostname}.
   # You can customize the prefix here.
-#   default: :sidekiq_alive
-  #
+  #  default: :sidekiq_alive
+  
    config.queue_prefix = :sidekiq_alive
 
   # ==> Rack server
   # Web server used to serve an HTTP response.
   # Can also be set with the environment variable SIDEKIQ_ALIVE_SERVER.
   # default: 'webrick'
-  #
    config.server = 'puma'
 end

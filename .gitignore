@@ -6,7 +6,7 @@
 *.rdb
 # Ignore bundler config.
 /.bundle
-
+.devspace
 # Ignore all logfiles and tempfiles.
 *.log
 /log/*

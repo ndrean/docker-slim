@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# fetchs from an API and display response as a background job
 module PagesHelper
    require 'open-uri'
    
@@ -11,7 +14,7 @@ module PagesHelper
    # end
 
    def self.scrap(id)
-      url="https://jsonplaceholder.typicode.com/todos/#{id}"
+      url = "https://jsonplaceholder.typicode.com/todos/#{id}"
       response = URI.open(url)
       json = JSON.parse(response.read)
       return json

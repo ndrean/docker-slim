@@ -1,5 +1,4 @@
-
-redis_conf = { 
+redis_conf = {
   url: ENV['REDIS_URL'],
   password: ENV['REDIS_PASSWORD'],
   network_timeout: 5
