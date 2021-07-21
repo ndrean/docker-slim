@@ -1,1 +1,1 @@
-REDIS = Redis.new(Rails.application.config_for(:redis))
+# REDIS = Redis.new(Rails.application.config_for(:redis))

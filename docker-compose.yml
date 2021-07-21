@@ -13,45 +13,45 @@ x-app: &common
       - RAILS_ENV=production
 
 services:
-  pg:
-    image: postgres:13.3-alpine
-    ports:
-      - 5432
-    environment:
-      - POSTGRES_PASSWORD=dockerpassword
-      # - POSTGRES_PASSWORD=fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-      - ./pg/init-user.sql:/docker-entrypoint-initdb.d/init-user.sql:ro
-      # - ./pg/init-remote-user.sql:/docker-entrypoint-initdb.d/init-remote-user.sql:ro
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+  # pg:
+  #   image: postgres:13.3-alpine
+  #   ports:
+  #     - 5432
+  #   environment:
+  #     - POSTGRES_PASSWORD=dockerpassword
+  #     # - POSTGRES_PASSWORD=fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd
+  #   volumes:
+  #     - pg_data:/var/lib/postgresql/data
+  #     - ./pg/init-user.sql:/docker-entrypoint-initdb.d/init-user.sql:ro
+  #     # - ./pg/init-remote-user.sql:/docker-entrypoint-initdb.d/init-remote-user.sql:ro
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 5
 
-  redisdb:
-    image: redis:6.2.4-alpine
-    ports:
-      - 6379
-    env_file: .env
-    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
-    volumes:
-      - redis_data:/data
-      - ./redis/config/redis.conf:/usr/local/etc/redis/redis.conf:ro
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+  # redisdb:
+  #   image: redis:6.2.4-alpine
+  #   ports:
+  #     - 6379
+  #   env_file: .env
+  #   command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+  #   volumes:
+  #     - redis_data:/data
+  #     - ./redis/config/redis.conf:/usr/local/etc/redis/redis.conf:ro
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
 
   sidekiq:
     <<: *common
     entrypoint: ["./app-pid.sh"]
     command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
-    depends_on:
-      redisdb:
-        condition: service_healthy
+    # depends_on:
+    #   redisdb:
+    #     condition: service_healthy
 
   webserver:
     build:
@@ -65,12 +65,11 @@ services:
 
   app:
     <<: *common
-    depends_on:
-      pg:
-        condition: service_healthy
-      redisdb:
-        condition: service_healthy
-
+    # depends_on:
+    #   pg:
+    #     condition: service_healthy
+    #   redisdb:
+    #     condition: service_healthy
     ports:
       - 4000:3000
     # <- create/migrate
@@ -78,7 +77,6 @@ services:
     command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
     tmpfs:
       - /tmp
-
-volumes:
-  redis_data: {}
-  pg_data: {}
+# volumes:
+#   redis_data: {}
+#   pg_data: {}

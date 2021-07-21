@@ -42,7 +42,8 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
 
   # Use a different cache store in production.
-  # config.cache_store = :redis_cache_store, { :driver => :hiredis, url: ENV['REDIS_URL'] }
+  # <----
+  # config.cache_store = :redis_cache_store, { :driver => :hiredis, url: ENV['REDIS_URL'] } 
 
   config.public_file_server.headers = {
     'Cache-Control' => 'public, s-maxage=31536000, max-age=15552000',

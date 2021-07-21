@@ -14,11 +14,11 @@ const Button = () => {
   React.useEffect(() => {
     async function counter() {
       try {
-        const { countPG, countRedis } = await fetchCounters("/getCounters");
-        console.log("init", countPG, countRedis);
+        const { countPG } = await fetchCounters("/getCounters"); //  countRedis
+        // console.log("init", countPG, countRedis);
         setCounters({
           countPG: Number(countPG),
-          countRedis: Number(countRedis),
+          // countRedis: Number(countRedis),
         });
       } catch (err) {
         console.warn(err);
@@ -31,21 +31,21 @@ const Button = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      let { countPG, countRedis } = counters;
+      let { countPG } = counters; // , countRedis
       countPG += 1;
-      countRedis = Number(countRedis) + 1;
+      // countRedis = Number(countRedis) + 1;
       await Promise.all([
         postCounters("/incrCounters", {
           countPG,
-          countRedis,
+          // countRedis,
         })
           .then((res) => {
             if (res.status === "created") {
-              setCounters({ countPG, countRedis });
+              setCounters({ countPG }); // , countRedis
             }
           })
           .catch((err) => console.log(err)),
-        startWorkers(),
+        startWorkers().catch((err) => console.log(err)),
       ]);
     } catch (err) {
       console.log(err);
@@ -64,7 +64,7 @@ const Button = () => {
           <div>
             <h1>PG counter: {counters.countPG}</h1>
             <br />
-            <h1>Redis counter: {counters.countRedis}</h1>
+            {/* <h1>Redis counter: {counters.countRedis}</h1> */}
           </div>
         )}
       </div>
@@ -73,10 +73,3 @@ const Button = () => {
 };
 
 export default Button;
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   ReactDOM.render(
-//     <Hello name="React" />,
-//     document.body.appendChild(document.createElement("div"))
-//   );
-// });
