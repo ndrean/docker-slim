@@ -2,15 +2,15 @@ version: "3"
 
 x-app: &common
   env_file: .env
-  build:
-    context: .
-    dockerfile: _alpine.prod.Dockerfile
-    args:
-      - RUBY_VERSION=3.0.2-alpine
-      - BUNDLER_VERSION=2.2.24
-      # - NODE_VERSION=14
-      - NODE_ENV=production
-      - RAILS_ENV=production
+  image: ndrean/rails-remote:v0
+  # build:
+  #   context: .
+  #   dockerfile: _alpine.prod.Dockerfile
+  #   args:
+  #     - RUBY_VERSION=3.0.2-alpine
+  #     - BUNDLER_VERSION=2.2.24
+  #     - NODE_ENV=production
+  #     - RAILS_ENV=production
 
 services:
   # pg:
@@ -54,9 +54,10 @@ services:
     #     condition: service_healthy
 
   webserver:
+    # image: ndrean/nginx-docker:v0
     build:
       context: .
-      dockerfile: ./_nginx.Dockerfile
+      dockerfile: ./_nginx-docker.Dockerfile
     ports:
       - 9000:9000
     command: ["nginx", "-g", "daemon off;"]
@@ -66,17 +67,17 @@ services:
   app:
     <<: *common
     # depends_on:
-    #   pg:
-    #     condition: service_healthy
     #   redisdb:
     #     condition: service_healthy
+    #   pg:
+    #     condition: service_healthy
     ports:
-      - 4000:3000
-    # <- create/migrate
-    entrypoint: [./manage-db.sh]
+      - 3000:3000
+    entrypoint: [./manage-db.sh] # <- create/migrate
     command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
     tmpfs:
       - /tmp
-# volumes:
-#   redis_data: {}
+
+volumes:
+  redis_data: {}
 #   pg_data: {}

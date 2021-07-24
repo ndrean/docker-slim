@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: rails-svc
+  name: rails-sd-svc
   labels:
     app: rails
 spec:

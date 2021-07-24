@@ -59,7 +59,7 @@ ENV RAILS_ENV=$RAILS_ENV \
    REDIS_URL=$REDIS_URL
 
 WORKDIR /app
-RUN rm -rf node_modules tmp/cache tmp/miniprofiler tmp/sockets /public
+RUN rm -rf node_modules tmp/cache tmp/miniprofiler tmp/sockets
 
 
 

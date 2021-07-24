@@ -1,5 +1,5 @@
 redis_conf = { 
-  url: ENV.fetch('REDIS_URL',""),
+  url: ENV.fetch('REDIS_SIDEKIQ',""),
   network_timeout: 5
 }
 

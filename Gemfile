@@ -20,6 +20,7 @@ gem 'turbolinks', '~> 5'
 gem 'redis'
 gem 'hiredis'
 
+
 gem 'sidekiq'
 gem 'sidekiq-failures', '~> 1.0'
 gem 'sidekiq_alive'

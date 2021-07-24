@@ -177,6 +177,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
+  connection_pool
   hiredis
   listen (~> 3.3)
   pg (~> 1.1)
