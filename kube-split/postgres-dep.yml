@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pg-svc
+  labels:
+    app: rails #### pg # <- must match with the pod
+spec:
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  selector:
+    # the set of pods with name 'pg' is targeted by this service
+    app: pg
+
+---
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # about the deployment itself. Gives a name of the DEPLOYMENT
+  name: pg-dep
+spec: # of the deployment
+  replicas: 1
+  selector:
+    # the deployment must match all pods with label "app: pg"
+    matchLabels:
+      # the label for the POD that the deployment is targeting
+      app: pg # <- must match with the template for the pod, below
+  template: # blue print of a pod
+    metadata:
+      name: pg-pod
+      # label for the POD that the deployment is deploying
+      labels:
+        app: pg # <- must match SERVICE
+    spec:
+      volumes:
+        - name: pg-pv # must match pv
+          persistentVolumeClaim:
+            claimName: pg-pvc # msut match pvc
+      containers:
+        - name: pg-container
+          image: postgres:13.3-alpine
+          imagePullPolicy: "IfNotPresent"
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "dockerpassword"
+              # valueFrom:
+              #   secretKeyRef:
+              #     name: secrets
+              #     key: postgres_password
+            - name: POSTGRES_USER
+              value: "postgres"
+              # valueFrom:
+              #   secretKeyRef:
+              #     name: secrets
+              #     key: postgres_user
+            - name: DATABASE
+              value: "ortkcbqt"
+            - name: PGDATA
+              value: /var/lib/postgresql/data
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - mountPath: "/var/lib/postgresql/data"
+              name: pg-pv # must match pv
+---
+# create/provision/allocate space for a volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pg-pv
+  labels:
+    type: local
+    # app: pg
+spec:
+  # storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath: # for dvpt on single-node such as Minikube, to emulate network attached vol
+    path: "/tmp/data"
+
+---
+# we bind the resource PV to the pod
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pg-pvc
+spec:
+  # storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  #### volumeName: pg-pv

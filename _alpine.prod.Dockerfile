@@ -35,9 +35,9 @@ ARG RUBY_VERSION=3.0.2-alpine
 FROM ruby:${RUBY_VERSION}
 
 ARG RAILS_ENV=production
-ARG NODE_ENV=production
-ARG REDIS_URL=redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424
-ARG POSTGRES_URL=postgres://ortkcbqt:fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd@batyr.db.elephantsql.com/ortkcbqt
+
+# ARG REDIS_URL=redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424
+# ARG POSTGRES_URL=postgres://ortkcbqt:fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd@batyr.db.elephantsql.com/ortkcbqt
 
 RUN apk -U upgrade && apk add --no-cache  libpq tzdata netcat-openbsd \
    && rm -rf /var/cache/apk/*
@@ -51,7 +51,6 @@ COPY --from=builder --chown=app-user /app /app
 # ENTRYPOINT ["./docker-entrypoint.sh"]
 
 ENV RAILS_ENV=$RAILS_ENV \
-   NODE_ENV=$NODE_ENV \
    RAILS_LOG_TO_STDOUT=true \
    RAILS_SERVE_STATIC_FILES=false  \
    BUNDLE_PATH='vendor/bundle' \

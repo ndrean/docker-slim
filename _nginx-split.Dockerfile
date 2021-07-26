@@ -1,5 +1,5 @@
 FROM nginx:1.21.1-alpine
-COPY ./webserver/split.conf /etc/nginx/conf.d/split.conf
+# COPY ./webserver/split.conf /etc/nginx/conf.d/default.conf
 
 # RUN adduser --disabled-password app-user
 # USER app-user

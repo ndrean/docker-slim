@@ -1,9 +1,12 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: <%= ENV.fetch('RAILS_MAX_THREADS', 5 ) %>
 
 production:
   <<: *default
-  # url: <%= ENV.fetch('ELEPHANT_URL', '') %>
-  url: <%= ENV.fetch('POSTGRES_URL', '') %>
+  # url: <%= ENV.fetch('POSTGRES_URL','') %>
+  username: <%= ENV.fetch('POSTGRES_USER','') %>
+  password: <%= ENV.fetch('POSTGRES_PASSWORD','') %>
+  host: <%= ENV.fetch('POSTGRES_HOST','') %>
+  database: <%= ENV.fetch('DATABASE','') %>

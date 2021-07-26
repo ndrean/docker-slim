@@ -5,7 +5,7 @@ metadata:
   labels:
     app: rails
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: rails
   ports:

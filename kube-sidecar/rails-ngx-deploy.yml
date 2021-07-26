@@ -5,7 +5,7 @@ metadata:
   # labels:
   #   app: k8-rails
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: rails
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: rails
-          image: ndrean/rails-remote:v1
+          image: ndrean/rails-remote:v2
           command: ["bundle"]
           args: ["exec", "rails", "s", "-b", "0.0.0.0"]
           ports:
@@ -36,24 +36,19 @@ spec:
             - name: REDIS_SIDEKIQ
               value: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424/0"
         - name: nginx
-          image: ndrean/nginx-sd:v0
+          image: ndrean/nginx-sd-cfm:v0
           command: ["nginx"]
           args: ["-g", "daemon off;"]
           ports:
             - containerPort: 9000
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: 9000
-          #   initialDelaySeconds: 300
-          #   periodSeconds: 5
-          #   timeoutSeconds: 2
-          #   failureThreshold: 10
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: 9000
-          #   initialDelaySeconds: 300
-          #   periodSeconds: 5
-          #   timeoutSeconds: 2
-          #   failureThreshold: 10
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d/ # mount nginx-conf volumn to /etc/nginx
+              readOnly: true
+              name: nginx-conf
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: nginx-conf # place ConfigMap `nginx-conf` on /etc/nginx
+            items:
+              - key: myconfig.conf
+                path: myconfig.conf # dig directory

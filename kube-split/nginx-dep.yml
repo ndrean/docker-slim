@@ -21,22 +21,31 @@ spec:
     spec:
       containers:
         - image: ndrean/nginx-split:v0
-          imagePullPolicy: "IfNotPresent"
+          imagePullPolicy: "Always"
           name: frontend
           ports:
             - containerPort: 9000
-          # lifecycle:
-          #   preStop:
-          #     exec:
-          #       command: ["/usr/sbin/nginx", "-s", "quit"]
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d # mount nginx-conf volumn to /etc/nginx
+              readOnly: true
+              name: nginx-conf
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: nginx-conf # place ConfigMap `nginx-conf` on /etc/nginx
+            items:
+              - key: myconfig.conf
+                path: default.conf
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: nginx-svc
+  labels:
+    app: nginx
 spec:
-  type: NodePort
+  type: LoadBalancer # <- external service
   selector:
     app: nginx
   ports:
@@ -45,4 +54,4 @@ spec:
       port: 80
       # the port the app is listening on targetPort
       targetPort: 9000
-      name: http
+      nodePort: 30000

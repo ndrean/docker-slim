@@ -1,22 +1,20 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: setup
+  name: db-migrate
 spec:
   template:
-    metadata:
-      name: setup
     spec:
       containers:
-        - name: setup
-          image: ndrean/rails-pg-local:v0
-          args: ["bundle exec rails db:prepare"]
+        - name: backend
+          image: ndrean/rails-pg-local:v1
+          command: ["bundle", "exec", "rails", "db:setup"]
           env:
-            - name: DATABASE_NAME
+            - name: DATABASE
               value: "ortkcbqt"
-            - name: DATABASE_URL
+            - name: POSTGRES_URL
               value: "postgres"
-            - name: DATABASE_PORT
+            - name: POSTGRES_PORT
               value: "5432"
             - name: POSTGRES_USER
               value: "postgres"
@@ -24,7 +22,7 @@ spec:
               #   secretKeyRef:
               #     name: "db-user"
               #     key: "username"
-            - name: DATABASE_PASSWORD
+            - name: POSTGRES_PASSWORD
               value: "postgrespassword"
               # valueFrom:
               #   secretKeyRef:
@@ -32,10 +30,10 @@ spec:
               #     key: "password"
             - name: RAILS_APP
               value: "production"
-            - name: REDIS_URL
-              value: "redis"
-            - name: REDIS_PORT
-              value: "6379"
+            # - name: REDIS_URL
+            #   value: "redis"
+            # - name: REDIS_PORT
+            #   value: "6379"
             - name: RAILS_MASTER_KEY
               value: 5a4be435c6eb87a1a95073f4a4cacca8
               # valueFrom:

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: sidekiq
-          image: ndrean/rails-remote:v1
+          image: ndrean/rails-remote:v2
           command: ["bundle"]
           args: ["exec", "sidekiq", "-C", "./config/sidekiq.yml"]
           env:

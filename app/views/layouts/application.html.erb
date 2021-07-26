@@ -25,10 +25,11 @@
     
     <%= yield %>
 
-    <p>POSTGRES_URL: <%= ENV['POSTGRES_URL'] %></p>
-    <p>REMOTE_URL: <%= ENV['ELEPHANT_URL'] %></p>
-    <p>REDIS_SIDEKIQ: <%= Sidekiq.redis { |conn| conn.connection[:id] } %></p>
-    <p>REDIS_DB: <%=  ENV['REDIS_DB'] %></p>
+    <p><%= ENV['HOSTNAME'] %></p>
+    <p>POSTGRES_URL: <%= ENV['DATABASE_URL'] %></p>
+    <p>REMOTE_URL: <%# ENV['ELEPHANT_URL'] %></p>
+    <p>REDIS_SIDEKIQ: <%# Sidekiq.redis { |conn| conn.connection[:id] } %></p>
+    <p>REDIS_DB: <%#  ENV['REDIS_DB'] %></p>
     <code>
       MASTER_KEY: <%= ENV.fetch('RAILS_MASTER_KEY','') %>
     </code>

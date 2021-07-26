@@ -32,7 +32,7 @@
 #######################################
 
 FROM nginx:1.21.1-alpine
-COPY ./webserver/sidecar.conf /etc/nginx/conf.d/sidecar.conf
+# COPY ./webserver/sidecar.conf /etc/nginx/conf.d/default.conf
 
 # RUN adduser --disabled-password app-user
 # USER app-user

@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sidekiq-deploy
+  name: sidekiq-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: rails-be
+      instance: sidekiq
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -15,24 +15,25 @@ spec:
   template:
     metadata:
       labels:
-        app: rails-be
+        # app: rails
+        instance: sidekiq
     spec:
       containers:
         - name: sidekiq
-          image: ndrean/rails-pg-local:v0
+          image: ndrean/rails-pg-local:v1
+          imagePullPolicy: "Always"
           command: ["bundle"]
           args: ["exec", "sidekiq", "-C", "./config/sidekiq.yml"]
           envFrom:
             - configMapRef:
-                name: env
+                name: config
           env:
             - name: REDIS_SIDEKIQ
+              #value: "redis://redis-svc:6379/0"
+              # value: "redis://redis.default.svc.cluster.local:6379/"
               value: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424/0"
               #value: redis://redis.default.svc.cluster.local:6379/
-            - name: RAILS_ENV
-              value: "production"
-            - name: NODE_ENV
-              value: "production"
+              # - name: REDIS_SIDEKIQ
           ports:
             - name: sidekiqalive
               containerPort: 7433
