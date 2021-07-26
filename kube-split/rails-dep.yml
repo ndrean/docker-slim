@@ -30,57 +30,58 @@ spec:
           envFrom:
             - configMapRef:
                 name: config
+            - secretRef:
+                name: secrets
           env:
-            - name: POSTGRES_PASSWORD
-              value: "dockerpassword"
-              # valueFrom:
-              #   secretKeyRef:
-              #     name: secrets
-              #     key: postgres_password
-            - name: POSTGRES_USER
-              value: "postgres"
-              # valueFrom:
-              #   secretKeyRef:
-              #     name: secrets
-              #     key: postgres_user
-            - name: POSTGRES_HOST
-              value: "pg"
-              # valueFrom:
-              #   configMapKeyRef:
-              #     name: config
-              #     key: postgres_host
-            - name: DATABASE
-              value: "ortkcbqt"
-              # valueFrom:
-              #   configMapKeyRef:
-              #     name: config
-              #     key: database
-            - name: POSTGRES_HOST
-              value: "pg-svc"
-            - name: RAILS_MASTER_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: secrets
-                  key: rails_master_key
+            # - name: POSTGRES_PASSWORD
+            #   value: "dockerpassword"
+            #   # valueFrom:
+            #   #   secretKeyRef:
+            #   #     name: secrets
+            #   #     key: postgres_password
+            # - name: POSTGRES_USER
+            #   value: "postgres"
+            #   # valueFrom:
+            #   #   secretKeyRef:
+            #   #     name: secrets
+            #   #     key: postgres_user
+            # - name: POSTGRES_HOST
+            #   value: "pg"
+            #   # valueFrom:
+            #   #   configMapKeyRef:
+            #   #     name: config
+            #   #     key: postgres_host
+            # - name: DATABASE
+            #   value: "ortkcbqt"
+            # valueFrom:
+            #   configMapKeyRef:
+            #     name: config
+            #     key: database
+            # - name: POSTGRES_HOST
+            #   value: "pg-svc"
+            # - name: RAILS_MASTER_KEY
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: secrets
+            #       key: rails_master_key
             - name: REDIS_SIDEKIQ
-              value: "redis-svc"
-            - name: REDIS_PORT
-              value: "6379"
-            - name: RAILS_ENV
-              valueFrom:
-                configMapKeyRef:
-                  name: config
-                  key: rails_env
-            - name: RAILS_LOGS_TO_STDOUT
-              valueFrom:
-                configMapKeyRef:
-                  name: config
-                  key: rails_log_to_stdout
-            - name: RAILS_SERVE_STATIC_FILES
-              valueFrom:
-                configMapKeyRef:
-                  name: config
-                  key: rails_serve_static_files
+              value: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424/0"
+
+            # - name: RAILS_ENV
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: config
+            #       key: rails_env
+            # - name: RAILS_LOGS_TO_STDOUT
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: config
+            #       key: rails_log_to_stdout
+            # - name: RAILS_SERVE_STATIC_FILES
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: config
+            #       key: rails_serve_static_files
 
 ---
 apiVersion: v1

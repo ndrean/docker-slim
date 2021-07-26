@@ -42,21 +42,26 @@ spec: # of the deployment
         - name: pg-container
           image: postgres:13.3-alpine
           imagePullPolicy: "IfNotPresent"
+          envFrom:
+            - configMapRef:
+                name: config
+            - secretRef:
+                name: secrets
           env:
-            - name: POSTGRES_PASSWORD
-              value: "dockerpassword"
-              # valueFrom:
-              #   secretKeyRef:
-              #     name: secrets
-              #     key: postgres_password
-            - name: POSTGRES_USER
-              value: "postgres"
-              # valueFrom:
-              #   secretKeyRef:
-              #     name: secrets
-              #     key: postgres_user
-            - name: DATABASE
-              value: "ortkcbqt"
+            # - name: POSTGRES_PASSWORD
+            #   # value: "dockerpassword"
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: secrets
+            #       key: postgres_password
+            # - name: POSTGRES_USER
+            #   # value: "postgres"
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: secrets
+            #       key: postgres_user
+            # - name: DATABASE
+            #   value: "ortkcbqt"
             - name: PGDATA
               value: /var/lib/postgresql/data
           resources:
