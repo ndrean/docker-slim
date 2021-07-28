@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rails-nginx-deploy
+  name: rails-nginx-dep
   # labels:
   #   app: k8-rails
 spec:
@@ -21,34 +21,30 @@ spec:
           args: ["exec", "rails", "s", "-b", "0.0.0.0"]
           ports:
             - containerPort: 3000
-          # envFrom:
-          #   - configMapRef:
-          #       name: env
+          envFrom:
+            - configMapRef:
+                name: env
           env:
             - name: POSTGRES_URL
               value: "postgres://ortkcbqt:fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd@batyr.db.elephantsql.com/ortkcbqt"
-            - name: RAILS_ENV
-              value: "production"
-            - name: NODE_ENV
-              value: "production"
             - name: REDIS_CACHE
               value: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424/1"
             - name: REDIS_SIDEKIQ
               value: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424/0"
         - name: nginx
-          image: ndrean/nginx-sd-cfm:v0
+          image: ndrean/nginx-split:v0
           command: ["nginx"]
           args: ["-g", "daemon off;"]
           ports:
             - containerPort: 9000
           volumeMounts:
-            - mountPath: /etc/nginx/conf.d/ # mount nginx-conf volumn to /etc/nginx
+            - mountPath: /etc/nginx/conf.d/ # mount nginx-conf volumn to /etc/nginx/conf.d/
               readOnly: true
               name: nginx-conf
       volumes:
         - name: nginx-conf
           configMap:
-            name: nginx-conf # place ConfigMap `nginx-conf` on /etc/nginx
+            name: nginx-conf # place ConfigMap `nginx-conf` on /etc/nginx/conf.d
             items:
               - key: myconfig.conf
                 path: myconfig.conf # dig directory

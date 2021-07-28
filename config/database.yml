@@ -5,8 +5,8 @@ default: &default
 
 production:
   <<: *default
-  # url: <%= ENV.fetch('POSTGRES_URL','') %>
+  # url: <%= ENV.fetch('POSTGRES_URL','') %> # <- pg-local supp
   username: <%= ENV.fetch('POSTGRES_USER','') %>
   password: <%= ENV.fetch('POSTGRES_PASSWORD','') %>
   host: <%= ENV.fetch('POSTGRES_HOST','') %>
-  database: <%= ENV.fetch('DATABASE','') %>
+  database: <%= ENV.fetch('POSTGRES_DB','') %>

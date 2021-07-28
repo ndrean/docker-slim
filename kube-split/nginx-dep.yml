@@ -26,7 +26,7 @@ spec:
           ports:
             - containerPort: 9000
           volumeMounts:
-            - mountPath: /etc/nginx/conf.d # mount nginx-conf volumn to /etc/nginx
+            - mountPath: "/etc/nginx/conf.d" # mount nginx-conf volumn to /etc/nginx
               readOnly: true
               name: nginx-conf
       volumes:
@@ -45,7 +45,7 @@ metadata:
   labels:
     app: nginx
 spec:
-  type: LoadBalancer # <- external service
+  type: NodePort # LoadBalancer # <- external service
   selector:
     app: nginx
   ports:

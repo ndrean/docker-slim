@@ -2,13 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: pg-svc
-  labels:
-    app: rails #### pg # <- must match with the pod
+  # labels:
+  #   app: pg #### pg # <- must match with the pod
 spec:
   ports:
     - protocol: TCP
-      port: 5432
-      targetPort: 5432
+      port: 5432 # <- service port opened for Rails
   selector:
     # the set of pods with name 'pg' is targeted by this service
     app: pg
@@ -62,8 +61,8 @@ spec: # of the deployment
             #       key: postgres_user
             # - name: DATABASE
             #   value: "ortkcbqt"
-            - name: PGDATA
-              value: /var/lib/postgresql/data
+            # - name: PGDATA
+            #   value: /var/lib/postgresql/data
           resources:
             limits:
               memory: "128Mi"
@@ -73,23 +72,23 @@ spec: # of the deployment
           volumeMounts:
             - mountPath: "/var/lib/postgresql/data"
               name: pg-pv # must match pv
----
+# ---
 # create/provision/allocate space for a volume
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: pg-pv
-  labels:
-    type: local
-    # app: pg
-spec:
-  # storageClassName: manual
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteMany
-  hostPath: # for dvpt on single-node such as Minikube, to emulate network attached vol
-    path: "/tmp/data"
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: pg-pv
+#   labels:
+#     type: local
+#     # app: pg
+# spec:
+#   # storageClassName: manual
+#   capacity:
+#     storage: 1Gi
+#   accessModes:
+#     - ReadWriteMany
+#   hostPath: # for dvpt on single-node such as Minikube, to emulate network attached vol
+#     path: "/tmp/data"
 
 ---
 # we bind the resource PV to the pod

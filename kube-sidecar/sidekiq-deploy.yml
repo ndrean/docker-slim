@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sidekiq-deploy
+  name: sidekiq-dep
 spec:
   replicas: 1
   selector:
@@ -17,14 +17,13 @@ spec:
           image: ndrean/rails-remote:v2
           command: ["bundle"]
           args: ["exec", "sidekiq", "-C", "./config/sidekiq.yml"]
+          envFrom:
+            - configMapRef:
+                name: env
           env:
             - name: REDIS_SIDEKIQ
               value: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424/0"
               #value: redis://redis.default.svc.cluster.local:6379/
-            - name: RAILS_ENV
-              value: "production"
-            - name: NODE_ENV
-              value: "production"
           ports:
             - name: sidekiqalive
               containerPort: 7433

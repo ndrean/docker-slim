@@ -4,15 +4,13 @@ metadata:
   name: config
 data:
   POSTGRES_HOST: "pg-svc" # <- name of the service that exposes the Postgres pod
-  DATABASE: "ortkcbqt"
+  POSTGRES_DB: "ortkcbqt"
+  PGDATA: "/var/lib/postgresql/data"
   # redis_host: "redis-svc" # <- idem
   RAILS_ENV: "production"
   RAILS_LOG_TO_STDOUT: "true"
   RAILS_SERVE_STATIC_FILES: "false"
-  # RAILS_MASTER_KEY: 5a4be435c6eb87a1a95073f4a4cacca8
   # POSTGRES_URL: postgresql://postgres:dockerpassword@pg:5432/ortkcbqt
-  # POSTGRES_PASSWORD: dockerpassword
-  # POSTGRES_USER: postgres
   # POSTGRES_URL: postgres://ortkcbqt:fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd@batyr.db.elephantsql.com/ortkcbqt
   # REDIS_SIDEKIQ: "redis://redis.default.svc.cluster.local:6379/"
   # REDIS_SIDEKIQ: redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424

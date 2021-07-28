@@ -19,7 +19,6 @@ ENV LANG=C.UTF-8 \
    BUNDLE_PATH='vendor/bundle' 
 
 RUN gem install bundler:${BUNDLER_VERSION} --no-document \
-   # && bundle config set deployment 'true' \
    && bundle config set --without 'development test' \
    && bundle install --quiet 
 
@@ -36,9 +35,6 @@ FROM ruby:${RUBY_VERSION}
 
 ARG RAILS_ENV=production
 
-# ARG REDIS_URL=redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424
-# ARG POSTGRES_URL=postgres://ortkcbqt:fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd@batyr.db.elephantsql.com/ortkcbqt
-
 RUN apk -U upgrade && apk add --no-cache  libpq tzdata netcat-openbsd \
    && rm -rf /var/cache/apk/*
 
@@ -48,14 +44,10 @@ USER app-user
 
 COPY --from=builder --chown=app-user /app /app
 
-# ENTRYPOINT ["./docker-entrypoint.sh"]
-
 ENV RAILS_ENV=$RAILS_ENV \
    RAILS_LOG_TO_STDOUT=true \
    RAILS_SERVE_STATIC_FILES=false  \
-   BUNDLE_PATH='vendor/bundle' \
-   POSTGRES_URL=$POSTGRES_URL \
-   REDIS_URL=$REDIS_URL
+   BUNDLE_PATH='vendor/bundle'
 
 WORKDIR /app
 RUN rm -rf node_modules tmp/cache tmp/miniprofiler tmp/sockets

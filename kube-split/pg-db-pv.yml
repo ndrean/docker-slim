@@ -1,0 +1,16 @@
+# create/provision/allocate space for a volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pg-pv
+  labels:
+    type: local
+    # app: pg
+spec:
+  # storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath: # for dvpt on single-node such as Minikube, to emulate network attached vol
+    path: "/tmp/data"

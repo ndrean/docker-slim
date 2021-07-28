@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migrate
+spec:
+  template:
+    spec:
+      containers:
+        - name: backend
+          image: ndrean/rails-pg-local:v1
+          imagePullPolicy: IfNotPresent
+          command: ["bundle", "exec", "rails", "db:setup"]
+          envFrom:
+            - secretRef:
+                name: secrets
+            - configMapRef:
+                name: config
+      restartPolicy: Never

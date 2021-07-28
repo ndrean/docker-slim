@@ -5,7 +5,7 @@ metadata:
   labels:
     app: rails
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: rails
   ports:
@@ -14,4 +14,5 @@ spec:
       port: 80
       # the port the app is listening on targetPort
       targetPort: 9000
+      nodePort: 30000
       name: http
