@@ -34,7 +34,7 @@ SidekiqAlive.setup do |config|
   # Here is where you can set de periodicity that the Sidekiq has to probe it is working
   # Time unit: seconds
   # default: 10 * 60 # 10 minutes
-   config.time_to_live = 10
+   config.time_to_live = 10*60
 
   # ==> Callback
   # After the key is stored in redis you can perform anything.

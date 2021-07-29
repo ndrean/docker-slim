@@ -61,7 +61,7 @@ GEM
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
     bindex (0.8.1)
-    bootsnap (1.7.5)
+    bootsnap (1.7.6)
       msgpack (~> 1.0)
     builder (3.2.4)
     byebug (11.1.3)
@@ -70,11 +70,11 @@ GEM
     crass (1.0.6)
     erubi (1.10.0)
     ffi (1.15.3)
-    globalid (0.4.2)
-      activesupport (>= 4.2.0)
+    globalid (0.5.1)
+      activesupport (>= 5.0)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
-    listen (3.5.1)
+    listen (3.6.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.10.0)
@@ -95,6 +95,8 @@ GEM
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
+    rack-cors (1.1.1)
+      rack (>= 2.0.0)
     rack-mini-profiler (2.3.2)
       rack (>= 1.2.0)
     rack-proxy (0.7.0)
@@ -127,11 +129,11 @@ GEM
       method_source
       rake (>= 0.13)
       thor (~> 1.0)
-    rake (13.0.3)
+    rake (13.0.6)
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    redis (4.3.1)
+    redis (4.4.0)
     semantic_range (3.0.0)
     sidekiq (6.2.1)
       connection_pool (>= 2.2.2)
@@ -139,7 +141,7 @@ GEM
       redis (>= 4.2.0)
     sidekiq-failures (1.0.0)
       sidekiq (>= 4.0.0)
-    sidekiq_alive (2.0.6)
+    sidekiq_alive (2.1.2)
       sidekiq
     spring (2.1.1)
     sprockets (4.0.2)
@@ -179,6 +181,7 @@ DEPENDENCIES
   listen (~> 3.3)
   pg (~> 1.1)
   puma (~> 5.0)
+  rack-cors
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.4)
   redis
@@ -189,10 +192,10 @@ DEPENDENCIES
   turbolinks (~> 5)
   tzinfo-data
   web-console (>= 4.1.0)
-  webpacker (~> 5.0)
+  webpacker (~> 5.4)
 
 RUBY VERSION
    ruby 3.0.1p64
 
 BUNDLED WITH
-   2.2.21
+   2.2.24

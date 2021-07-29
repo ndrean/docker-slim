@@ -40,33 +40,33 @@ class PagesController < ApplicationController
     end
   end
 
-  def get_counters
-    begin
-      cPG = Counter.last
-      cRed = REDIS.get('compteur')
-      countPG = cPG.nil? ? 0 : cPG.nb
-      countRedis = cRed == '' ? 0 : cRed
-      render json: {
-        countPG: countPG,
-        countRedis: countRedis,
-        status: :ok
-      }
-    rescue StandardError => e
-      puts e.message
-      render json: { status: 500 }
-    end
+  # def get_counters
+  #   begin
+  #     cPG = Counter.last
+  #     cRed = REDIS.get('compteur')
+  #     countPG = cPG.nil? ? 0 : cPG.nb
+  #     countRedis = cRed == '' ? 0 : cRed
+  #     render json: {
+  #       countPG: countPG,
+  #       countRedis: countRedis,
+  #       status: :ok
+  #     }
+  #   rescue StandardError => e
+  #     puts e.message
+  #     render json: { status: 500 }
+  #   end
     
-  end
+  # end
 
-  def create
-    begin
-      Counter.create!(nb: params[:countPG])
-      REDIS.set('compteur', params[:countRedis])
-      render json: { status: :created }
-    rescue StandardError => e
-      puts e.message
-      render json: { status: 500 }
-    end 
-  end
+  # def create
+  #   begin
+  #     Counter.create!(nb: params[:countPG])
+  #     REDIS.set('compteur', params[:countRedis])
+  #     render json: { status: :created }
+  #   rescue StandardError => e
+  #     puts e.message
+  #     render json: { status: 500 }
+  #   end 
+  # end
 
 end
