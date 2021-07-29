@@ -1,9 +1,9 @@
 development:
   adapter: redis
-  url: <%= ENV.fetch("REDIS_CABLE", "redis://localhost:6379/3" ) %>
+  url: <%= ENV.fetch("REDIS_CABLE", "redis://redis:6379/3" ) %>
   channel_prefix: cable_dev
 
 production:
   adapter: redis
-  url: <%= ENV.fetch("REDIS_CABLE", "redis://localhost:6379/3" ) %>
+  url: <%= ENV.fetch("REDIS_CABLE", "redis://redis:6379/3" ) %>
   channel_prefix: cable_prod

@@ -8,7 +8,7 @@ import React, { useState, useEffect } from "react";
 import fetchCounters from "../utils/fetchCounters.js";
 import postCounters from "../utils/postCounters.js";
 import startWorkers from "../utils/startWorkers.js";
-import consumer from "../../channels/consumer";
+// import consumer from "../../channels/consumer";
 import CounterChannel from "../../channels/counter_channel.js";
 const Button = () => {
   const [counters, setCounters] = useState({});
@@ -69,10 +69,8 @@ const Button = () => {
 
         {counters && (
           <div>
-            {/* {data.countPG} */}
             <h1>PG counter: {counters.countPG}</h1>
             <br />
-            {/* {data.countRedis} */}
             <h1>Redis counter: {counters.countRedis}</h1>
           </div>
         )}

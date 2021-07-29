@@ -17,7 +17,6 @@ const images = require.context("../images", true);
 const imagePath = (name) => images(name, true);
 
 import Button from "./components/Button.jsx";
-import CounterWS from "./components/CounterWS";
 
 document.addEventListener("DOMContentLoaded", () => {
   ReactDOM.render(
