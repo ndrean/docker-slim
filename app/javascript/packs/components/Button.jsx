@@ -16,18 +16,19 @@ const Button = () => {
   useEffect(() => {
     async function initCounter() {
       try {
-        const { countPG, countRedis } = await fetchCounters("/getCounters");
-        const cPG = Number(countPG),
-          cRD = Number(countRedis);
         let i = 0;
         CounterChannel.received = ({ countPG, countRedis }) => {
           if (countPG && countRedis) {
             i = 1;
-            console.log(i, countPG, countRedis);
-            setCounters({ countPG, countRedis });
+            return setCounters({ countPG, countRedis });
           }
         };
-        if (i === 0) setCounters({ countPG: cPG, countRedis: cRD });
+        if (i === 0) {
+          const { countPG, countRedis } = await fetchCounters("/getCounters");
+          const cPG = Number(countPG),
+            cRD = Number(countRedis);
+          setCounters({ countPG: cPG, countRedis: cRD });
+        }
       } catch (err) {
         console.warn(err);
         throw new Error(err);

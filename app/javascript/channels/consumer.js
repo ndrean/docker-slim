@@ -3,4 +3,6 @@
 
 import { createConsumer } from "@rails/actioncable";
 
+createConsumer("ws://localhost:28080");
+
 export default createConsumer();
