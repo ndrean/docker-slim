@@ -4,6 +4,8 @@
 
 import React from "react";
 
+// import * as ActionCable from "@rails/actioncable";
+
 import fetchCounters from "../utils/fetchCounters.js";
 import postCounters from "../utils/postCounters.js";
 import startWorkers from "../utils/startWorkers.js";
