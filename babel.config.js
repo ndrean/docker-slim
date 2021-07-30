@@ -50,15 +50,8 @@ module.exports = function (api) {
       "@babel/plugin-syntax-dynamic-import",
       isTestEnv && "babel-plugin-dynamic-import-node",
       "@babel/plugin-transform-destructuring",
-
       [
         "@babel/plugin-proposal-class-properties",
-        {
-          loose: true,
-        },
-      ],
-      [
-        "@babel/plugin-proposal-private-methods",
         {
           loose: true,
         },
@@ -87,6 +80,12 @@ module.exports = function (api) {
         "babel-plugin-transform-react-remove-prop-types",
         {
           removeImport: true,
+        },
+      ],
+      [
+        "@babel/plugin-proposal-private-methods",
+        {
+          loose: true,
         },
       ],
     ].filter(Boolean),

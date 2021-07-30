@@ -2,11 +2,15 @@
 <html lang="en">
   <head>
     <title>DockerSlim</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="Slim Rails image ">
    
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= action_cable_meta_tag %>
+
+    <meta name="theme-color" content="#ffffff">
 
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
@@ -21,13 +25,14 @@
     <%= image_pack_tag 'media/images/Elephantsql.jpg', class: "img", alt:"logo" %>
     <%# image_pack_tag 'media/images/FrontReact.png', class: "img-med"  %>
     <img src="<%= asset_pack_path 'media/images/FrontReact.png' %>" class="img-med" alt="logo"></img>
-    
+    <%= image_pack_tag 'media/images/websocket.jpeg', class: 'img', alt: 'logo
+    ' %>
     <%= yield %>
-
+    <p>Hosted by: <%= ENV['HOSTNAME'] %></p>
     <p>POSTGRES_URL: <%= ENV['POSTGRES_URL'] %></p>
-    <p>REMOTE_URL: <%= ENV['ELEPHANT_URL'] %></p>
-    <p>SIDEKIQ_REDIS_URL: <%= Sidekiq.redis { |conn| conn.connection[:id] } %></p>
-    <p>REDIS_URL: <%=  ENV['REDIS_URL'] %></p>
+    
+    <p>REDIS_SIDEKIQ: <%= Sidekiq.redis { |conn| conn.connection[:id] } %></p>
+    <p>REDIS_DB: <%=  ENV['REDIS_URL'] %></p>
     <code>
       MASTER_KEY: <%= ENV.fetch('RAILS_MASTER_KEY','') %>
     </code>

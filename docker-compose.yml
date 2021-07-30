@@ -2,15 +2,16 @@ version: "3"
 
 x-app: &common
   env_file: .env
-  build:
-    context: .
-    dockerfile: _alpine.prod.Dockerfile
-    args:
-      - RUBY_VERSION=3.0.2-alpine
-      - BUNDLER_VERSION=2.2.24
-      # - NODE_VERSION=14
-      - NODE_ENV=production
-      - RAILS_ENV=production
+  image: rails-app:latest
+  # build:
+  #   context: .
+  #   dockerfile: _alpine.prod.Dockerfile
+  #   args:
+  #     - RUBY_VERSION=3.0.2-alpine
+  #     - BUNDLER_VERSION=2.2.24
+  #     # - NODE_VERSION=14
+  #     - NODE_ENV=production
+  #     - RAILS_ENV=production
 
 services:
   pg:
@@ -70,7 +71,6 @@ services:
         condition: service_healthy
       redisdb:
         condition: service_healthy
-
     ports:
       - 4000:3000
     # <- create/migrate
@@ -78,6 +78,12 @@ services:
     command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
     tmpfs:
       - /tmp
+
+  cable:
+    <<: *common
+    command: ["bundle", "exec", "puma", "-p", "28080", "cable/config.ru"]
+    ports:
+      - "28080:28080"
 
 volumes:
   redis_data: {}

@@ -1,0 +1,4 @@
+production:
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_CABLE", "redis://redisdb:6379/3" ) %>
+  channel_prefix: cable_prod

@@ -31,31 +31,30 @@ class PagesController < ApplicationController
     HardWorker.perform_async
     # ACTIVE_JOB with Sidekiq (intializer with REDIS_URL, config.active_job.queue_adapter)
     HardJob.perform_later 
-    
-    head :no_content
+    return render json: { status: :no_content }
   end
 
-  def get_counters
-    cPG = Counter.last
-    cRed = REDIS.get('compteur')
-    countPG = (cPG.nil?) ? 0 : cPG.nb
-    countRedis = cRed
-    return render json: {
-      countPG: countPG,
-      countRedis: countRedis,
-      status: :ok
-    }
-  end
+  # def get_counters
+  #   cPG = Counter.last
+  #   cRed = REDIS.get('compteur')
+  #   countPG = (cPG.nil?) ? 0 : cPG.nb
+  #   countRedis = cRed
+  #   return render json: {
+  #     countPG: countPG,
+  #     countRedis: countRedis,
+  #     status: :ok
+  #   }
+  # end
 
-  def create
-    begin
-      if (Counter.create!(nb: params[:countPG]) && REDIS.set("compteur", params[:countRedis]))
-        return render json: { status: :created }
-      end
-      raise PagesController::Error.new("database down")
-    rescue => e
-      STDERR.puts e.message
-    end
-    return render json: { status: 500}
-  end
+  # def create
+  #   begin
+  #     if (Counter.create!(nb: params[:countPG]) && REDIS.set("compteur", params[:countRedis]))
+  #       return render json: { status: :created }
+  #     end
+  #     raise PagesController::Error.new("database down")
+  #   rescue => e
+  #     STDERR.puts e.message
+  #   end
+  #   return render json: { status: 500}
+  # end
 end

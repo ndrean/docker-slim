@@ -11,7 +11,7 @@ require "action_mailer/railtie"
 # require "action_mailbox/engine"
 # require "action_text/engine"
 require "action_view/railtie"
-# require "action_cable/engine"
+require "action_cable/engine" #<--
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
@@ -33,6 +33,17 @@ module DockerSlim
     # config.eager_load_paths << Rails.root.join("extras")
     config.active_job.queue_adapter = :sidekiq #<- ONLY FOR ACTIVE_JOB
 
+    # Separate Action Cable into its own process.
+    config.action_cable.url = ENV.fetch('CABLE_FRONT_URL', 'ws://cable:28080')
+    # Separate Action Cable into its own process.
+    
+    # Action Cable will only allow connections from these domains.
+    # origins = ENV.fetch('CABLE_ALLOWED_REQUEST_ORIGINS', "http:\/\/localhost*").split(",")
+    # origins.map! { |url| /#{url}/ }
+    # config.action_cable.allowed_request_origins = origins
+    
+    config.action_cable.disable_request_forgery_protection = true
+    config.action_cable.mount_path = '/cable'
     # Don't generate system test files.
     config.generators.system_tests = nil
 

@@ -7,25 +7,45 @@ import React from "react";
 import fetchCounters from "../utils/fetchCounters.js";
 import postCounters from "../utils/postCounters.js";
 import startWorkers from "../utils/startWorkers.js";
+import CountersChannel from "../../channels/counters_channel.js";
 
 const Button = () => {
   const [counters, setCounters] = React.useState({});
 
   React.useEffect(() => {
-    async function counter() {
+    async function initCounter() {
       try {
-        const { countPG, countRedis } = await fetchCounters("/getCounters");
-        console.log("init", countPG, countRedis);
-        setCounters({
-          countPG: Number(countPG),
-          countRedis: Number(countRedis),
-        });
+        let i = 0;
+        CountersChannel.received = ({ countPG, countRedis }) => {
+          if (countPG && countRedis) {
+            i = 1;
+            return setCounters({ countPG, countRedis });
+          }
+        };
+        if (i === 0) {
+          const { countPG, countRedis } = await fetchCounters("/getCounters");
+          const cPG = Number(countPG),
+            cRD = Number(countRedis);
+          setCounters({ countPG: cPG, countRedis: cRD });
+        }
       } catch (err) {
         console.warn(err);
         throw new Error(err);
       }
     }
-    counter();
+    // try {
+    //   const { countPG, countRedis } = await fetchCounters("/getCounters");
+    //   console.log("init", countPG, countRedis);
+    //   setCounters({
+    //     countPG: Number(countPG),
+    //     countRedis: Number(countRedis),
+    //   });
+    // } catch (err) {
+    //   console.warn(err);
+    //   throw new Error(err);
+    // }
+
+    initCounter();
   }, []);
 
   const handleClick = async (e) => {
@@ -45,7 +65,7 @@ const Button = () => {
             }
           })
           .catch((err) => console.log(err)),
-        startWorkers(),
+        startWorkers().catch((err) => console.log(err)),
       ]);
     } catch (err) {
       console.log(err);
