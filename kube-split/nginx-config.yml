@@ -6,7 +6,7 @@ data:
   myconfig.conf: |
     upstream puma {
       server rails-svc:3000;
-      # keepalive 1024;
+      keepalive 1024;
     }
 
     access_log  /dev/stdout main;

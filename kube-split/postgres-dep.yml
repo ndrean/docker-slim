@@ -15,11 +15,14 @@ spec:
 ---
 # Deployment
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   # about the deployment itself. Gives a name of the DEPLOYMENT
   name: pg-dep
+  labels:
+    app: pg
 spec: # of the deployment
+  serviceName: pg-dep
   replicas: 1
   selector:
     # the deployment must match all pods with label "app: pg"
@@ -46,23 +49,23 @@ spec: # of the deployment
                 name: config
             - secretRef:
                 name: secrets
-          env:
-            # - name: POSTGRES_PASSWORD
-            #   # value: "dockerpassword"
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: secrets
-            #       key: postgres_password
-            # - name: POSTGRES_USER
-            #   # value: "postgres"
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: secrets
-            #       key: postgres_user
-            # - name: DATABASE
-            #   value: "ortkcbqt"
-            # - name: PGDATA
-            #   value: /var/lib/postgresql/data
+          # env:
+          # - name: POSTGRES_PASSWORD
+          #   # value: "dockerpassword"
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: secrets
+          #       key: postgres_password
+          # - name: POSTGRES_USER
+          #   # value: "postgres"
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: secrets
+          #       key: postgres_user
+          # - name: DATABASE
+          #   value: "ortkcbqt"
+          # - name: PGDATA
+          #   value: /var/lib/postgresql/data
           resources:
             limits:
               memory: "128Mi"

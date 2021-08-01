@@ -45,7 +45,7 @@ metadata:
   labels:
     app: nginx
 spec:
-  type: NodePort # LoadBalancer # <- external service
+  type: LoadBalancer # NodePort # LoadBalancer # <- external service
   selector:
     app: nginx
   ports:

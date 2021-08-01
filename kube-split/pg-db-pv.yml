@@ -4,10 +4,10 @@ kind: PersistentVolume
 metadata:
   name: pg-pv
   labels:
-    type: local
-    # app: pg
+    #   type: local
+    app: pg
 spec:
-  # storageClassName: manual
+  storageClassName: hostpath
   capacity:
     storage: 1Gi
   accessModes:

@@ -2,12 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rails-dep
-  labels:
+  labels: # must match the service
     app: rails
 spec:
   replicas: 3
   selector:
-    matchLabels:
+    matchLabels: # which pods are we deploying
       app: rails
   strategy:
     type: RollingUpdate
@@ -16,7 +16,7 @@ spec:
       maxSurge: 1
   template:
     metadata:
-      labels:
+      labels: # must match service and replicaset matchlabel
         app: rails
     spec:
       containers:
