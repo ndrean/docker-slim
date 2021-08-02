@@ -16,7 +16,7 @@ data:
   REDIS_CACHE: "redis://redis-svc:6379/2"
   REDIS_CABLE: "redis://redis-svc:6379/3"
 
-  CABLE_FRONT_URL: "ws://localhost:9000"
+  CABLE_FRONT_URL: "ws://rails-svc:3000/cable"
   # CABLE_FRONT_URL: "ws://localhost:28080/cable"
   # POSTGRES_URL: postgresql://postgres:dockerpassword@pg:5432/ortkcbqt
   # POSTGRES_URL: postgres://ortkcbqt:fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd@batyr.db.elephantsql.com/ortkcbqt

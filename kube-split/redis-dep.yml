@@ -42,16 +42,18 @@ spec:
             #   readOnly: false
             - name: data
               mountPath: "/data"
+              readOnly: false
       # volumes:
       #   - conf: conf
       #     configMap:
-      #     name: redis
-      #     defaultMode: 0755
+      #       name: redis
+      #       defaultMode: 0755
   volumeClaimTemplates:
     - metadata:
         name: data
       spec:
         accessModes: ["ReadWriteMany"]
+        storageClassName: "standard"
         resources:
           requests:
-            storage: 1Gi
+            storage: 50Mi

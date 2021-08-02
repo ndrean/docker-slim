@@ -53,6 +53,7 @@ spec: # of the deployment
           volumeMounts:
             - mountPath: "/var/lib/postgresql/data"
               name: pg-pv # must match pv
+              readOnly: false
           envFrom:
             - configMapRef:
                 name: config
@@ -88,5 +89,5 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 1Gi
+      storage: 50Mi
   #### volumeName: pg-pv

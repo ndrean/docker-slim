@@ -9,7 +9,7 @@ metadata:
 spec:
   storageClassName: hostpath
   capacity:
-    storage: 1Gi
+    storage: 100Mi
   accessModes:
     - ReadWriteMany
   hostPath: # for dvpt on single-node such as Minikube, to emulate network attached vol
