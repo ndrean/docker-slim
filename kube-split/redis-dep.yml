@@ -2,35 +2,32 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redis-svc
-  labels:
-    app: rails
 spec:
   ports:
     - port: 6379
+      targetPort: 6379
+      name: client
   selector:
-    app: rails
-    tier: redis
+    app: redis
 
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: redis-dep
+  name: redis
   labels:
-    name: redis # must match service
-    instance: sidekiq
+    app: redis
 spec:
-  replicas: 1
+  serviceName: redis
   selector:
     matchLabels:
-      app: rails # which pod should we deploy ### redis
-      tier: redis
+      app: redis
+  replicas: 1
   template:
     metadata:
       name: redis-pod
       labels:
-        app: rails # must match service ### redis
-        tier: redis
+        app: redis
     spec:
       containers:
         - name: redis
@@ -39,12 +36,22 @@ spec:
           ports:
             - containerPort: 6379
           command: ["redis-server"]
-          # env:
-          #   - name: MASTER
-          #     value: "true"
-      #     volumeMounts:
-      #       - mountPath: /redis-master-data
-      #         name: data
+          volumeMounts:
+            # - name: conf
+            #   mountPath: /conf
+            #   readOnly: false
+            - name: data
+              mountPath: "/data"
       # volumes:
-      #   - name: data
-      #     emptyDir: {}
+      #   - conf: conf
+      #     configMap:
+      #     name: redis
+      #     defaultMode: 0755
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteMany"]
+        resources:
+          requests:
+            storage: 1Gi

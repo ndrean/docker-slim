@@ -2,46 +2,54 @@
 // like app/views/layouts/application.html.erb. All it does is render <div>Hello React</div> at the bottom
 // of the page.
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import fetchCounters from "../utils/fetchCounters.js";
 import postCounters from "../utils/postCounters.js";
 import startWorkers from "../utils/startWorkers.js";
+import CounterChannel from "../../channels/counter_channel.js";
 
 const Button = () => {
-  const [counters, setCounters] = React.useState({});
+  const [counters, setCounters] = useState({});
 
-  React.useEffect(() => {
-    async function counter() {
+  useEffect(() => {
+    async function initCounter() {
       try {
-        const { countPG } = await fetchCounters("/getCounters"); //  countRedis
-        // console.log("init", countPG, countRedis);
-        setCounters({
-          countPG: Number(countPG),
-          // countRedis: Number(countRedis),
-        });
+        let i = 0;
+        CounterChannel.received = ({ countPG, countRedis }) => {
+          if (countPG && countRedis) {
+            i = 1;
+            return setCounters({ countPG, countRedis });
+          }
+        };
+        if (i === 0) {
+          const { countPG, countRedis } = await fetchCounters("/getCounters");
+          const cPG = Number(countPG),
+            cRD = Number(countRedis);
+          setCounters({ countPG: cPG, countRedis: cRD });
+        }
       } catch (err) {
         console.warn(err);
         throw new Error(err);
       }
     }
-    counter();
+    initCounter();
   }, []);
 
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      let { countPG } = counters; // , countRedis
+      let { countPG, countRedis } = counters;
       countPG += 1;
-      // countRedis = Number(countRedis) + 1;
+      countRedis = Number(countRedis) + 1;
       await Promise.all([
         postCounters("/incrCounters", {
           countPG,
-          // countRedis,
+          countRedis,
         })
           .then((res) => {
             if (res.status === "created") {
-              setCounters({ countPG }); // , countRedis
+              setCounters({ countPG, countRedis });
             }
           })
           .catch((err) => console.log(err)),
@@ -64,7 +72,7 @@ const Button = () => {
           <div>
             <h1>PG counter: {counters.countPG}</h1>
             <br />
-            {/* <h1>Redis counter: {counters.countRedis}</h1> */}
+            <h1>Redis counter: {counters.countRedis}</h1>
           </div>
         )}
       </div>

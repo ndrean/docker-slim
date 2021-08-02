@@ -27,6 +27,16 @@ Rails.application.configure do
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = 'http://assets.example.com'
 
+  # Separate Action Cable into its own process.
+    config.action_cable.url = ENV.fetch('CABLE_FRONT_URL', '')
+    # Separate Action Cable into its own process.
+
+  # Action Cable will only allow connections from these domains.
+  # origins = ENV.fetch('CABLE_ALLOWED_REQUEST_ORIGINS', "http:\/\/localhost*").split(",")
+  # origins.map! { |url| /#{url}/ }
+  # config.action_cable.allowed_request_origins = origins  
+  config.action_cable.disable_request_forgery_protection = true
+  
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
@@ -46,7 +56,6 @@ Rails.application.configure do
   config.cache_store = :redis_cache_store, { 
     :driver => :hiredis,
     url: ENV['REDIS_CACHE'],
-    
   } 
 
   config.public_file_server.headers = {

@@ -44,6 +44,15 @@ spec: # of the deployment
         - name: pg-container
           image: postgres:13.3-alpine
           imagePullPolicy: "IfNotPresent"
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - mountPath: "/var/lib/postgresql/data"
+              name: pg-pv # must match pv
           envFrom:
             - configMapRef:
                 name: config
@@ -66,32 +75,6 @@ spec: # of the deployment
           #   value: "ortkcbqt"
           # - name: PGDATA
           #   value: /var/lib/postgresql/data
-          resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
-          ports:
-            - containerPort: 5432
-          volumeMounts:
-            - mountPath: "/var/lib/postgresql/data"
-              name: pg-pv # must match pv
-# ---
-# create/provision/allocate space for a volume
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: pg-pv
-#   labels:
-#     type: local
-#     # app: pg
-# spec:
-#   # storageClassName: manual
-#   capacity:
-#     storage: 1Gi
-#   accessModes:
-#     - ReadWriteMany
-#   hostPath: # for dvpt on single-node such as Minikube, to emulate network attached vol
-#     path: "/tmp/data"
 
 ---
 # we bind the resource PV to the pod

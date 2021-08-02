@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rails-dep
+  name: cable-dep
   labels: # must match the service
-    app: rails
+    app: cable
 spec:
   replicas: 1
   selector:
     matchLabels: # which pods are we deploying
-      app: rails
+      app: cable
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -17,16 +17,16 @@ spec:
   template:
     metadata:
       labels: # must match service and replicaset matchlabel
-        app: rails
+        app: cable
     spec:
       containers:
-        - name: backend
+        - name: cable
           image: ndrean/rails-pg-red:v0
           imagePullPolicy: "Always"
           command: ["bundle"]
-          args: ["exec", "rails", "server", "-b", "0.0.0.0"]
+          args: ["exec", "puma", "-p", "28080", "./cable/config.ru"]
           ports:
-            - containerPort: 3000
+            - containerPort: 28080
           envFrom:
             - configMapRef:
                 name: config
@@ -40,17 +40,17 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: rails-svc
+  name: cable-svc
   labels:
-    app: rails
+    app: cable
 spec:
   selector:
-    app: rails
+    app: cable
   type: ClusterIP # default type
   ports:
     - protocol: TCP
       # port exposed by the service
-      port: 3000
+      port: 28080
       # the port the app is listening on targetPort
-      targetPort: 3000
+      targetPort: 28080
       name: http
