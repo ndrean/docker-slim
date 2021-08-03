@@ -8,17 +8,17 @@ class PagesController < ApplicationController
 
   def home    
     # <- test Redis database: to be rescued
-    STDOUT.puts "Redis db is UP" if (REDIS.ping == 'PONG')
+    puts "Redis db is UP" if (REDIS.ping == 'PONG')
     # <- test Sidekiq/Redis connection (github/sidekiq/lib/sidekiq.rb)
-    STDOUT.puts "Redis-Sidekiq @  #{Sidekiq.redis { |con| con.connection[:id] }}"
+    puts "Redis-Sidekiq @  #{Sidekiq.redis { |con| con.connection[:id] }}"
 
     # PSQL <- test PG connection
     begin
       ActiveRecord::Base.connection.execute("SELECT 1").getvalue(0,0)
       # raise PagesController::Error.new("PG is down") if (one != 1)
-      STDOUT.puts "PG is UP"
+      puts "PG is UP"
     rescue => e
-      STDERR.puts e.message
+      puts e.message
     end
 
     # <- rescued Sidekiq test

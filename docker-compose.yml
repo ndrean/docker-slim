@@ -2,7 +2,7 @@ version: "3"
 
 x-app: &common
   env_file: .env
-  image: rails-app:latest
+  image: ndrean/rails-app:v0
   # build:
   #   context: .
   #   dockerfile: _alpine.prod.Dockerfile
@@ -81,7 +81,7 @@ services:
 
   cable:
     <<: *common
-    command: ["bundle", "exec", "puma", "-p", "28080", "cable/config.ru"]
+    command: ["bundle", "exec", "puma", "-p", "28080", "./cable/config.ru"]
     ports:
       - "28080:28080"
 
