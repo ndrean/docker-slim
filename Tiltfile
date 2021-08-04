@@ -32,7 +32,7 @@ k8s_yaml('./kube-split/redis-dep.yml')
 k8s_yaml('./kube-split/cable-dep.yml')
 k8s_yaml('./kube-split/nginx-dep.yml')
 
-#k8s_yaml('./kube-split/migrate.yml')
+k8s_yaml('./kube-split/migrate.yml')
 
 allow_k8s_contexts('current')
 k8s_resource('nginx-dep', port_forwards='9000')

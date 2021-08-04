@@ -28,15 +28,15 @@ Rails.application.configure do
   # config.asset_host = 'http://assets.example.com'
 
   # Separate Action Cable into its own process.
-  config.action_cable.url = ENV.fetch('CABLE_ORIGIN', '')
-  config.action_cable.allowed_request_origins = ENV.fetch('CABLE_ORIGIN','')
+  # onfig.action_cable.url = ENV.fetch('CABLE_ORIGIN', '')
+  #config.action_cable.allowed_request_origins = %r{http://localhost*}
 
   # Action Cable will only allow connections from these domains.
   # if ENV['CABLE_ORIGIN']
   #   origins = ENV.fetch('CABLE_ORIGIN', "http:\/\/localhost*")
   #   config.action_cable.allowed_request_origins = origins  
   # else
-    # config.action_cable.disable_request_forgery_protection = true
+  config.action_cable.disable_request_forgery_protection = true #V1
   # end
   
   
