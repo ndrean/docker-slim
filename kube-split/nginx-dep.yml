@@ -54,4 +54,4 @@ spec:
       port: 80
       # the port the app is listening on targetPort
       targetPort: 9000
-      nodePort: 30000
+      nodePort: 31000

@@ -8,6 +8,7 @@ import Turbolinks from "turbolinks";
 import "stylesheets/application";
 import React from "react";
 import ReactDOM from "react-dom";
+import "../channels";
 
 Rails.start();
 Turbolinks.start();

@@ -15,9 +15,8 @@ data:
   REDIS_SIDEKIQ: "redis://redis-svc:6379/1"
   REDIS_CACHE: "redis://redis-svc:6379/2"
   REDIS_CABLE: "redis://redis-svc:6379/3"
-
-  CABLE_FRONT_URL: "ws://rails-svc:3000/cable"
-  # CABLE_FRONT_URL: "ws://localhost:28080/cable"
+  CABLE_ORIGIN: "ws://cable-svc:28080"
+  # CABLE_ORIGIN: "ws://localhost:28080/cable"
   # POSTGRES_URL: postgresql://postgres:dockerpassword@pg:5432/ortkcbqt
   # POSTGRES_URL: postgres://ortkcbqt:fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd@batyr.db.elephantsql.com/ortkcbqt
   # REDIS_SIDEKIQ: redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424

@@ -14,7 +14,7 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: redis
+  name: redis-dep
   labels:
     app: redis
 spec:
@@ -53,7 +53,7 @@ spec:
         name: data
       spec:
         accessModes: ["ReadWriteMany"]
-        storageClassName: "standard"
+        # storageClassName: "hostpath"
         resources:
           requests:
             storage: 50Mi

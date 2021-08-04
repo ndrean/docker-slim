@@ -9,13 +9,12 @@ data:
       keepalive 1024;
     }
 
-
     access_log  /dev/stdout main;
     error_log   /dev/stdout info;
 
     server {
-      listen 9000; # default_server; <---------
-      server_name localhost; # <--------------
+      listen 9000 default_server; #<---------
+      #server_name localhost; # <--------------
       root /usr/share/nginx/html;
       try_files  $uri @puma;
       access_log  off;
@@ -35,15 +34,19 @@ data:
         proxy_redirect off;
         proxy_pass http://puma;
 
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-Host $http_host;
-        #add_header "Access-Control-Allow-Methods" "POST, GET, OPTIONS";
-        #add_header "Access-Control-Allow-Origin" "*";
+        # proxy_http_version 1.1;
+        # proxy_set_header Upgrade $http_upgrade;
+        # proxy_set_header Connection "Upgrade";
+        # proxy_set_header X-Forwarded-Proto $scheme;
+        # proxy_set_header X-Forwarded-Host $http_host;
       }
 
+      location /cable {
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_pass "http://cable-svc:28080";
+      }
 
       error_page 500 502 503 504 /500.html;
       error_page 404             /404.html;
