@@ -40,7 +40,7 @@ module DockerSlim
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Separate Action Cable into its own process.
-    config.action_cable.url = ENV.fetch('CABLE_FRONT_URL', 'ws://localhost:28080')
+    config.action_cable.url = ENV.fetch('CABLE_URL', 'ws://localhost:28080')
     # Separate Action Cable into its own process.
     
     # Action Cable will only allow connections from these domains.

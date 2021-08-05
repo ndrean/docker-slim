@@ -24,6 +24,11 @@ class PagesController < ApplicationController
     end
     # <- check Sidekiq
     SidekiqHelper.check
+    REDIS.incr('page_count')
+    @page_count = REDIS.get('page_count') #<- pass to view
+    data = {}
+    data['page_count'] = @page_count.to_i
+    ActionCable.server.broadcast('counters_channel', data.as_json) 
   end
 
   def start_workers
@@ -39,34 +44,4 @@ class PagesController < ApplicationController
       render json: { status: 500}
     end
   end
-
-  # def get_counters
-  #   begin
-  #     cPG = Counter.last
-  #     cRed = REDIS.get('compteur')
-  #     countPG = cPG.nil? ? 0 : cPG.nb
-  #     countRedis = cRed == '' ? 0 : cRed
-  #     render json: {
-  #       countPG: countPG,
-  #       countRedis: countRedis,
-  #       status: :ok
-  #     }
-  #   rescue StandardError => e
-  #     puts e.message
-  #     render json: { status: 500 }
-  #   end
-    
-  # end
-
-  # def create
-  #   begin
-  #     Counter.create!(nb: params[:countPG])
-  #     REDIS.set('compteur', params[:countRedis])
-  #     render json: { status: :created }
-  #   rescue StandardError => e
-  #     puts e.message
-  #     render json: { status: 500 }
-  #   end 
-  # end
-
 end

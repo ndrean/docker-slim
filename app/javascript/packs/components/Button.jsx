@@ -12,7 +12,6 @@ import startWorkers from "../utils/startWorkers.js";
 import CounterChannel from "../../channels/counter_channel.js";
 const Button = () => {
   const [counters, setCounters] = useState({});
-
   useEffect(() => {
     async function initCounter() {
       try {

@@ -35,13 +35,17 @@
     <%= image_pack_tag 'media/images/Postgres.png', class: "img-large" %>
     <%= image_pack_tag 'media/images/Elephantsql.jpeg', class: "img" %>
     <%= image_pack_tag 'media/images/FrontReact.png', class: "img-med" %>
-
+  <h3 > Page hit count:  <%= @page_count %></h3>
     </div>
     
     <%= yield %>
-     <p>Hosted by: <%= ENV['HOSTNAME'] %></p>
+
+
+    <p>Hosted by: <%= ENV['HOSTNAME'] %></p>
     <p>POSTGRES_URL: <%= ENV['POSTGRES_URL'] %></p>
     <p>REMOTE_POSTGRES_URL: <%= ENV['ELEPHANT_URL']%></p>
+    <p>REDIS_URL: <%= ENV['REDIS_URL'] %></p>
+    <p>CAUBLE_URL: <%= ENV['CABLE_URL'] %></p>
     <p>SIDEKIQ_REDIS_URL: <%= Sidekiq.redis { |conn| conn.connection[:id] } %></p>
     <code> RAILS MASTER KEY:  <%= ENV['RAILS_MASTER_KEY'] %> </code>
   </body>
