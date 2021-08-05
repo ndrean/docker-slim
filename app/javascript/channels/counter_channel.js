@@ -4,6 +4,7 @@ const CounterChannel = consumer.subscriptions.create(
   { channel: "CounterChannel" },
   {
     connected() {
+      console.log("Client connected");
       // Called when the subscription is ready for use on the server
     },
 

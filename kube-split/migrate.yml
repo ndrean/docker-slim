@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ndrean/rails-pg-red:v0
+          image: ndrean/rails-pg-red
           imagePullPolicy: IfNotPresent
           command: ["bundle", "exec", "rails", "db:migrate"]
           envFrom:

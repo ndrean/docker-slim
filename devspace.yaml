@@ -4,6 +4,13 @@ version: v1beta10
 vars:
   - name: IMAGE
     value: ndrean/rails-pg-red
+# images:
+#   rails:
+#     image: ndrean/rails-pg-red
+#     dockerfile: _alpine.prod.Dockerfile
+#   nginx:
+#     image: ndrean/nginx-split2
+#     dockerfile: _nginx-split2.Dockerfile
 
 # `deployments` tells DevSpace how to deploy this project
 deployments:
@@ -17,9 +24,9 @@ deployments:
         - kube-split/redis-dep.yml
         - kube-split/pg-db-pv.yml
         - kube-split/postgres-dep.yml
-        - kube-split/rails-dep.yml
-        - kube-split/cable-dep.yml
         - kube-split/sidekiq-dep.yml
+        - kube-split/cable-dep.yml
+        - kube-split/rails-dep.yml
         - kube-split/nginx-dep.yml
 
 # `dev` only applies when you run `devspace dev`

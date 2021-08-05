@@ -1,3 +1,7 @@
+ok
+only=['app','public/', 'Gemfile', 'Gemfile.lock', 'package.json', 'yarn.lock']
+only=['/app','/public', 'Gemfile', 'Gemfile.lock', 'package.json', 'yarn.lock']
+
 docker_build(
    "ndrean/rails-pg-red",
    ".",
@@ -7,5 +11,21 @@ docker_build(
       "NODE_ENV": "production",
       "RAILS_ENV": "production",
       "BUNDLER_VERSION": "2.2.24"
-   }
+   },
+   only=['/app','/public', 'Gemfile', 'Gemfile.lock', 'package.json', 'yarn.lock']
+)
+docker_build(
+   'ndrean/rails-pg-red',
+   '.',
+   live_update=[
+      sync('./app','/app')
+   ],
+   dockerfile="_alpine.prod.Dockerfile",
+   only=["rails", "sidekiq", "cable"]
+)
+
+docker_build(
+   "ndrean/nginx-split2",
+   ".",
+   dockerfile="_nginx-split2.Dockerfile"
 )

@@ -65,7 +65,7 @@ const Button = () => {
     <>
       <div className="flexed">
         <button className="button" onClick={handleClick}>
-          Click me!
+          Click here!
         </button>
 
         {counters && (

@@ -27,6 +27,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: config
+            - secretRef:
+                name: secrets
           ports:
             - name: sidekiqalive
               containerPort: 7433
