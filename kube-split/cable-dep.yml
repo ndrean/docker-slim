@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: cable
-          image: ndrean/rails-pg-red:v0
+          image: ndrean/rails-pg-red
           imagePullPolicy: "Always"
           command: ["bundle"]
           args: ["exec", "puma", "-p", "28080", "./cable/config.ru"]

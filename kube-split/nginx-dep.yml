@@ -20,7 +20,7 @@ spec:
         app: nginx
     spec:
       containers:
-        - image: ndrean/nginx-split:v0
+        - image: ndrean/nginx-split2
           imagePullPolicy: "Always"
           name: frontend
           ports:

@@ -5,7 +5,7 @@ metadata:
   labels: # must match the service
     app: rails
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels: # which pods are we deploying
       app: rails
@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ndrean/rails-pg-red:v0
+          image: ndrean/rails-pg-red
           imagePullPolicy: "Always"
           command: ["bundle"]
           args: ["exec", "rails", "server", "-b", "0.0.0.0"]

@@ -7,22 +7,20 @@ k8s_yaml([
 ])
 
 docker_build(
-   "ruby",
-   ".",
-   dockerfile="_alpine.prod.Dockerfile",
-   only=[
-      "rails",
-      "sidekiq",
-      "cable"
+   'rails-pg-red',
+   '.',
+   live_update=[
+      sync('./app','./app')
    ]
+
+
 )
 
 docker_build(
-   "ndrean/nginx-split:v0",
+   "ndrean/nginx-split2",
    ".",
-   dockerfile="_nginx-split.Dockerfile"
+   dockerfile="_nginx-split2.Dockerfile"
 )
-
 
 
 k8s_yaml('./kube-split/rails-dep.yml')

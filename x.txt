@@ -1,0 +1,11 @@
+docker_build(
+   "ndrean/rails-pg-red",
+   ".",
+   dockerfile="_alpine.prod.Dockerfile",
+   build_args={
+      "RUBY_VERSION": "3.0.2-alpine",
+      "NODE_ENV": "production",
+      "RAILS_ENV": "production",
+      "BUNDLER_VERSION": "2.2.24"
+   }
+)
