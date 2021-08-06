@@ -1,4 +1,4 @@
-# 3 branches
+# Branches
 
 - master <=> run with `overmind start`
 
@@ -61,6 +61,7 @@ assets:  ./bin/webpack-dev-server
 web:     bundle exec rails server
 redis-server:   redis-server /usr/local/etc/redis.conf
 worker:  bundle exec sidekiq -C config/sidekiq.yml
+cable: bundle exec puma -p 28080 cable/config.ru
 ```
 
 ## The Redis database
@@ -95,9 +96,13 @@ Declared a controller "Example_Controller" inheriting from ApplicationController
 Then "config.ex.ru" and launched with:
 "bundle exec puma -b tcp://0.0.0.0:3001 config.ex.ru"
 
+=> this is used for cable with `/cable/config.ru` to run a standalone Cable.
+
 ## Nginx
 
 ```sh
  cp nginx/k8nginx.conf /usr/local/etc/nginx/servers/
  nginx -s stop && nginx
 ```
+
+The config will pass the websockets.
