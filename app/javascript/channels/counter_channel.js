@@ -11,8 +11,8 @@ const CounterChannel = consumer.subscriptions.create(
       // Called when the subscription has been terminated by the server
     },
 
-    received(data) {
-      // Called when there's incoming data on the websocket for this channel
+    received: function (data) {
+      // to be overwritten, called when there's incoming data on the websocket for this channel
     },
   }
 );

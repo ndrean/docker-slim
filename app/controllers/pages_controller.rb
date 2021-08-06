@@ -25,10 +25,15 @@ class PagesController < ApplicationController
     # <- check Sidekiq
     SidekiqHelper.check
     REDIS.incr('page_count')
-    @page_count = REDIS.get('page_count') #<- pass to view
-    data = {}
-    data['page_count'] = @page_count.to_i
-    ActionCable.server.broadcast('counters_channel', data.as_json) 
+    # -> the "hits_channel.js" has a "connected" method that will call
+    #  the "hits_channel.hits" method to broadcast 
+
+    # @page_count = REDIS.get('page_count').to_i #<- pass to view
+    # data = {}
+    # data['hits_count'] = @page_count
+    # puts data
+    # ActionCable.server.broadcast('hits', data.as_json)
+
   end
 
   def start_workers

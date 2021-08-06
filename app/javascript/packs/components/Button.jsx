@@ -4,29 +4,35 @@
 
 import React, { useState, useEffect } from "react";
 
-// import CounterChannel from "channels/counter_channel";
 import fetchCounters from "../utils/fetchCounters.js";
 import postCounters from "../utils/postCounters.js";
 import startWorkers from "../utils/startWorkers.js";
 // import consumer from "../../channels/consumer";
 import CounterChannel from "../../channels/counter_channel.js";
+import HitsChannel from "../../channels/hits_channel.js";
+
 const Button = () => {
   const [counters, setCounters] = useState({});
+  const [hitCounts, setHitCounts] = useState();
   useEffect(() => {
     async function initCounter() {
       try {
+        HitsChannel.received = (data) => {
+          setHitCounts(data.hits_count);
+        };
+        // setHitCounts(document.getElementById("hits").innerHTML);
         let i = 0;
-        CounterChannel.received = ({ countPG, countRedis }) => {
-          if (countPG && countRedis) {
+        CounterChannel.received = ({ countPG }) => {
+          if (countPG) {
             i = 1;
-            return setCounters({ countPG, countRedis });
+            return setCounters({ countPG });
           }
         };
         if (i === 0) {
-          const { countPG, countRedis } = await fetchCounters("/getCounters");
-          const cPG = Number(countPG),
-            cRD = Number(countRedis);
-          setCounters({ countPG: cPG, countRedis: cRD });
+          const { countPG } = await fetchCounters("/getCounters"); // , countRedis
+          const cPG = Number(countPG);
+          // cRD = Number(countRedis);
+          setCounters({ countPG: cPG }); // countRedis: cRD;
         }
       } catch (err) {
         console.warn(err);
@@ -39,14 +45,14 @@ const Button = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      let { countPG, countRedis } = counters;
+      let { countPG } = counters; // , countRedis
       countPG += 1;
-      countRedis = Number(countRedis) + 1;
+      // countRedis = Number(countRedis) + 1;
       await Promise.any([
-        postCounters("/incrCounters", { countPG, countRedis })
+        postCounters("/incrCounters", { countPG }) // , countRedis
           .then((res) => {
             if (res.status === "created") {
-              return setCounters({ countPG, countRedis });
+              return setCounters({ countPG }); // , countRedis
             }
             throw new Error(res.status);
           })
@@ -70,7 +76,7 @@ const Button = () => {
           <div>
             <h1>PG counter: {counters.countPG}</h1>
             <br />
-            <h1>Redis counter: {counters.countRedis}</h1>
+            <h1>Total page hits: {hitCounts}</h1>
           </div>
         )}
       </div>

@@ -1,5 +1,6 @@
 class CounterChannel < ApplicationCable::Channel
   def subscribed
+    # pubsub
     stream_from "counters_channel"
     
   end
@@ -8,6 +9,7 @@ class CounterChannel < ApplicationCable::Channel
     # rebroadcasting the received message to any other connected client
     ActionCable.server.broadcast('counters_channel',data)
   end
+
   
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
