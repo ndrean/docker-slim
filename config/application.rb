@@ -40,12 +40,14 @@ module DockerSlim
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Separate Action Cable into its own process.
-    config.action_cable.url = ENV.fetch('CABLE_URL', 'ws://localhost:28080')
+    config.action_cable.url = 'wss://pg-redis-cable-sdq.herokuapp.com/cable'
+    # ENV.fetch('CABLE_URL', 'ws://localhost:28080')
     # Separate Action Cable into its own process.
     
     # Action Cable will only allow connections from these domains.
-    origins = ENV.fetch('CABLE_ALLOWED_REQUEST_ORIGINS', "http:\/\/localhost*").split(",")
-    origins.map! { |url| /#{url}/ }
+    # origins = ENV.fetch('CABLE_ALLOWED_REQUEST_ORIGINS', "http:\/\/localhost*").split(",")
+    # origins.map! { |url| /#{url}/ }
+    origins = ['https://pg-redis-cable-sdq.herokuapp.com']
     config.action_cable.allowed_request_origins = origins
 
     config.active_job.queue_adapter = :sidekiq
