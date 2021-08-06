@@ -7,3 +7,4 @@ development: &dev
 
 production:
   <<: *dev
+  url: <%= ENV.fetch('REDISTOGO_URL','') %>

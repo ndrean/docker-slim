@@ -1,6 +1,11 @@
+# redis_conf = {
+#   url: ENV['REDIS_URL'],
+#   password: ENV['REDIS_PASSWORD'],
+#   network_timeout: 5
+# }
+
 redis_conf = {
-  url: ENV['REDIS_URL'],
-  password: ENV['REDIS_PASSWORD'],
+  url: ENV['REDISTOGO_URL'],
   network_timeout: 5
 }
 
