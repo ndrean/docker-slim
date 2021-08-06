@@ -11,10 +11,10 @@ class HardJob < ApplicationJob
   include PagesHelper
 
   def perform(*args)
-    puts Rails.logger.info ' !!!!!!!! I am a job, doing a heavy job: curl to Google ......!!!!!!!'
+    Rails.logger.info ' !!!!!!!! I am a job, doing a heavy job: curl to Google ......!!!!!!!'
     
     obj = PagesHelper.scrap(2)
-    puts Rails.logger.info "JOB:.#{obj}..||..#{obj["title"]}...is...#{obj["completed"]}"
+    Rails.logger.info "JOB:.#{obj}..||..#{obj["title"]}...is...#{obj["completed"]}"
     
     # system('curl -I http://google.com')
 
