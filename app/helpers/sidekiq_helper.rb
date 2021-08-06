@@ -8,7 +8,7 @@ module SidekiqHelper
       begin
          # cf gtihub/lib/sidekiq/Sidekiq/api.rb
          p size = Sidekiq::Stats.new().processes_size
-         
+         Rails.logger.info "#{size}"
          # raise SidekiqHelper::Error.new('Sidekiq down') if (size.zero?)
 
          puts 'Sidekiq is UP' if (size.positive?)
