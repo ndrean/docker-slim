@@ -1,5 +1,6 @@
 class PagesController < ApplicationController
   include SidekiqHelper
+  include PagesHelper
 
   class Error < StandardError
   end
@@ -14,47 +15,31 @@ class PagesController < ApplicationController
 
     # PSQL <- test PG connection
     begin
-      ActiveRecord::Base.connection.execute("SELECT 1").getvalue(0,0)
+      one = ActiveRecord::Base.connection.execute("SELECT 1").getvalue(0,0)
       # raise PagesController::Error.new("PG is down") if (one != 1)
-      puts "PG is UP"
+      puts "PG is UP" if (one == 1)
     rescue => e
       puts e.message
     end
 
     # <- rescued Sidekiq test
     SidekiqHelper.check
+
+    REDIS.incr('page_count')
   end
 
   def start_workers
     #<- to be rescued
-    # background WORKER with Sidekiq: 
-    HardWorker.perform_async
-    # ACTIVE_JOB with Sidekiq (intializer with REDIS_URL, config.active_job.queue_adapter)
-    HardJob.perform_later 
-    return render json: { status: :no_content }
+    begin
+      raise PagesController::Error.new('Workers Sidekiq down') if (Sidekiq::Stats.new.processes_size.zero?)
+      # background WORKER with Sidekiq: 
+      HardWorker.perform_async
+      # ACTIVE_JOB with Sidekiq (intializer with REDIS_URL, config.active_job.queue_adapter)
+      HardJob.perform_later 
+      return render json: { status: 200 }
+    rescue StandardError => e
+      puts e.message
+      render json: { status: 500 }
+    end
   end
-
-  # def get_counters
-  #   cPG = Counter.last
-  #   cRed = REDIS.get('compteur')
-  #   countPG = (cPG.nil?) ? 0 : cPG.nb
-  #   countRedis = cRed
-  #   return render json: {
-  #     countPG: countPG,
-  #     countRedis: countRedis,
-  #     status: :ok
-  #   }
-  # end
-
-  # def create
-  #   begin
-  #     if (Counter.create!(nb: params[:countPG]) && REDIS.set("compteur", params[:countRedis]))
-  #       return render json: { status: :created }
-  #     end
-  #     raise PagesController::Error.new("database down")
-  #   rescue => e
-  #     STDERR.puts e.message
-  #   end
-  #   return render json: { status: 500}
-  # end
 end

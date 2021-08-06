@@ -2,68 +2,60 @@
 // like app/views/layouts/application.html.erb. All it does is render <div>Hello React</div> at the bottom
 // of the page.
 
-import React from "react";
-
-// import * as ActionCable from "@rails/actioncable";
+import React, { useState, useEffect } from "react";
 
 import fetchCounters from "../utils/fetchCounters.js";
 import postCounters from "../utils/postCounters.js";
 import startWorkers from "../utils/startWorkers.js";
 import CountersChannel from "../../channels/counters_channel.js";
+import HitsChannel from "../../channels/hits_channel.js";
 
 const Button = () => {
-  const [counters, setCounters] = React.useState({});
+  const [counters, setCounters] = useState({});
+  const [hitCounts, setHitCounts] = useState();
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function initCounter() {
       try {
+        // page hit count
+        HitsChannel.received = (data) => {
+          setHitCounts(data.hits_count);
+        };
+        // click counter
         let i = 0;
-        CountersChannel.received = ({ countPG, countRedis }) => {
-          if (countPG && countRedis) {
+        CountersChannel.received = ({ countPG }) => {
+          if (countPG) {
+            // && countRedis
             i = 1;
-            return setCounters({ countPG, countRedis });
+            return setCounters({ countPG });
           }
         };
         if (i === 0) {
-          const { countPG, countRedis } = await fetchCounters("/getCounters");
-          const cPG = Number(countPG),
-            cRD = Number(countRedis);
-          setCounters({ countPG: cPG, countRedis: cRD });
+          const { countPG } = await fetchCounters("/getCounters");
+          const cPG = Number(countPG);
+          setCounters({ countPG: cPG }); //cRD
         }
       } catch (err) {
         console.warn(err);
         throw new Error(err);
       }
     }
-    // try {
-    //   const { countPG, countRedis } = await fetchCounters("/getCounters");
-    //   console.log("init", countPG, countRedis);
-    //   setCounters({
-    //     countPG: Number(countPG),
-    //     countRedis: Number(countRedis),
-    //   });
-    // } catch (err) {
-    //   console.warn(err);
-    //   throw new Error(err);
-    // }
-
     initCounter();
   }, []);
 
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      let { countPG, countRedis } = counters;
+      let { countPG } = counters;
       countPG += 1;
-      countRedis = Number(countRedis) + 1;
+      // countRedis = Number(countRedis) + 1;
       await Promise.all([
         postCounters("/incrCounters", {
           countPG,
-          countRedis,
         })
           .then((res) => {
             if (res.status === "created") {
-              setCounters({ countPG, countRedis });
+              setCounters({ countPG });
             }
           })
           .catch((err) => console.log(err)),
@@ -86,7 +78,7 @@ const Button = () => {
           <div>
             <h1>PG counter: {counters.countPG}</h1>
             <br />
-            <h1>Redis counter: {counters.countRedis}</h1>
+            <h1>Total page hits: {hitCounts}</h1>
           </div>
         )}
       </div>
@@ -95,10 +87,3 @@ const Button = () => {
 };
 
 export default Button;
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   ReactDOM.render(
-//     <Hello name="React" />,
-//     document.body.appendChild(document.createElement("div"))
-//   );
-// });

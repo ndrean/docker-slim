@@ -1,16 +1,17 @@
 import consumer from "./consumer";
 
-const CountersChannel = consumer.subscriptions.create(
-  { channel: "CountersChannel" },
+const HitsChannel = consumer.subscriptions.create(
+  { channel: "HitsChannel" },
   {
     connected() {
-      console.log("Client connected");
+      this.perform("hits", {});
       // Called when the subscription is ready for use on the server
     },
     disconnected() {},
-    received(data) {
+    received: function (data) {
       // overwritten in Button.jsx
     },
   }
 );
-export default CountersChannel;
+
+export default HitsChannel;

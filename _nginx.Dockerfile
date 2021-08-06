@@ -40,3 +40,5 @@ COPY ./webserver/prod.conf /etc/nginx/conf.d/nginx.conf
 
 COPY ./public /usr/share/nginx/html
 
+CMD ["nginx", "-g", "daemon off;"]
+

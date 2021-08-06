@@ -8,10 +8,10 @@ module SidekiqHelper
          # cf gtihub/lib/sidekiq/Sidekiq/api.rb
          size = Sidekiq::Stats.new().processes_size
          raise SidekiqHelper::Error.new("Sidekiq down") if size == 0
-         STDOUT.puts "Sidekiq is UP"
+         puts "Sidekiq is UP" if (size.positive?)
          Sidekiq::Monitor::Status.new.display(section="all")
-      rescue => e
-         STDERR.puts e.message
+      rescue StandardError => e
+         puts e.message
       end
    end
 end

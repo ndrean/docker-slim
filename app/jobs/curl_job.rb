@@ -13,7 +13,7 @@ class CurlJob < ApplicationJob
     res = Net::HTTP.get_response(uri)
     puts res.body if res.is_a?(Net::HTTPSuccess)
     
-    raise CurlJob::Error.new('could not get Google') if (res.code != '301')
+    # raise CurlJob::Error.new('could not get Google') if (res.code != '301')
 
   end
 end

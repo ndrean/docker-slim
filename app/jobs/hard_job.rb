@@ -13,7 +13,7 @@ class HardJob < ApplicationJob
     obj = PagesHelper.get_api(2) || nil
     puts Rails.logger.info "JOB:.#{obj}..||..#{obj["title"]}...is...#{obj["completed"]}"
     
-    raise HardJob::Error.new('could not get the api') if obj == nil
+    # raise HardJob::Error.new('could not get the api') if obj == nil
 
   end
 end

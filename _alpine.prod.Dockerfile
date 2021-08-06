@@ -55,6 +55,10 @@ ENV RAILS_ENV=$RAILS_ENV \
 
 WORKDIR /app
 RUN rm -rf node_modules tmp/cache tmp/miniprofiler tmp/sockets 
+
+# CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+# CMD ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
+CMD ["bundle", "exec", "puma", "-p", "28080", "./cable/config.ru"]
 # /public
 
 

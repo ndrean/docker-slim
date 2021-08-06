@@ -12,7 +12,7 @@ class CurlWorker
     uri = URI('https://google.com')
     res = Net::HTTP.get_response(uri)
     puts res.body if res.is_a?(Net::HTTPSuccess)
-    raise CurlWorker::Error.new('could not get Google') if (res.code != '301')
+    # raise CurlWorker::Error.new('could not get Google') if (res.code != '301')
 
     
   end

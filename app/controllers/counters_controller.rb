@@ -23,12 +23,11 @@ class CountersController < ApplicationController
       # begin
       data = {}
       data['countPG'] = params[:countPG]
-      data['countRedis'] = params[:countRedis]
+      # data['countRedis'] = params[:countRedis]
 
       counter = Counter.create!(nb: data['countPG'] )
-      REDIS.set('compteur', data['countRedis'])
+      # REDIS.set('compteur', data['countRedis'])
 
-      
       if counter.valid?
          # broadcast the message on the channel
          ActionCable.server.broadcast('counters_channel', data.as_json) 

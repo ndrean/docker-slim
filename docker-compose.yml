@@ -2,7 +2,7 @@ version: "3"
 
 x-app: &common
   env_file: .env
-  image: ndrean/rails-app:v0
+  image: ndrean/rails-dc
   # build:
   #   context: .
   #   dockerfile: _alpine.prod.Dockerfile
@@ -55,9 +55,10 @@ services:
         condition: service_healthy
 
   webserver:
-    build:
-      context: .
-      dockerfile: ./_nginx.Dockerfile
+    image: ndrean/nginx-dc
+    # build:
+    # context: .
+    # dockerfile: ./_nginx.Dockerfile
     ports:
       - 9000:9000
     command: ["nginx", "-g", "daemon off;"]
@@ -84,6 +85,9 @@ services:
     command: ["bundle", "exec", "puma", "-p", "28080", "./cable/config.ru"]
     ports:
       - "28080:28080"
+    depends_on:
+      redisdb:
+        condition: service_healthy
 
 volumes:
   redis_data: {}
