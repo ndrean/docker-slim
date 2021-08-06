@@ -1,6 +1,5 @@
-assets:  ./bin/webpack-dev-server
-web:     bundle exec rails server
-redis-server:   redis-server redis/redis.conf
+web:     bundle exec rails server -p $PORT
+redis-server:   redis-server
 worker:  bundle exec sidekiq -C config/sidekiq.yml
 cable: bundle exec puma -p 28080 cable/config.ru
 
