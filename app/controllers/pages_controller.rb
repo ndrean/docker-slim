@@ -23,7 +23,7 @@ class PagesController < ApplicationController
       puts e.message
     end
     # <- check Sidekiq
-    # SidekiqHelper.check ????????
+    SidekiqHelper.check #????????
 
     REDIS.incr('page_count')
     @page_count = REDIS.get('page_count')
