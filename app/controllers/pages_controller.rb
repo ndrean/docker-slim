@@ -23,7 +23,8 @@ class PagesController < ApplicationController
       puts e.message
     end
     # <- check Sidekiq
-    SidekiqHelper.check
+    # SidekiqHelper.check ????????
+
     REDIS.incr('page_count')
     @page_count = REDIS.get('page_count')
     # -> the "hits_channel.js" has a "connected" method that will call
@@ -32,7 +33,7 @@ class PagesController < ApplicationController
 
   def start_workers
     begin
-      raise PagesController::Error.new('Workers Sidekiq down') if (Sidekiq::Stats.new.processes_size.zero?)
+      # raise PagesController::Error.new('Workers Sidekiq down') if (Sidekiq::Stats.new.processes_size.zero?)
       # Worker with Sidekiq
       HardWorker.perform_async
       # Active_Job with Sidekiq
