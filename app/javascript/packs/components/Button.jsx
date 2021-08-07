@@ -73,7 +73,7 @@ const Button = () => {
 
         {counters && (
           <div>
-            <h1>PG counter: {counters.countPG}</h1>
+            <h1>Click counter: {counters.countPG}</h1>
             <br />
             <h1>Total page hits: {hitCounts}</h1>
           </div>
