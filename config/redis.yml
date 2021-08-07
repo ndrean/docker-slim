@@ -1,5 +1,4 @@
 default: &default
-  password: secretpwd #<- removed for heroku
 
 development: &dev
   <<: *default
