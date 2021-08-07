@@ -6,7 +6,7 @@ const HitsChannel = consumer.subscriptions.create(
     connected() {
       // const currentHits = document.getElementById("hits").innerHTML;
       // // calling the method "hits" in "hits_channel.rb" and pass an object
-      this.perform("hits", {});
+      this.perform("trigger_hits", {});
       // Called when the subscription is ready for use on the server
     },
 

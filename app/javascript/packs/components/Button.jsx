@@ -20,7 +20,7 @@ const Button = () => {
         HitsChannel.received = (data) => {
           setHitCounts(data.hits_count);
         };
-        // setHitCounts(document.getElementById("hits").innerHTML);
+
         let i = 0;
         CounterChannel.received = ({ countPG }) => {
           if (countPG) {
@@ -29,10 +29,9 @@ const Button = () => {
           }
         };
         if (i === 0) {
-          const { countPG } = await fetchCounters("/getCounters"); // , countRedis
+          const { countPG } = await fetchCounters("/getCounters");
           const cPG = Number(countPG);
-          // cRD = Number(countRedis);
-          setCounters({ countPG: cPG }); // countRedis: cRD;
+          setCounters({ countPG: cPG });
         }
       } catch (err) {
         console.warn(err);

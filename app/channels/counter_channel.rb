@@ -1,13 +1,13 @@
 class CounterChannel < ApplicationCable::Channel
   def subscribed
     # pubsub
-    stream_from "counters_channel"
+    stream_from "click_counter"
     
   end
 
   def receive(data)
     # rebroadcasting the received message to any other connected client
-    ActionCable.server.broadcast('counters_channel',data)
+    ActionCable.server.broadcast('click_counter',data)
   end
 
   

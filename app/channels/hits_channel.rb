@@ -10,7 +10,7 @@ class HitsChannel < ApplicationCable::Channel
   #   # ActionCable.server.broadcast('hits',data.as_json)
   # end
 
-  def hits
+  def trigger_hits
     # page_count = REDIS.get('page_count').to_i #<- pass to view
     data = {}
     data['hits_count'] = REDIS.get('page_count').to_i
