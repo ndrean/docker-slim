@@ -24,12 +24,8 @@ class CountersController < ApplicationController
       begin
          data = {}
          data['countPG'] = params[:countPG]
-         data['countRedis'] = params[:countRedis]
-
+         # the value of the counter is incremented client-side
          counter = Counter.create!(nb: data['countPG'] )
-         REDIS.set('compteur', data['countRedis'])
-
-         
          if counter.valid?
             # broadcast the message on the channel
             ActionCable.server.broadcast('counters_channel', data.as_json) 
@@ -42,8 +38,4 @@ class CountersController < ApplicationController
          render json: { status: 500 }
       end 
    end
-
-   # def counter_params
-   #    params.require(:counter).permit(:nb, :counter_id, :countPG, :countRedis)
-   # end
 end

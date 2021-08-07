@@ -10,9 +10,9 @@ class PagesController < ApplicationController
 
   def home
     # <- test Redis database
-    p "Redis db:  #{REDIS.ping}"
+    Rails.logger.info( "Redis db:  #{REDIS.ping}")
     # <- test Sidekiq/Redis connection (github/sidekiq/lib/sidekiq.rb)
-    p "Redis-Sidekiq: #{Sidekiq.redis { |con| con.connection[:id] }}"
+    Rails.logger.info( "Redis-Sidekiq: #{Sidekiq.redis { |con| con.connection[:id] }}")
 
     # PSQL <- test PG connection
     begin
@@ -23,7 +23,7 @@ class PagesController < ApplicationController
       puts e.message
     end
     # <- check Sidekiq
-    SidekiqHelper.check #????????
+    SidekiqHelper.check
 
     REDIS.incr('page_count')
     @page_count = REDIS.get('page_count')
@@ -33,7 +33,7 @@ class PagesController < ApplicationController
 
   def start_workers
     begin
-      # raise PagesController::Error.new('Workers Sidekiq down') if (Sidekiq::Stats.new.processes_size.zero?)
+      raise PagesController::Error.new('Workers Sidekiq down') if (Sidekiq::Stats.new.processes_size.zero?)
       # Worker with Sidekiq
       HardWorker.perform_async
       # Active_Job with Sidekiq
