@@ -1,7 +1,7 @@
 import consumer from "./consumer";
 
 const CounterChannel = consumer.subscriptions.create(
-  { channel: "ClickCounter" },
+  { channel: "ClickChannel" },
   {
     connected() {
       // Called when the subscription is ready for use on the server

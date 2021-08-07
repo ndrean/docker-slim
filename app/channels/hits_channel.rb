@@ -1,7 +1,7 @@
 class HitsChannel < ApplicationCable::Channel
   def subscribed
     # pubsub
-    stream_from "hits"
+    stream_from "hits_channel"
     
   end
 
@@ -15,7 +15,7 @@ class HitsChannel < ApplicationCable::Channel
     data = {}
     data['hits_count'] = REDIS.get('page_count').to_i
     puts data
-    ActionCable.server.broadcast('hits', data.as_json)
+    ActionCable.server.broadcast('hits_channel', data.as_json)
   end
   
   def unsubscribed
