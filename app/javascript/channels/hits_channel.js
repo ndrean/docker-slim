@@ -4,6 +4,7 @@ const HitsChannel = consumer.subscriptions.create(
   { channel: "HitsChannel" },
   {
     connected() {
+      console.log("Client connected");
       // const currentHits = document.getElementById("hits").innerHTML;
       // // calling the method "hits" in "hits_channel.rb" and pass an object
       this.perform("trigger_hits", {});

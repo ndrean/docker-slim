@@ -14,13 +14,14 @@ import HitsChannel from "../../channels/hits_channel.js";
 const Button = () => {
   const [counters, setCounters] = useState({});
   const [hitCounts, setHitCounts] = useState();
+
   useEffect(() => {
     async function initCounter() {
       try {
         HitsChannel.received = (data) => {
-          setHitCounts(data.hits_count);
+          console.log(data);
+          return setHitCounts(data.hits_count);
         };
-
         let i = 0;
         CounterChannel.received = ({ countPG }) => {
           if (countPG) {
