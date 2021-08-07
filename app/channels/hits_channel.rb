@@ -5,11 +5,8 @@ class HitsChannel < ApplicationCable::Channel
     
   end
 
-  # def receive(data)
-  #   # rebroadcasting the received message to any other connected client
-  #   ActionCable.server.broadcast('hits_channel',data.as_json)
-  # end
-
+    # the "hits_channel.js" has a "connected" method that will call
+    #  the "HitsChannel::hits" method to increment and broadcast 
   def trigger_hits
     # page_count = REDIS.get('page_count').to_i #<- pass to view
     REDIS.incr('hits_count')

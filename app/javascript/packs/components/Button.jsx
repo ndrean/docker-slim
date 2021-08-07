@@ -1,13 +1,8 @@
-// Run this example by adding <%= javascript_pack_tag 'hello_react' %> to the head of your layout file,
-// like app/views/layouts/application.html.erb. All it does is render <div>Hello React</div> at the bottom
-// of the page.
-
 import React, { useState, useEffect } from "react";
 
 import fetchCounters from "../utils/fetchCounters.js";
 import postCounters from "../utils/postCounters.js";
 import startWorkers from "../utils/startWorkers.js";
-// import consumer from "../../channels/consumer";
 import CounterChannel from "../../channels/counter_channel.js";
 import HitsChannel from "../../channels/hits_channel.js";
 
@@ -19,7 +14,6 @@ const Button = () => {
     async function initCounter() {
       try {
         HitsChannel.received = (data) => {
-          console.log(data);
           return setHitCounts(data.hits_count);
         };
         let i = 0;

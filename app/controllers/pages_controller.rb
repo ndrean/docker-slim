@@ -28,13 +28,6 @@ class PagesController < ApplicationController
     # <- check Sidekiq
     SidekiqHelper.check
 
-    # REDIS.incr('page_count')
-    # data = {}
-    # data['hits_count'] = REDIS.get('hits_count')
-    # ActionCable.server.broadcast('hits_channel', data.as_json) 
-    # @page_count = REDIS.get('page_count')
-    # -> the "hits_channel.js" has a "connected" method that will call
-    #  the "hits_channel.hits" method to broadcast 
     @origin = request.remote_ip
   end
 
