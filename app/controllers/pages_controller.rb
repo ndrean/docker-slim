@@ -32,6 +32,7 @@ class PagesController < ApplicationController
     # @page_count = REDIS.get('page_count')
     # -> the "hits_channel.js" has a "connected" method that will call
     #  the "hits_channel.hits" method to broadcast 
+    @origin = request.remote_ip
   end
 
   def start_workers
