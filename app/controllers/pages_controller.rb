@@ -9,9 +9,9 @@ class PagesController < ApplicationController
 
   def home    
     # <- test Redis database: to be rescued
-    puts "Redis db is UP" if (REDIS.ping == 'PONG')
+    Rails.logger.info "Redis db is UP" if (REDIS.ping == 'PONG')
     # <- test Sidekiq/Redis connection (github/sidekiq/lib/sidekiq.rb)
-    puts "Redis-Sidekiq @  #{Sidekiq.redis { |con| con.connection[:id] }}"
+    Rails.logger.info "Redis-Sidekiq @  #{Sidekiq.redis { |con| con.connection[:id] }}"
 
     # PSQL <- test PG connection
     begin
@@ -25,7 +25,7 @@ class PagesController < ApplicationController
     # <- rescued Sidekiq test
     SidekiqHelper.check
 
-    REDIS.incr('page_count')
+    @origin = request.remote_ip
   end
 
   def start_workers

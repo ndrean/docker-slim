@@ -28,6 +28,7 @@
     <%= image_pack_tag 'media/images/websocket.jpeg', class: 'img', alt: 'logo
     ' %>
     <%= yield %>
+    <p>Browser's IP: <%= @origin %></p>
     <p>Hosted by: <%= ENV['HOSTNAME'] %></p>
     <p>POSTGRES_URL: <%= ENV['POSTGRES_URL'] %></p>
     

@@ -89,6 +89,12 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  # Separate Action Cable into its own process.
+  config.action_cable.url = ENV.fetch('CABLE_URL', 'ws://localhost:28080')
+  config.action_cable.allowed_request_origins = ENV.fetch('ALLOWED_ORIGINS', %r{http://localhost*})
+    
+  # config.action_cable.disable_request_forgery_protection = true
+  config.action_cable.mount_path = '/cable'
   # Inserts middleware to perform automatic connection switching.
   # The `database_selector` hash is used to pass options to the DatabaseSelector
   # middleware. The `delay` is used to determine how long to wait after a write

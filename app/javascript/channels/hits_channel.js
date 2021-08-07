@@ -4,8 +4,7 @@ const HitsChannel = consumer.subscriptions.create(
   { channel: "HitsChannel" },
   {
     connected() {
-      this.perform("hits", {});
-      // Called when the subscription is ready for use on the server
+      this.perform("trigger_hits");
     },
     disconnected() {},
     received: function (data) {
