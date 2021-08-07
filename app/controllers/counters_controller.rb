@@ -25,7 +25,7 @@ class CountersController < ApplicationController
          counter = Counter.create!(nb: data['countPG'] )
          if counter.valid?
             # broadcast the message on the channel
-            ActionCable.server.broadcast('click_channel', data.as_json) 
+            ActionCable.server.broadcast('counter_channel', data.as_json) 
             render json: { status: :created }
          else
             raise PagesController::Error.new("database down")

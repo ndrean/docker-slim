@@ -10,14 +10,17 @@ class PagesController < ApplicationController
 
   def home
     # <- test Redis database
-    Rails.logger.info( "Redis db:  #{REDIS.ping}")
+    res = REDIS.ping
+    raise PagesController::Error.new('Redis DB down') if (res != "PONG")
+    Rails.logger.info( "Redis db:  #{res}")
+
     # <- test Sidekiq/Redis connection (github/sidekiq/lib/sidekiq.rb)
     Rails.logger.info( "Redis-Sidekiq: #{Sidekiq.redis { |con| con.connection[:id] }}")
 
     # PSQL <- test PG connection
     begin
       one = ActiveRecord::Base.connection.execute('SELECT 1').getvalue(0,0)
-      puts 'PG is UP' if (one == 1)
+      Rails.logger.info 'PG is UP' if (one == 1)
       raise PagesController::Error.new('PG down') if (one != 1)
     rescue => e
       puts e.message
@@ -26,7 +29,7 @@ class PagesController < ApplicationController
     SidekiqHelper.check
 
     REDIS.incr('page_count')
-    @page_count = REDIS.get('page_count')
+    # @page_count = REDIS.get('page_count')
     # -> the "hits_channel.js" has a "connected" method that will call
     #  the "hits_channel.hits" method to broadcast 
   end

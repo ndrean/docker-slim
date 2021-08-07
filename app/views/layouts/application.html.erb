@@ -13,7 +13,6 @@
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%# javascript_pack_tag 'Index' %>
-    <%# javascript_packs_with_chunks_tag 'counters_channel' %>
     
     <%# Generated with: https://realfavicongenerator.net/ %>
     <%# <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"> %>
@@ -39,10 +38,10 @@
     
     <%= yield %>
 
-    <h5 > Local page hit count:  <%= @page_count %> </h5>
+    <!-- <h5 > Local page hit count:  <%# @page_count %> </h5> -->
     <p>Hosted by: <%= ENV['HOSTNAME'] %></p>
     <p>POSTGRES_URL: <%= ENV['DATABASE_URL'] %></p>
-    <p>REMOTE_POSTGRES_URL: <%# ENV['ELEPHANT_URL']%></p>
+    <!-- <p>REMOTE_POSTGRES_URL: <%# ENV['ELEPHANT_URL']%></p> -->
     <p>REDIS_URL: <%= ENV['REDISTOGO_URL'] %></p>
     <!-- <p>CABLE_URL: <%# ENV['CABLE_URL'] %></p> -->
     <p>SIDEKIQ_REDIS_URL: <%= Sidekiq.redis { |conn| conn.connection[:id] } %></p>
