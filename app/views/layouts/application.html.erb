@@ -39,7 +39,8 @@
     <%= yield %>
 
     <!-- <h5 > Local page hit count:  <%# @page_count %> </h5> -->
-    <p>Hosted by: <%= ENV['HOSTNAME'] %></p>
+    <!-- <p>Hosted by: <%# ENV['HOSTNAME'] %></p> -->
+    <p>Browser's IP: <%= @origin %></p>
     <p>POSTGRES_URL: <%= ENV['DATABASE_URL'] %></p>
     <!-- <p>REMOTE_POSTGRES_URL: <%# ENV['ELEPHANT_URL']%></p> -->
     <p>REDIS_URL: <%= ENV['REDISTOGO_URL'] %></p>
