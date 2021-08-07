@@ -8,7 +8,11 @@ class PagesController < ApplicationController
 
   def home    
     # <- test Redis database: to be rescued
-    puts "Redis db is UP" if (REDIS.ping == 'PONG')
+    res = REDIS.ping
+    Rails.logger.info "Redis db is UP" if (REDIS.ping == 'PONG')
+    raise PagesController::Error.new('Redis DB down') if (res != "PONG")
+
+    Rails.logger.info( "Redis db:  #{res}")
     
     # PSQL <- test PG connection
     begin
@@ -20,6 +24,9 @@ class PagesController < ApplicationController
     end
     # <- rescued Sidekiq test
     SidekiqHelper.check
+
+    REDIS.incr('page_count')
+    @origin = request.remote_ip
   end
 
   def start_workers

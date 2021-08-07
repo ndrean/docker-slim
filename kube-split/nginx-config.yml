@@ -9,8 +9,11 @@ data:
       keepalive 1024;
     }
 
-    access_log  /dev/stdout main;
-    error_log   /dev/stdout info;
+    #access_log  /dev/stdout main;
+    #error_log   /dev/stdout info;
+
+    log_format upstream '$upstream_bytes_received $upstream_response_time';
+    access_log /var/log/nginx-upstream upstream;
 
     server {
       listen 9000 default_server;

@@ -2,9 +2,13 @@ k8s_yaml([
    './kube-split/config.yml',
    './kube-split/secrets.yml',
    './kube-split/nginx-config.yml',
-   './kube-split/pg-db-pv.yml',
-   
+   './kube-split/pg-db-pv.yml', 
 ])
+k8s_yaml('./kube-split/postgres-dep.yml')
+k8s_yaml('./kube-split/redis-dep.yml')
+
+k8s_resource('sidekiq-dep', resource_deps=['redis-dep'])
+k8s_resource('rails-dep', resource_deps=['pg-dep'])
 
 docker_build(
    "ndrean/rails-pg-red",
@@ -15,8 +19,8 @@ docker_build(
       "NODE_ENV": "production",
       "RAILS_ENV": "production",
       "BUNDLER_VERSION": "2.2.24"
-   }
-   
+   },
+   ignore=['Tiltfile','kube-split/']
 )
 
 docker_build(
@@ -29,20 +33,17 @@ docker_build(
       "RAILS_ENV": "production",
       "BUNDLER_VERSION": "2.2.24"
    },
-   only=['public/','Gemfile', 'Gemfile.lock', 'package.json', 'yarn.lock']
+   ignore=['Tiltfile','kube-split/']
 )
-
-k8s_yaml('./kube-split/postgres-dep.yml')
-k8s_yaml('./kube-split/redis-dep.yml')
-
-k8s_resource('sidekiq-dep', resource_deps=['redis-dep'])
-k8s_resource('rails-dep', resource_deps=['pg-dep'])
 
 k8s_yaml('./kube-split/rails-dep.yml')
 k8s_yaml('./kube-split/sidekiq-dep.yml')
 
 k8s_yaml('./kube-split/cable-dep.yml')
+
+k8s_resource('nginx-dep', resource_deps=['rails-dep'])
 k8s_yaml('./kube-split/nginx-dep.yml')
+
 
 k8s_yaml('./kube-split/migrate.yml')
 

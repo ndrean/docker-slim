@@ -29,6 +29,7 @@
     <%= yield %>
 
     <h5>The Rails host is: <%= ENV['HOSTNAME'] %></h5>
+    <p>Browser's IP: <%= @origin %></p>
     <code>
       MASTER_KEY: <%= ENV.fetch('RAILS_MASTER_KEY','') %>
     </code>
