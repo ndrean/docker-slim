@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: sidekiq
-          image: ndrean/rails-pg-red
+          image: ndrean/rails-base
           imagePullPolicy: "Always"
           command: ["bundle"]
           args: ["exec", "sidekiq", "-C", "./config/sidekiq.yml"]

@@ -14,16 +14,12 @@ spec:
     spec:
       containers:
         - name: sidekiq
-          image: ndrean/rails-remote:v2
+          image: ndrean/rails-base
           command: ["bundle"]
           args: ["exec", "sidekiq", "-C", "./config/sidekiq.yml"]
           envFrom:
             - configMapRef:
                 name: env
-          env:
-            - name: REDIS_SIDEKIQ
-              value: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424/0"
-              #value: redis://redis.default.svc.cluster.local:6379/
           ports:
             - name: sidekiqalive
               containerPort: 7433

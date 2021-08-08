@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ndrean/rails-pg-red
+          image: ndrean/rails-base
           imagePullPolicy: "Always"
           command: ["bundle"]
           args: ["exec", "rails", "server", "-b", "0.0.0.0"]

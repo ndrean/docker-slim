@@ -1,7 +1,3 @@
-// Run this example by adding <%= javascript_pack_tag 'hello_react' %> to the head of your layout file,
-// like app/views/layouts/application.html.erb. All it does is render <div>Hello React</div> at the bottom
-// of the page.
-
 import React, { useState, useEffect } from "react";
 
 import fetchCounters from "../utils/fetchCounters.js";
@@ -19,6 +15,7 @@ const Button = () => {
     async function initCounter() {
       try {
         HitsChannel.received = (data) => {
+          console.log(data);
           setHitCounts(data.hits_count);
         };
 
@@ -45,14 +42,13 @@ const Button = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      let { countPG } = counters; // , countRedis
+      let { countPG } = counters;
       countPG += 1;
-      // countRedis = Number(countRedis) + 1;
       await Promise.any([
-        postCounters("/incrCounters", { countPG }) // , countRedis
+        postCounters("/incrCounters", { countPG })
           .then((res) => {
             if (res.status === "created") {
-              return setCounters({ countPG }); // , countRedis
+              return setCounters({ countPG });
             }
             throw new Error(res.status);
           })

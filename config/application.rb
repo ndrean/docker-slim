@@ -38,9 +38,7 @@ module DockerSlim
     config.generators.system_tests = nil
 
     if ENV["RAILS_LOG_TO_STDOUT"].present?
-      logger           = ActiveSupport::Logger.new(STDOUT)
-      logger.formatter = config.log_formatter
-      config.logger    = ActiveSupport::TaggedLogging.new(logger)
+      Rails.logger = ActiveSupport::Logger.new(STDOUT)
     end
 
     # <-- create a "/config/local_env.yml" file  (key: value) to be loaded with:

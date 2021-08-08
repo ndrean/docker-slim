@@ -19,7 +19,8 @@ docker_build(
       "NODE_ENV": "production",
       "RAILS_ENV": "production",
       "BUNDLER_VERSION": "2.2.24"
-   }
+   },
+   ignore=['Tiltfile','kube-split/']
 )
 
 docker_build(
@@ -32,8 +33,10 @@ docker_build(
       "RAILS_ENV": "production",
       "BUNDLER_VERSION": "2.2.24"
    },
-   only=['public/','Gemfile', 'Gemfile.lock', 'package.json', 'yarn.lock']
+   ignore=['Tiltfile','kube-split/']
 )
+
+
 
 k8s_yaml('./kube-split/postgres-dep.yml')
 k8s_yaml('./kube-split/redis-dep.yml')

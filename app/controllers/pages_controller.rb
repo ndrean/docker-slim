@@ -25,7 +25,6 @@ class PagesController < ApplicationController
     # <- rescued Sidekiq test
     SidekiqHelper.check
 
-    REDIS.incr('page_count')
     @origin = request.remote_ip
   end
 
