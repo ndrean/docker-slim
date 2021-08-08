@@ -7,7 +7,7 @@ metadata:
     #   type: local
     app: pg
 spec:
-  storageClassName: hostpath
+  storageClassName: standard
   capacity:
     storage: 100Mi
   accessModes:

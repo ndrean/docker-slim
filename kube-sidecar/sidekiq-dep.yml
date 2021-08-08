@@ -6,11 +6,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: rails
+      app: sidekiq # change from Rails
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   template:
     metadata:
       labels:
-        app: rails
+        app: sidekiq # change from Rails
     spec:
       containers:
         - name: sidekiq

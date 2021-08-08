@@ -17,7 +17,7 @@ data:
       root /usr/share/nginx/html;
       try_files  $uri @puma;
       access_log  off;
-      gzip_static on; # to serve pre-gzipped version
+      gzip_static on;
       sendfile    on;
       expires     max;
       add_header  Cache-Control public;

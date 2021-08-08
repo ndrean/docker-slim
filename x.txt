@@ -11,7 +11,7 @@ k8s_yaml([
 ])
 
 docker_build(
-   "ndrean/rails-pg-red",
+   "ndrean/rails-base",
    ".",
    dockerfile="_alpine.prod.Dockerfile",
    build_args={
@@ -20,20 +20,20 @@ docker_build(
       "RAILS_ENV": "production",
       "BUNDLER_VERSION": "2.2.24"
    },
-   ignore=['Tiltfile','kube-split/']
+   ignore=['Tiltfile', '/kube-sidecar']
 )
 
 docker_build(
-   "ndrean/nginx-split2",
+   "ndrean/nginx-ws",
    ".",
-   dockerfile="_nginx-split2.Dockerfile",
+   dockerfile="_nginx-split.Dockerfile",
    build_args={
       "RUBY_VERSION": "3.0.2-alpine",
       "NODE_ENV": "production",
       "RAILS_ENV": "production",
       "BUNDLER_VERSION": "2.2.24"
    },
-   ignore=['Tiltfile','kube-split/']
+   ignore=['Tiltfile','kube-sidecar/']
 )
 
 
