@@ -82,7 +82,7 @@ Rails.application.configure do
 
   config.action_cable.url = 'wss://pg-redis-cable-sdq.herokuapp.com/cable'
 
-  origins = ['https://pg-redis-cable-sdq.herokuapp.com']
+  origins = ['https://pg-redis-cable-sdq.herokuapp.com', 'http://pg-redis-cable-sdq.herokuapp.com']
   config.action_cable.allowed_request_origins = origins
 
   # Do not dump schema after migrations.
