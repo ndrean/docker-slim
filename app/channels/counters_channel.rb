@@ -5,7 +5,7 @@ class CountersChannel < ApplicationCable::Channel
 
   def receive(data)
     # rebroadcasting the received message to any other connected client
-    ActionCable.server.broadcast('counters_channel', data)
+    ActionCable.server.broadcast('counters_channel', data.as_json)
   end
   
   def unsubscribed

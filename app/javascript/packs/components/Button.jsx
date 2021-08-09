@@ -27,8 +27,7 @@ const Button = () => {
         };
         if (i === 0) {
           const { countPG } = await fetchCounters("/getCounters");
-          const cPG = Number(countPG);
-          setCounters({ countPG: cPG });
+          setCounters({ countPG: Number(countPG) });
         }
       } catch (err) {
         console.warn(err);

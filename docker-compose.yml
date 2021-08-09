@@ -2,7 +2,7 @@ version: "3"
 
 x-app: &common
   env_file: .env
-  image: ndrean/rails-dc
+  image: rails-base-docker
   # build:
   #   context: .
   #   dockerfile: _alpine.prod.Dockerfile
@@ -55,7 +55,7 @@ services:
         condition: service_healthy
 
   webserver:
-    image: ndrean/nginx-dc
+    image: nginx-docker
     # build:
     # context: .
     # dockerfile: ./_nginx.Dockerfile
