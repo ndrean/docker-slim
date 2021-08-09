@@ -67,11 +67,9 @@ Rails.application.configure do
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
   
-  # Uncomment if you wish to allow Action Cable access from any origin.
-  # config.action_cable.disable_request_forgery_protection = true
-  # Separate Action Cable into its own process.
-  # config.action_cable.url = 'ws://localhost:28080'
-  # config.action_cable.url = 'ws://localhost:5000/cable' #`ws://${ENV['ALLOWED_ORIGIN']}:28080/cable`
-  origins = ['http://localhost:5000', 'http://localhost:9000'] #`http://${ENV['ALLOWED_ORIGIN']}:9000`, 
+  # Action Cable
+  # Separate Action Cable into its own process -> in 'createConsumer'
+  # config.action_cable.disable_request_forgery_protection = true <- for any origin
+  origins = ['http://localhost:5000', 'http://localhost:9000'] 
   config.action_cable.allowed_request_origins = origins
 end
