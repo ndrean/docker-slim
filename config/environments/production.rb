@@ -80,7 +80,7 @@ Rails.application.configure do
   #   Rails.logger = ActiveSupport::Logger.new(SDTOUT)
   # end
 
-  config.action_cable.url = 'wss://pg-redis-cable-sdq.herokuapp.com/cable'
+  # config.action_cable.url = 'wss://pg-redis-cable-sdq.herokuapp.com/cable' #<--- test with only createConsumer
 
   origins = ['https://pg-redis-cable-sdq.herokuapp.com', 'http://pg-redis-cable-sdq.herokuapp.com']
   config.action_cable.allowed_request_origins = origins

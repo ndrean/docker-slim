@@ -70,7 +70,8 @@ Rails.application.configure do
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
   # Separate Action Cable into its own process.
-  config.action_cable.url = 'ws://localhost:28080'
-  origins = ['http://localhost:9000']
+  # config.action_cable.url = 'ws://localhost:28080'
+  # config.action_cable.url = 'ws://localhost:5000/cable' #`ws://${ENV['ALLOWED_ORIGIN']}:28080/cable`
+  origins = ['http://localhost:5000', 'http://localhost:9000'] #`http://${ENV['ALLOWED_ORIGIN']}:9000`, 
   config.action_cable.allowed_request_origins = origins
 end

@@ -2,5 +2,6 @@
 // You can generate new channels where WebSocket features live using the `bin/rails generate channel` command.
 
 import { createConsumer } from "@rails/actioncable";
-createConsumer(`wss://${window.location.hostname}:28080/cable`);
+createConsumer(`ws://${window.location.hostname}:28080/cable`);
+// console.log(window.location.hostname);
 export default createConsumer();

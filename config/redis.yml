@@ -2,7 +2,8 @@ default: &default
 
 development: &dev
   <<: *default
-  url: <%= ENV.fetch('REDIS_URL','') %>
+  # url: <%= ENV.fetch('REDIS_URL','') %>
+  url: redis://localhost:6379/0
 
 production:
   <<: *dev

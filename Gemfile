@@ -24,7 +24,7 @@ gem 'sidekiq'
 gem 'sidekiq_alive'
 gem 'sidekiq-failures', '~> 1.0'
 
-gem 'rack-cors'
+# gem 'rack-cors'
 
 
 # Reduces boot times through caching; required in config/boot.rb
