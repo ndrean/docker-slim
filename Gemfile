@@ -20,6 +20,8 @@ gem 'turbolinks', '~> 5'
 gem 'redis'
 gem 'hiredis'
 
+# gem 'prometheus_exporter'
+
 
 gem 'sidekiq'
 gem 'sidekiq-failures', '~> 1.0'

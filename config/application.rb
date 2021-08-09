@@ -15,6 +15,9 @@ require "action_cable/engine"
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
+# require 'prometheus_exporter/middleware'
+
+# This reports stats per request like HTTP status and timings
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -25,7 +28,7 @@ module DockerSlim
     config.load_defaults 6.1
 
     # Configuration for the application, engines, and railties goes here.
-    #
+    # Rails.application.middleware.unshift PrometheusExporter::Middleware
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #

@@ -37,7 +37,7 @@ k8s_yaml('./kube-split/rails-dep.yml')
 k8s_yaml('./kube-split/sidekiq-dep.yml')
 k8s_yaml('./kube-split/cable-dep.yml')
 
-k8s_resource('rails-dep', resource_deps=['pg-dep'])
+k8s_resource('rails-dep', resource_deps=['pg-dep', 'redis-dep'])
 k8s_resource('sidekiq-dep', resource_deps=['redis-dep'])
 k8s_resource('cable-dep', resource_deps=['redis-dep'])
 k8s_resource('nginx-dep', resource_deps=['rails-dep', 'cable-dep'])
