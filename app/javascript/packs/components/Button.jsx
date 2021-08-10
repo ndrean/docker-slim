@@ -39,7 +39,8 @@ const Button = () => {
     e.preventDefault();
     try {
       let { countPG } = counters;
-      countPG = Number(countPG) + 1;
+      if (countPG === nil) countPG = 0;
+      countPG += 1;
       counterChannel.sending(countPG);
       // await startWorkers().catch((err) => console.log(err));
       // await Promise.any([
