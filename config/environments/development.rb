@@ -1,11 +1,12 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  # Specify AnyCable WebSocket server URL to use by JS client <--------------------
+  # config.after_initialize do
+  #   config.action_cable.url = ActionCable.server.config.url = ENV.fetch("CABLE_URL", "ws://localhost:8080/cable") if AnyCable::Rails.enabled?
+  # end
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # In the development environment your application's code is reloaded any time
-  # it changes. This slows down response time but is perfect for development
-  # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
 
   # Do not eager load code on boot.
@@ -19,21 +20,15 @@ Rails.application.configure do
   if Rails.root.join('tmp', 'caching-dev.txt').exist?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
-
     config.cache_store = :memory_store
     config.public_file_server.headers = {
       'Cache-Control' => "public, max-age=#{2.days.to_i}"
     }
   else
     config.action_controller.perform_caching = false
-
     config.cache_store = :null_store
   end
 
-  # Don't care if the mailer can't send.
-  # config.action_mailer.raise_delivery_errors = false
-
-  # config.action_mailer.perform_caching = false
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -51,24 +46,18 @@ Rails.application.configure do
   config.active_record.verbose_query_logs = true
 
 
-  # Raises error for missing translations.
-  # config.i18n.raise_on_missing_translations = true
-
-  # Annotate rendered view with file names.
-  # config.action_view.annotate_rendered_view_with_filenames = true
-
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
   
-  # config.active_record.database_selector = { delay: 2.seconds }
-  # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
-  # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+
+  # Action Cable embedded with Rails, use ".url" on localhost and pass meta_tag
+  # config.action_cable.url = "ws://localhost:5000/cable" 
+
+  # ActionCable standalone;: remove ".url" and set -> in 'createConsumer(ws:localhost:28080/cable')
   
-  # Action Cable
-  # Separate Action Cable into its own process -> in 'createConsumer'
   # config.action_cable.disable_request_forgery_protection = true <- for any origin
   origins = ['http://localhost:5000', 'http://localhost:9000'] 
   config.action_cable.allowed_request_origins = origins

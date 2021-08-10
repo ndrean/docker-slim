@@ -1,11 +1,11 @@
 # config/initializers/cors.rb
 
-Rails.application.config.middleware.insert_before 0, Rack::Cors do
-  allow do
+#Rails.application.config.middleware.insert_before 0, Rack::Cors do
+#  allow do
     # host domain
-    origins 'http://localhost:9000' 
-    resource '*', 
-    headers: :any, 
-    methods: %i(:get :post :head :options)
-  end
-end
+#    origins 'http://localhost:9000' 
+#    resource '*', 
+#    headers: :any, 
+#    methods: %i(:get :post :head :options)
+#  end
+#end
