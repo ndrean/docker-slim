@@ -8,7 +8,7 @@ import hitsChannel from "../../channels/hits_channel.js";
 
 const Button = () => {
   const [counters, setCounters] = useState({});
-  const [hitCounts, setHitCounts] = useState();
+  const [hitCounts, setHitCounts] = useState(0);
 
   useEffect(() => {
     async function initCounter() {
@@ -39,7 +39,7 @@ const Button = () => {
     e.preventDefault();
     try {
       let { countPG } = counters;
-      countPG += 1;
+      countPG = Number(countPG) + 1;
       counterChannel.sending(countPG);
       await startWorkers().catch((err) => console.log(err));
       // await Promise.any([
