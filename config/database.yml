@@ -17,6 +17,6 @@ development:
 production:
   #   # primary:
   <<: *default
-  url: <%= POSTGRES_URL %>
+  url: <%= ENV['POSTGRES_URL'] %>
 #   database: ortkcbqt
 #   url: postgresql://postgres@localhost:5432/ortkcbqt
