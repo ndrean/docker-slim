@@ -1,29 +1,23 @@
 # Branches
 
-- master <=> run with `overmind start`
+- Deployed on Heroku: <https://pg-redis-cable-sdq.herokuapp.com>, but without Sidekiq (2 free dynos only).
+
+- master <=> run with `overmind start -f Procfile.overmind`
 
 - dock-dev <=> run `docker-compose up --build`
 
-- docker-prod <=> run `docker-compose up --build`
+- docker-prod <=> build images and run `docker-compose up --build`
 
-## Create Rails app without Sprockets
-
-Create a Rails app running "Webpack only", without using Sprockets:
-
-```sh
-> rails new my-app --skip-sprockets
-```
-
-It's much easier to start an app with this flag than change an app already using Sprockets.
+- Kubernets/Minikube <=> start Minikube and run Tilt
 
 ## Initialize the PostgreSQL database
 
-- modifiy **/config/database.yml** (or **.env**) to pass to the Postrgres adapter the desired user/password: `POSTGRES_URL=postgresql://bob:bobpwd@localhost:5432/k8_development`
+- modifiy **/config/database.yml** (or **.env**) to pass to the Postgres adapter the desired user/password: `POSTGRES_URL=postgresql://bob:bobpwd@localhost:5432/k8_development`
 
 - run in a terminal:
 
 ```sh
-RAILS_ENV=development rails rails db:drop rails:create rails:migrate
+RAILS_ENV=development rails rails db:drop rails:prepare
 ```
 
 - connect to PostgreSQL to create ROLE 'bob' with password "bobpwd"
@@ -105,4 +99,4 @@ Then "config.ex.ru" and launched with:
  nginx -s stop && nginx
 ```
 
-The config will pass the websockets.
+The config will pass the web sockets.

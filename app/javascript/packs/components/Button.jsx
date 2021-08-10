@@ -14,7 +14,7 @@ const Button = () => {
     async function initCounter() {
       try {
         hitsChannel.received = (data) => {
-          return setHitCounts(data.hits_count);
+          if (data) return setHitCounts(data.hits_count);
         };
         let i = 0;
         counterChannel.received = (data) => {
@@ -42,7 +42,7 @@ const Button = () => {
       if (!countPG) countPG = 0;
       countPG += 1;
       counterChannel.sending(countPG);
-      // await startWorkers().catch((err) => console.log(err));
+      await startWorkers().catch((err) => console.log(err));
       // await Promise.any([
       //   // postCounters("/incrCounters", { countPG })
       //   //   .then((res) => {
