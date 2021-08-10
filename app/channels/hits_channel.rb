@@ -2,7 +2,6 @@ class HitsChannel < ApplicationCable::Channel
   def subscribed
     # pubsub
     stream_from "hits_channel"
-    
   end
 
     # the "hits_channel.js" has a "connected" method that will call

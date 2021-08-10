@@ -4,7 +4,7 @@ import fetchCounters from "../utils/fetchCounters.js";
 import postCounters from "../utils/postCounters.js";
 import startWorkers from "../utils/startWorkers.js";
 import counterChannel from "../../channels/counter_channel.js";
-import HitsChannel from "../../channels/hits_channel.js";
+import hitsChannel from "../../channels/hits_channel.js";
 
 const Button = () => {
   const [counters, setCounters] = useState({});
@@ -13,7 +13,7 @@ const Button = () => {
   useEffect(() => {
     async function initCounter() {
       try {
-        HitsChannel.received = (data) => {
+        hitsChannel.received = (data) => {
           return setHitCounts(data.hits_count);
         };
         let i = 0;
@@ -41,18 +41,18 @@ const Button = () => {
       let { countPG } = counters;
       countPG += 1;
       counterChannel.sending(countPG);
-
-      await Promise.any([
-        // postCounters("/incrCounters", { countPG })
-        //   .then((res) => {
-        //     if (res.status === "created") {
-        //       return setCounters({ countPG });
-        //     }
-        //     throw new Error(res.status);
-        //   })
-        //   .catch((err) => console.log(err)),
-        startWorkers().catch((err) => console.log(err)),
-      ]);
+      await startWorkers().catch((err) => console.log(err));
+      // await Promise.any([
+      //   // postCounters("/incrCounters", { countPG })
+      //   //   .then((res) => {
+      //   //     if (res.status === "created") {
+      //   //       return setCounters({ countPG });
+      //   //     }
+      //   //     throw new Error(res.status);
+      //   //   })
+      //   //   .catch((err) => console.log(err)),
+      //   startWorkers().catch((err) => console.log(err)),
+      // ]);
     } catch (err) {
       console.log(err);
       throw new Error(err);
