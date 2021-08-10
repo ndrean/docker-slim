@@ -41,7 +41,7 @@ const Button = () => {
       let { countPG } = counters;
       countPG = Number(countPG) + 1;
       counterChannel.sending(countPG);
-      await startWorkers().catch((err) => console.log(err));
+      // await startWorkers().catch((err) => console.log(err));
       // await Promise.any([
       //   // postCounters("/incrCounters", { countPG })
       //   //   .then((res) => {
