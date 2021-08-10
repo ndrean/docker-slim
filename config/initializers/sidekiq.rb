@@ -15,20 +15,20 @@
 
 Sidekiq.configure_server do |config|
   config.redis = redis_conf
-  config.on :startup do
-    require 'prometheus_exporter/instrumentation'
-    PrometheusExporter::Instrumentation::SidekiqQueue.start
-    PrometheusExporter::Instrumentation::Process.start type: 'sidekiq'
-    PrometheusExporter::Instrumentation::ActiveRecord.start(
-      custom_labels: { type: "sidekiq" }, #optional params
-      config_labels: [:database, :host] #optional params
-    )
-  end
-  config.server_middleware do |chain|
-    require 'prometheus_exporter/instrumentation'
-    chain.add PrometheusExporter::Instrumentation::Sidekiq
-  end
-  config.death_handlers << PrometheusExporter::Instrumentation::Sidekiq.death_handler
+  # config.on :startup do
+  #   require 'prometheus_exporter/instrumentation'
+  #   PrometheusExporter::Instrumentation::SidekiqQueue.start
+  #   PrometheusExporter::Instrumentation::Process.start type: 'sidekiq'
+  #   PrometheusExporter::Instrumentation::ActiveRecord.start(
+  #     custom_labels: { type: "sidekiq" }, #optional params
+  #     config_labels: [:database, :host] #optional params
+  #   )
+  # end
+  # config.server_middleware do |chain|
+  #   require 'prometheus_exporter/instrumentation'
+  #   chain.add PrometheusExporter::Instrumentation::Sidekiq
+  # end
+  # config.death_handlers << PrometheusExporter::Instrumentation::Sidekiq.death_handler
   
 end
 

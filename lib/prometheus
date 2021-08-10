@@ -1,4 +1,4 @@
-require 'prometheus_exporter/server'
+#require 'prometheus_exporter/server'
 
 # client allows instrumentation to send info to server
 # require 'prometheus_exporter/client'

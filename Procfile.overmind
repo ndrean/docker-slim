@@ -3,4 +3,4 @@ web:     bundle exec rails server -p 5000
 redis-server:   redis-server redis/redis.conf
 worker:  bundle exec sidekiq -C config/sidekiq.yml
 cable: bundle exec puma -p 28080 cable/config.ru
-prometheus: bundle exec prometheus_exporter -p 9394
+#prometheus: bundle exec prometheus_exporter -p 9394
