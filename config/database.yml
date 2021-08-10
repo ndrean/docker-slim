@@ -15,7 +15,8 @@ development:
   #   url: <%= ENV.fetch('REPLICA_URL','') %>
   #   replica: true
 
-  production:
-    # primary:
-    <<: *default
-    url: <%= ENV.fetch('DATABASE_URL','') %>
+production:
+  # primary:
+  <<: *default
+  database: ortkcbqt
+  url: postgresql://postgres@localhost:5432/ortkcbqt

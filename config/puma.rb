@@ -41,3 +41,13 @@ pidfile ENV.fetch('PIDFILE', "tmp/pids/server.pid")
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+# puma.rb config
+after_worker_boot do
+   require 'prometheus_exporter/instrumentation'
+   PrometheusExporter::Instrumentation::Puma.start
+   PrometheusExporter::Instrumentation::ActiveRecord.start(
+      custom_labels: { type: "puma_single_mode" }, #optional params
+      config_labels: [:database, :host] #optional params
+   )
+end

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import fetchCounters from "../utils/fetchCounters.js";
 import postCounters from "../utils/postCounters.js";
 import startWorkers from "../utils/startWorkers.js";
-import CounterChannel from "../../channels/counter_channel.js";
+import counterChannel from "../../channels/counter_channel.js";
 import HitsChannel from "../../channels/hits_channel.js";
 
 const Button = () => {
@@ -17,16 +17,15 @@ const Button = () => {
           return setHitCounts(data.hits_count);
         };
         let i = 0;
-        CounterChannel.received = ({ countPG }) => {
-          if (countPG) {
+        counterChannel.received = (data) => {
+          if (data.countPG) {
             i = 1;
-            return setCounters({ countPG });
+            return setCounters({ countPG: data.countPG });
           }
         };
         if (i === 0) {
           const { countPG } = await fetchCounters("/getCounters");
-          const cPG = Number(countPG);
-          setCounters({ countPG: cPG });
+          setCounters({ countPG: Number(countPG) });
         }
       } catch (err) {
         console.warn(err);
@@ -39,18 +38,19 @@ const Button = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      let { countPG } = counters; // , countRedis
+      let { countPG } = counters;
       countPG += 1;
-      // countRedis = Number(countRedis) + 1;
+      counterChannel.sending(countPG);
+
       await Promise.any([
-        postCounters("/incrCounters", { countPG }) // , countRedis
-          .then((res) => {
-            if (res.status === "created") {
-              return setCounters({ countPG }); // , countRedis
-            }
-            throw new Error(res.status);
-          })
-          .catch((err) => console.log(err)),
+        // postCounters("/incrCounters", { countPG })
+        //   .then((res) => {
+        //     if (res.status === "created") {
+        //       return setCounters({ countPG });
+        //     }
+        //     throw new Error(res.status);
+        //   })
+        //   .catch((err) => console.log(err)),
         startWorkers().catch((err) => console.log(err)),
       ]);
     } catch (err) {
@@ -79,10 +79,3 @@ const Button = () => {
 };
 
 export default Button;
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   ReactDOM.render(
-//     <Hello name="React" />,
-//     document.body.appendChild(document.createElement("div"))
-//   );
-// });

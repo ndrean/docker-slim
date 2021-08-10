@@ -12,10 +12,10 @@ class PagesController < ApplicationController
     # <- test Redis database
     res = REDIS.ping
     raise PagesController::Error.new('Redis DB down') if (res != "PONG")
-    Rails.logger.info( "Redis db:  #{res}")
+    Rails.logger.info( 'Redis db is Up') 
 
     # <- test Sidekiq/Redis connection (github/sidekiq/lib/sidekiq.rb)
-    Rails.logger.info( "Redis-Sidekiq: #{Sidekiq.redis { |con| con.connection[:id] }}")
+    Rails.logger.info( 'Redis-Sidekiq: #{Sidekiq.redis { |con| con.connection[:id] }}')
 
     # PSQL <- test PG connection
     begin

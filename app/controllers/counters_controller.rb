@@ -24,7 +24,6 @@ class CountersController < ApplicationController
          # the value of the counter is incremented client-side
          counter = Counter.create!(nb: data['countPG'] )
          if counter.valid?
-            # broadcast the message on the channel
             ActionCable.server.broadcast('counter_channel', data.as_json) 
             render json: { status: :created }
          else

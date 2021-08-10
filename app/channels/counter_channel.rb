@@ -4,11 +4,15 @@ class CounterChannel < ApplicationCable::Channel
     stream_from "counter_channel"
   end
 
-  def receive(data)
-    # rebroadcasting the received message to any other connected client
-    ActionCable.server.broadcast('counter_channel',data.as_json)
+  def receiving(msg)
+    puts msg
+    data = {}
+    data['countPG'] = msg['countPG']
+    # the value of the counter is incremented client-side
+    counter = Counter.create!(nb: data['countPG'] )
+    ActionCable.server.broadcast('counter_channel', data.as_json) if counter.valid?
   end
-  
+
   def unsubscribed
     stop_all_streams
   end

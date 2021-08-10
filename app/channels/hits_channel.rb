@@ -8,7 +8,6 @@ class HitsChannel < ApplicationCable::Channel
     # the "hits_channel.js" has a "connected" method that will call
     #  the "HitsChannel::hits" method to increment and broadcast 
   def trigger_hits
-    # page_count = REDIS.get('page_count').to_i #<- pass to view
     REDIS.incr('hits_count')
     data = {}
     data['hits_count'] = REDIS.get('hits_count').to_i
