@@ -24,12 +24,6 @@ module DockerSlim
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
 
-    # Configuration for the application, engines, and railties goes here.
-    #
-    # These settings can be overridden in specific environments using the files
-    # in config/environments, which are processed later.
-    #
-
     ############
     # config.active_record.database_selector = { delay: 2.seconds }
     # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
@@ -39,17 +33,14 @@ module DockerSlim
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    
 
     config.active_job.queue_adapter = :sidekiq
 
     # Don't generate system test files.
     config.generators.system_tests = nil
 
-    if ENV["RAILS_LOG_TO_STDOUT"].present?
+    # if ENV["RAILS_LOG_TO_STDOUT"].present?
       Rails.logger = ActiveSupport::Logger.new(STDOUT)
-      # logger.formatter = config.log_formatter
-      # config.logger    = ActiveSupport::TaggedLogging.new(logger)
-    end
+    # end
   end
 end

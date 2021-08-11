@@ -1,0 +1,9 @@
+server: bundle exec rails s
+assets: bundle exec bin/webpack-dev-server
+anycable: bundle exec anycable
+ws: anycable-go --port=8080
+worker:  bundle exec sidekiq -C config/sidekiq.yml
+redis-server:   redis-server redis/redis.conf
+
+#prometheus: bundle exec prometheus_exporter -p 9394
+#cable: bundle exec puma -p 28080 cable/config.ru

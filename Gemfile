@@ -24,7 +24,7 @@ gem 'sidekiq'
 gem 'sidekiq_alive'
 gem 'sidekiq-failures', '~> 1.0'
 
-#gem 'anycable-rails'
+gem 'anycable-rails'
 # gem 'rack-cors'
 # gem 'prometheus_exporter'
 

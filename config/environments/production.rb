@@ -2,12 +2,10 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   # Specify AnyCable WebSocket server URL to use by JS client
-  # config.after_initialize do
-  #   config.action_cable.url = ActionCable.server.config.url = ENV.fetch("CABLE_URL") if AnyCable::Rails.enabled?
-  # end
-  # Settings specified here will take precedence over those in config/application.rb.
+  config.after_initialize do
+    config.action_cable.url = ActionCable.server.config.url = ENV.fetch("CABLE_URL") if AnyCable::Rails.enabled?
+  end
 
-  # Code is not reloaded between requests.
   config.cache_classes = true
 
   # Eager load code on boot. This eager loads most of Rails and

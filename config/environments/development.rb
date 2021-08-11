@@ -1,12 +1,12 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  # Specify AnyCable WebSocket server URL to use by JS client <--------------------
-  # config.after_initialize do
-  #   config.action_cable.url = ActionCable.server.config.url = ENV.fetch("CABLE_URL", "ws://localhost:8080/cable") if AnyCable::Rails.enabled?
-  # end
-  # Settings specified here will take precedence over those in config/application.rb.
-
+  # Specify AnyCable WebSocket server URL to use by JS client
+  config.after_initialize do
+    config.action_cable.url = ActionCable.server.config.url = ENV.fetch("CABLE_URL", "ws://localhost:8080/cable") if AnyCable::Rails.enabled?
+    
+  end
+  
   config.cache_classes = false
 
   # Do not eager load code on boot.
@@ -54,10 +54,10 @@ Rails.application.configure do
   
 
   # Action Cable embedded with Rails, use ".url" on localhost and pass meta_tag
-  # config.action_cable.url = "ws://localhost:5000/cable" 
-
+  # config.action_cable.url = "ws://localhost:5000/cable" #<-- embedded mode (comment in createConsumer)
   # ActionCable standalone;: remove ".url" and set -> in 'createConsumer(ws:localhost:28080/cable')
   
+  config.action_cable.url = "ws://localhost:8080/cable" #<-- anycable
   # config.action_cable.disable_request_forgery_protection = true <- for any origin
   origins = ['http://localhost:5000', 'http://localhost:9000'] 
   config.action_cable.allowed_request_origins = origins

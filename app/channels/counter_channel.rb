@@ -16,4 +16,8 @@ class CounterChannel < ApplicationCable::Channel
   def unsubscribed
     stop_all_streams
   end
+
+  def receive(data)
+    puts data
+  end
 end

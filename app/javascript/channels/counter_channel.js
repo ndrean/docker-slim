@@ -18,5 +18,6 @@ const counterChannel = consumer.subscriptions.create(
     },
   }
 );
+counterChannel.sending({ test: 1 });
 
 export default counterChannel;
