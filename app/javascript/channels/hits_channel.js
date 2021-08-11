@@ -7,6 +7,7 @@ const hitsChannel = consumer.subscriptions.create(
       console.log("hits connected");
       // calling the method "hits" in "hits_channel.rb" and pass an object
       this.perform("trigger_hits");
+      this.send({ msg: "new client" });
     },
 
     disconnected() {

@@ -13,6 +13,11 @@ class CounterChannel < ApplicationCable::Channel
     ActionCable.server.broadcast('counter_channel', msg.as_json) if counter.valid?
   end
 
+  # to illustrate the send
+  def receive(data)
+    puts data
+  end
+
   def unsubscribed
     stop_all_streams
   end

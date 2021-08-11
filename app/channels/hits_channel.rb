@@ -14,6 +14,11 @@ class HitsChannel < ApplicationCable::Channel
     ActionCable.server.broadcast('hits_channel', data.as_json)
   end
   
+  # to illustrate the "send"
+  def receive(data)
+    puts data
+  end
+
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
     stop_all_streams

@@ -19,4 +19,6 @@ const counterChannel = consumer.subscriptions.create(
   }
 );
 
+console.log(counterChannel);
+
 export default counterChannel;

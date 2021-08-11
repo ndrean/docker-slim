@@ -4,5 +4,5 @@
 import { createConsumer } from "@rails/actioncable";
 
 createConsumer(`ws://${window.location.hostname}:28080/cable`);
-// console.log(window.location.hostname);
+
 export default createConsumer();
