@@ -37,7 +37,7 @@ FROM ruby:${RUBY_VERSION}
 ARG RAILS_ENV=production
 
 
-RUN apk -U upgrade && apk add --no-cache  libpq tzdata netcat-openbsd \
+RUN apk -U upgrade && apk add --no-cache  libpq tzdata netcat-openbsd curl\
    && rm -rf /var/cache/apk/*
 
 # -disabled-password doesn't assign a password, so cannot login

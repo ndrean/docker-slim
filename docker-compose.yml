@@ -77,6 +77,11 @@ services:
     # <- create/migrate
     entrypoint: [./manage-db.sh]
     command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+    healthcheck:
+      test: ["CMD", "curl", --fail", "http://localhost:4000/health"]
+      interval: 300s
+      timeout: 1s
+      retries: 1
     tmpfs:
       - /tmp
 
@@ -88,6 +93,8 @@ services:
     depends_on:
       redisdb:
         condition: service_healthy
+      # app:
+      #   condition: service_healthy
 
 volumes:
   redis_data: {}
