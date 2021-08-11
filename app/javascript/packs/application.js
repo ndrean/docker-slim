@@ -19,9 +19,5 @@ const imagePath = (name) => images(name, true);
 import Button from "./components/Button.jsx";
 
 document.addEventListener("DOMContentLoaded", () => {
-  ReactDOM.render(
-    <Button />,
-    document.getElementById("root")
-    // document.body.appendChild(document.createElement("div"))
-  );
+  ReactDOM.render(<Button />, document.getElementById("root"));
 });
