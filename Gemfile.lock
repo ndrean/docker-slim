@@ -177,7 +177,6 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
-  connection_pool
   hiredis
   listen (~> 3.3)
   pg (~> 1.1)
@@ -198,4 +197,4 @@ RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.2.24
+   2.2.25

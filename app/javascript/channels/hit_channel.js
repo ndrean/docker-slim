@@ -1,11 +1,12 @@
 import consumer from "./consumer";
 
-const HitsChannel = consumer.subscriptions.create(
-  { channel: "HitsChannel" },
+const hitChannel = consumer.subscriptions.create(
+  { channel: "HitChannel" },
   {
     connected() {
       // calling the method "trigger_hits" in "hits_channel.rb" and pass an object
       this.perform("trigger_hits");
+      this.send({ msg: "new client" });
     },
     disconnected() {},
     received: function (data) {
@@ -14,4 +15,4 @@ const HitsChannel = consumer.subscriptions.create(
   }
 );
 
-export default HitsChannel;
+export default hitChannel;

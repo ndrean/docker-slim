@@ -1,13 +1,18 @@
 import consumer from "./consumer";
 
-const CounterChannel = consumer.subscriptions.create(
+const counterChannel = consumer.subscriptions.create(
   { channel: "CounterChannel" },
   {
-    connected() {},
+    connected() {
+      console.log("click connected");
+    },
     disconnected() {},
-    received(data) {
-      // Called when there's incoming data on the websocket for this channel
+    received: function (data) {
+      // overwritten in Button.js
+    },
+    sending(data) {
+      this.perform("receiving", { countPG: data });
     },
   }
 );
-export default CounterChannel;
+export default counterChannel;

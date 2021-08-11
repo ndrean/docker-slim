@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 
 import fetchCounters from "../utils/fetchCounters.js";
-import postCounters from "../utils/postCounters.js";
+// import postCounters from "../utils/postCounters.js";
 import startWorkers from "../utils/startWorkers.js";
 
-import CounterChannel from "../../channels/counter_channel.js";
-import HitsChannel from "../../channels/hits_channel.js";
+import counterChannel from "../../channels/counter_channel.js";
+import hitChannel from "../../channels/hit_channel.js";
 
 const Button = () => {
   const [counters, setCounters] = useState({});
@@ -14,12 +14,12 @@ const Button = () => {
   useEffect(() => {
     async function initCounter() {
       try {
-        HitsChannel.received = (data) => {
-          setHitCounts(data.hits_count);
+        hitChannel.received = (data) => {
+          if (data) return setHitCounts(data.hits_count);
         };
 
         let i = 0;
-        CounterChannel.received = ({ countPG }) => {
+        counterChannel.received = ({ countPG }) => {
           if (countPG) {
             i = 1;
             return setCounters({ countPG });
@@ -41,18 +41,21 @@ const Button = () => {
     e.preventDefault();
     try {
       let { countPG } = counters;
+      if (!countPG) countPG = 0;
       countPG += 1;
-      await Promise.any([
-        postCounters("/incrCounters", { countPG })
-          .then((res) => {
-            if (res.status === "created") {
-              return setCounters({ countPG });
-            }
-            throw new Error(res.status);
-          })
-          .catch((err) => console.log(err)),
-        startWorkers().catch((err) => console.log(err)),
-      ]);
+      counterChannel.sending(countPG);
+      await startWorkers().catch((err) => console.log(err));
+      // await Promise.any([
+      //   // postCounters("/incrCounters", { countPG })
+      //   //   .then((res) => {
+      //   //     if (res.status === "created") {
+      //   //       return setCounters({ countPG });
+      //   //     }
+      //   //     throw new Error(res.status);
+      //   //   })
+      //   //   .catch((err) => console.log(err)),
+      //   startWorkers().catch((err) => console.log(err)),
+      // ]);
     } catch (err) {
       console.log(err);
       throw new Error(err);
