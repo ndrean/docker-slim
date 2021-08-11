@@ -1,4 +1,8 @@
-# Branches
+# Explanations
+
+<https://dev.to/ndrean/realtime-rails-with-websockets-1jk3>
+
+## Branches
 
 - Deployed on Heroku: <https://pg-redis-cable-sdq.herokuapp.com>, but without Sidekiq (2 free dynos only).
 
