@@ -4,7 +4,7 @@ FROM ruby:${RUBY_VERSION:-3.0.1-alpine} AS builder
 ARG BUNDLER_VERSION=2.2.24
 ARG NODE_ENV=production
 ARG RAILS_ENV=production
-
+ARG RAILS_SERVE_STATIC_FILES=false
 RUN apk -U upgrade && apk add --no-cache \
    postgresql-dev nodejs yarn build-base tzdata
 
@@ -27,7 +27,7 @@ RUN yarn --check-files --silent --production && yarn cache clean
 
 COPY . ./
 
-RUN bundle exec rake assets:precompile
+RUN bundle exec rails assets:precompile  assets:clean
 
 
 ###########################################################################
@@ -50,7 +50,7 @@ COPY --from=builder --chown=app-user /app /app
 
 ENV RAILS_ENV=$RAILS_ENV \
    RAILS_LOG_TO_STDOUT=true \
-   RAILS_SERVE_STATIC_FILES=false  \
+   RAILS_SERVE_STATIC_FILES=$RAILS_SERVE_STATIC_FILES  \
    BUNDLE_PATH='vendor/bundle'
 
 WORKDIR /app

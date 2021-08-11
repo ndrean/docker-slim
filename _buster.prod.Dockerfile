@@ -64,7 +64,7 @@ RUN yarn --check-files --silent && yarn cache clean
 
 COPY . ./
 
-RUN bundle exec rake assets:precompile
+RUN bundle exec rails assets:precompile
 # && rm -rf node_modules tmp/cache app/assets vendor/assets lib/assets spec
 
 # ENV RAILS_SERVE_STATIC_FILES true

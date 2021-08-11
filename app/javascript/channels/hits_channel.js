@@ -1,6 +1,6 @@
 import consumer from "./consumer";
 
-const HitsChannel = consumer.subscriptions.create(
+const hitsChannel = consumer.subscriptions.create(
   { channel: "HitsChannel" },
   {
     connected() {
@@ -13,4 +13,4 @@ const HitsChannel = consumer.subscriptions.create(
   }
 );
 
-export default HitsChannel;
+export default hitsChannel;

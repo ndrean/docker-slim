@@ -12,7 +12,7 @@ tmp/sockets
 log
 test
 config/deploy
-public/packs
+
 public/packs-test
 node_modules
 yarn-error.log
