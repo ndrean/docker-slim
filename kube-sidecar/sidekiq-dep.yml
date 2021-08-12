@@ -19,9 +19,13 @@ spec:
     spec:
       containers:
         - name: sidekiq
-          image: ndrean/rails-base
+          image: ndrean/rails-sc
           command: ["bundle"]
           args: ["exec", "sidekiq", "-C", "./config/sidekiq.yml"]
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "256Mi"
           envFrom:
             - configMapRef:
                 name: env

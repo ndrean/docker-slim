@@ -45,6 +45,7 @@ RUN adduser --disabled-password app-user
 USER app-user
 
 COPY --from=builder --chown=app-user /app /app
+# COPY --from=builder  /app /app
 
 ENV RAILS_ENV=$RAILS_ENV \
    RAILS_LOG_TO_STDOUT=true \

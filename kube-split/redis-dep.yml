@@ -33,21 +33,29 @@ spec:
         - name: redis
           image: redis:6.2.4-alpine
           imagePullPolicy: "IfNotPresent"
+          command: ["redis-server"]
           ports:
             - containerPort: 6379
-          command: ["redis-server"]
+          resources:
+            limits:
+              cpu: "50m"
+              memory: "50Mi"
           volumeMounts:
-            # - name: conf
-            #   mountPath: /conf
-            #   readOnly: false
+            # -  mountPath: /redis-master  # <- the config vol is mounted here
+            #    name: config
+            #    readOnly: true
             - name: data
               mountPath: "/data"
               readOnly: false
       # volumes:
-      #   - conf: conf
+      #   - name: data
+      #     emptyDir: {}
+      #   - name: config-redis
       #     configMap:
-      #       name: redis
-      #       defaultMode: 0755
+      #       name: redis-conf
+      # items:
+      # - key: redis-config
+      # path: redis.conf
   volumeClaimTemplates:
     - metadata:
         name: data

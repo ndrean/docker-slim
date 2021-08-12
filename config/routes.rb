@@ -13,5 +13,5 @@ Rails.application.routes.draw do
   # get '/incrCounters', to: 'pages#incr_counters'
   get '/startWorkers', to: 'pages#start_workers'
   get '/getCounters', to: 'counters#get_counters'
-  post '/incrCounters', to: "counters#create"
+  # post '/incrCounters', to: "counters#create"
 end

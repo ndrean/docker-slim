@@ -38,14 +38,16 @@ k8s_yaml('./kube-split/sidekiq-dep.yml')
 k8s_yaml('./kube-split/cable-dep.yml')
 
 k8s_resource('rails-dep', resource_deps=['pg-dep', 'redis-dep'])
-k8s_resource('sidekiq-dep', resource_deps=['redis-dep'])
+k8s_resource('sidekiq-dep', resource_deps=['redis-dep', 'rails-dep'])
 k8s_resource('cable-dep', resource_deps=['redis-dep','rails-dep'])
 k8s_resource('nginx-dep', resource_deps=['rails-dep', 'cable-dep'])
 
 k8s_yaml('./kube-split/nginx-dep.yml')
 
-local_resource('migrate', 'kubectl exec rails-dep-75dc5dcb67-gsdjf -- bundle exec rails db:migrate' ,resource_deps=['rails-dep'])
-#k8s_yaml('./kube-split/migrate.yml')
+#local_resource('migrate', '
+#   export POD_NAME=$(kubectl get pods -l app=rails -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}') &&
+#   kubectl exec $POD_NAME -- bundle exec rails db:migrate' ,resource_deps=['rails-dep'])
+
 
 allow_k8s_contexts('minikube')
-k8s_resource('nginx-dep', port_forwards='9000')
+k8s_resource('nginx-dep', port_forwards='31000')

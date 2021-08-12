@@ -1,0 +1,10 @@
+k8s_yaml(['./kube-sidecar/config-remote.yml', './kube-sidecar/nginx-config.yml'])
+k8s_yaml(['./kube-sidecar/rails-nginx-dep.yml', './kube-sidecar/sidekiq-dep.yml', './kube-sidecar/cable-dep.yml'])
+k8s_resource('sidekiq-dep', resource_deps=['rails-nginx-dep'])
+
+allow_k8s_contexts('current')
+k8s_resource('rails-nginx-dep', port_forwards='30000')
+
+#local_resource('migrate',
+#   "export POD_NAME=$(kubectl get pods -l app=rails -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}') && kubectl exec $POD_NAME -- bundle exec rails db:migrate",
+#   resource_deps=['rails-dep'])

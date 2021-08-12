@@ -23,6 +23,10 @@ spec:
         - name: cable
           image: ndrean/rails-base
           imagePullPolicy: "Always"
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "256Mi"
           command: ["bundle"]
           args: ["exec", "puma", "-p", "28080", "./cable/config.ru"]
           ports:

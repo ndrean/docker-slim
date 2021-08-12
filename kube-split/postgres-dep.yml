@@ -46,8 +46,8 @@ spec: # of the deployment
           imagePullPolicy: "IfNotPresent"
           resources:
             limits:
-              memory: "128Mi"
-              cpu: "500m"
+              memory: "150Mi"
+              cpu: "16m"
           ports:
             - containerPort: 5432
           volumeMounts:

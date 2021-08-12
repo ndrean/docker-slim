@@ -23,6 +23,10 @@ spec:
         - image: ndrean/nginx-ws
           imagePullPolicy: "Always"
           name: frontend
+          resources:
+            limits:
+              cpu: "32m"
+              memory: "16Mi"
           ports:
             - containerPort: 9000
           volumeMounts:

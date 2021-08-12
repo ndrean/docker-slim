@@ -2,10 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rails-nginx-dep
-  # labels:
-  #   app: k8-rails
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: rails
@@ -21,25 +19,40 @@ spec:
     spec:
       containers:
         - name: rails
-          image: ndrean/rails-base
+          image: ndrean/rails-sc
           command: ["bundle"]
           args: ["exec", "rails", "s", "-b", "0.0.0.0"]
+          # resources:
+          #   limits:
+          #     cpu: "400m"
+          #     memory: "256Mi"
           ports:
             - containerPort: 3000
           envFrom:
             - configMapRef:
                 name: env
+          volumeMounts:
+            - mountPath: /public
+              name: www
         - name: nginx
-          image: ndrean/nginx-sc
+          image: nginx:alpine
           command: ["nginx"]
           args: ["-g", "daemon off;"]
+          # resources:
+          #   limits:
+          #     cpu: "200"
+          #     memory: "128Mi"
           ports:
             - containerPort: 9000
           volumeMounts:
             - mountPath: /etc/nginx/conf.d/ # mount nginx-conf volumn to /etc/nginx/conf.d/
               readOnly: true
               name: nginx-conf
+            - mountPath: /usr/share/nginx/html
+              name: www
       volumes:
+        - name: www
+          emptyDir: {}
         - name: nginx-conf
           configMap:
             name: nginx-conf # place ConfigMap `nginx-conf` on /etc/nginx/conf.d

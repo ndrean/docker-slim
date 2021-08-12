@@ -22,6 +22,10 @@ spec:
         - name: sidekiq
           image: ndrean/rails-base
           imagePullPolicy: "Always"
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "512Mi"
           command: ["bundle"]
           args: ["exec", "sidekiq", "-C", "./config/sidekiq.yml"]
           envFrom:
