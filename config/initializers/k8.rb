@@ -1,0 +1,1 @@
+# $client= Kubeclient::Client.new('http://localhost:8080/api', 'v1')

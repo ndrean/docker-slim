@@ -21,7 +21,7 @@ gem 'redis'
 gem 'hiredis'
 
 # gem 'prometheus_exporter'
-
+# gem 'kubeclient'
 
 gem 'sidekiq'
 gem 'sidekiq-failures', '~> 1.0'

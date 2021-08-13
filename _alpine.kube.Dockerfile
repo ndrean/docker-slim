@@ -4,7 +4,6 @@ FROM ruby:${RUBY_VERSION:-3.0.2-alpine} AS builder
 ARG BUNDLER_VERSION=2.2.24
 ARG NODE_ENV=production
 ARG RAILS_ENV=production
-ARG RAILS_SERVE_STATIC_FILES=false
 
 RUN apk -U upgrade && apk add --no-cache \
    postgresql-dev nodejs yarn build-base tzdata
@@ -38,26 +37,27 @@ FROM ruby:${RUBY_VERSION}
 
 ARG RAILS_ENV=production
 
-RUN apk -U upgrade && apk add --no-cache  libpq tzdata netcat-openbsd \
-   && rm -rf /var/cache/apk/*
-
-
+RUN apk -U upgrade && apk add --no-cache  libpq tzdata netcat-openbsd curl \
+   && rm -rf /var/cache/apk/* \
+   && curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl \
+   && chmod +x ./kubectl \
+   && mv ./kubectl /usr/local/bin/kubectl
 
 # -disabled-password doesn't assign a password, so cannot login
-RUN adduser --disabled-password app-user
-USER app-user
+# RUN adduser --disabled-password app-user
+# USER app-user
 
 COPY --from=builder --chown=app-user /app /app
-# COPY --from=builder  /app /app
+COPY --from=builder  /app /app
 
 ENV RAILS_ENV=$RAILS_ENV \
    RAILS_LOG_TO_STDOUT=true \
-   RAILS_SERVE_STATIC_FILES=RAILS_SERVE_STATIC_FILES  \
+   RAILS_SERVE_STATIC_FILES=false  \
    BUNDLE_PATH='vendor/bundle'
 
 WORKDIR /app
+# RUN rm -rf node_modules tmp/cache tmp/miniprofiler tmp/sockets
 
-RUN rm -rf node_modules tmp/cache tmp/miniprofiler tmp/sockets
 
 
 

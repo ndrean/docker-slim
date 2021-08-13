@@ -6,6 +6,7 @@ import startWorkers from "../utils/startWorkers.js";
 
 import counterChannel from "../../channels/counter_channel.js";
 import hitChannel from "../../channels/hit_channel.js";
+import listChannel from "../../channels/list_channel.js";
 
 const Button = () => {
   const [counters, setCounters] = useState({});
@@ -14,7 +15,9 @@ const Button = () => {
   useEffect(() => {
     async function initCounter() {
       try {
+        // listChannel.received = (data)=> { console.log(data)}
         hitChannel.received = (data) => {
+          console.log(data);
           if (data) return setHitCounts(data.hits_count);
         };
 

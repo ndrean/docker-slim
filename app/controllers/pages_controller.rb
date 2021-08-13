@@ -24,8 +24,6 @@ class PagesController < ApplicationController
     end
     # <- rescued Sidekiq test
     SidekiqHelper.check
-
-    ListJob.perform_later
     
     @origin = request.remote_ip
   end

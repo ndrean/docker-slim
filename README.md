@@ -1,3 +1,44 @@
+# Kubernets API
+
+Kube config:
+`cat ~/.kube/confg``
+
+Get info:
+`kubectl cluster-info` returns:
+
+```txt
+Kubernetes control plane is running at https://127.0.0.1:55650
+CoreDNS is running at https://127.0.0.1:55650/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+```
+
+`kubectl proxy --port=8080 &`
+=> curl http://localhost:8080/api
+
+or:
+
+```sh
+APISERVER=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
+echo $APISERVER
+TOKEN=$(kubectl get secret $(kubectl get serviceaccount default -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 --decode )
+echo $TOKEN
+curl $APISERVER/api --header "Authorization: Bearer $TOKEN" --insecure
+```
+
+returns
+
+```json
+{
+  "kind": "APIVersions",
+  "versions": ["v1"],
+  "serverAddressByClientCIDRs": [
+    {
+      "clientCIDR": "0.0.0.0/0",
+      "serverAddress": "192.168.49.2:8443"
+    }
+  ]
+}
+```
+
 ## Remote PostgreSQL database: ElephantSQL
 
 No migration needed:

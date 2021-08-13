@@ -1,9 +1,10 @@
-ARG RUBY_VERSION=3.0.2-alpine
-FROM ruby:${RUBY_VERSION:-3.0.1-alpine} AS builder
+ARG RUBY_VERSION
+FROM ruby:${RUBY_VERSION:-3.0.2-alpine}
 
-ARG BUNDLER_VERSION=2.2.24
-ARG NODE_ENV=production
-ARG RAILS_ENV=production
+ARG BUNDLER_VERSION
+ARG NODE_ENV
+ARG RAILS_ENV
+ARG RAILS_SERVE_STATIC_FILES
 
 RUN apk -U upgrade && apk add --no-cache \
    postgresql-dev nodejs yarn build-base tzdata

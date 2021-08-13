@@ -5,7 +5,7 @@ metadata:
   labels: # must match the service
     app: rails
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels: # which pods are we deploying
       app: rails
@@ -19,14 +19,15 @@ spec:
       labels: # must match service and replicaset matchlabel
         app: rails
     spec:
+      serviceAccountName: rails
       containers:
         - name: backend
-          image: ndrean/rails-base
+          image: ndrean/rails-kube
           imagePullPolicy: "Always"
-          # resources:
-          #   limits:
-          #     cpu: "250m"
-          #     memory: "512Mi"
+          resources:
+            limits:
+              cpu: "150m"
+              memory: "256Mi"
           command: ["bundle"]
           args: ["exec", "rails", "server", "-b", "0.0.0.0"]
           ports:

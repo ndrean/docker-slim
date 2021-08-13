@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: brails
+spec:
+  serviceAccountName: brails
+  containers:
+    - name: internal-kubectl
+      image: ndrean/test

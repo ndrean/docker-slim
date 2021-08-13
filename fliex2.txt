@@ -1,8 +1,0 @@
-pod/cable-dep-76fd6d96bc-9tp2c
-pod/nginx-dep-559bfdf7d6-hv546
-pod/pg-dep-0
-pod/rails-dep-75dc5dcb67-5t428
-pod/rails-dep-75dc5dcb67-csnwg
-pod/rails-dep-75dc5dcb67-skk5t
-pod/redis-dep-0
-pod/sidekiq-dep-5d7bcb564d-29h4t
