@@ -29,7 +29,8 @@ RUN yarn --check-files --silent --production && yarn cache clean
 
 COPY . ./
 
-RUN bundle exec rails assets:precompile
+RUN bundle exec rails webpacker:compile
+# assets:precompile
 
 
 ###########################################################################
@@ -38,7 +39,7 @@ FROM ruby:${RUBY_VERSION}
 
 ARG RAILS_ENV=production
 
-RUN apk -U upgrade && apk add --no-cache  libpq tzdata netcat-openbsd \
+RUN apk -U upgrade && apk add --no-cache  libpq tzdata netcat-openbsd curl \
    && rm -rf /var/cache/apk/*
 
 

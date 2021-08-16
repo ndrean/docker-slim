@@ -1,4 +1,20 @@
+# Gist
+
+<https://gist.github.com/jferris/1aba7433f5318715bda66b98c1d953f0>
+
+require 'uri'
+require 'net/http'
+
+uri = UIR(""#{apiserver}/api/v1/namespaces/#{namespace}/pods")
+uri.headers = {
+'Authorization': 'Bearer '+ "#{token}",
+Accept': 'application/json',
+'cacert': cacert
+}
+
 # Kubernets API
+
+Running `kubectl`command from within a pod <https://trstringer.com/kubectl-from-within-pod/>
 
 Kube config:
 `cat ~/.kube/confg``
@@ -11,6 +27,13 @@ Kubernetes control plane is running at https://127.0.0.1:55650
 CoreDNS is running at https://127.0.0.1:55650/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 ```
 
+With proxy: (needs sidecar container in the pod)
+
+````sh
+kubectl proxy
+curl -X GET http://localhost:8001/api/v1/namespaces/test/pods
+```  => ok
+
 `kubectl proxy --port=8080 &`
 => curl http://localhost:8080/api
 
@@ -22,7 +45,7 @@ echo $APISERVER
 TOKEN=$(kubectl get secret $(kubectl get serviceaccount default -o jsonpath='{.secrets[0].name}') -o jsonpath='{.data.token}' | base64 --decode )
 echo $TOKEN
 curl $APISERVER/api --header "Authorization: Bearer $TOKEN" --insecure
-```
+````
 
 returns
 
@@ -38,6 +61,42 @@ returns
   ]
 }
 ```
+
+Without proxy:<https://kubernetes.io/docs/tasks/run-application/access-api-from-pod/#without-using-a-proxy>
+
+````sh
+# Point to the internal API server hostname
+APISERVER=https://kubernetes.default.svc
+
+# Path to ServiceAccount token
+SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
+
+# Read this Pod's namespace
+NAMESPACE=$(cat ${SERVICEACCOUNT}/namespace)
+
+# Read the ServiceAccount bearer token
+TOKEN=$(cat ${SERVICEACCOUNT}/token)
+
+# Reference the internal certificate authority (CA)
+CACERT=${SERVICEACCOUNT}/ca.crt
+
+# Explore the API with TOKEN
+curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}/api
+
+
+<https://docs.openshift.com/container-platform/3.7/rest_api/api/v1.Pod.html#Get-api-v1-namespaces-namespace-pods>
+
+Error create vs apply?
+Running cmd: kubectl apply -f ./kube-split/migrate.yml
+Warning: resource jobs/db-migrate is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
+job.batch/db-migrate configured
+
+```yml
+command: ["psql"]
+args: ["-w","-U","postgres","-d","$(POSTGRES_DB)","-c","SELECT1"]
+initialDelaySeconds: 30
+timoutSeconds:2
+````
 
 ## Remote PostgreSQL database: ElephantSQL
 
@@ -67,22 +126,3 @@ You to create a namespace "test" for testing when doing this kind of things. You
 <https://github.com/rails/rails/search?utf8=%E2%9C%93&q=standarderror&type=Code>
 
 <https://github.com/rails/rails/issues/41492>
-
-## Minikube
-
-```sh
-rails assets:precompile
-rails assets:clean
-docker build -t ndrean/ws:v0 . -f _nginx.Dockerfile
-
-docker build -t ndrean/app:v0 . -f _alpine.prod.Dockerfile
-
-minikube start
-kubectl create namespace myns
-kubens myns
-kubectl apply -f ./kube-sidecar
-kubectl get pods -w
-kubectl logs -f <pod>
-kubectl get svc
-minikube service rails-svc
-```

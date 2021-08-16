@@ -18,39 +18,26 @@ spec:
         # app: rails
         instance: sidekiq
     spec:
+      serviceAccountName: rails
       containers:
+        - name: server-k8
+          image: ndrean/serverk8-proxy
+          command: ["kubectl", "proxy"]
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "100Mi"
         - name: sidekiq
           image: ndrean/rails-base
           imagePullPolicy: "Always"
           resources:
             limits:
               cpu: "150m"
-              memory: "256Mi"
+              memory: "200Mi"
           command: ["bundle"]
-          args:
-            [
-              "exec",
-              "sidekiq",
-              "-C",
-              "./config/sidekiq.yml",
-              "DISABLE_SIDEKIQ_ALIVE=true",
-            ]
+          args: ["exec", "sidekiq", "-C", "./config/sidekiq.yml"]
           envFrom:
             - configMapRef:
                 name: config
             - secretRef:
                 name: secrets
-          ports:
-            - name: sidekiqalive
-              containerPort: 7433
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 7433
-            initialDelaySeconds: 30
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 7433
-            initialDelaySeconds: 30 # app specific. Time your sidekiq takes to start processing.
-

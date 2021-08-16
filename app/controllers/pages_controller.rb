@@ -1,6 +1,5 @@
 class PagesController < ApplicationController
   include SidekiqHelper
-
   class Error < StandardError
   end
 
@@ -26,16 +25,38 @@ class PagesController < ApplicationController
     SidekiqHelper.check
     
     @origin = request.remote_ip
+
+    # CurlJob.perform_later
+
+    # APISERVER= 'https://kubernetes.default.svc'
+    # # Path to ServiceAccount token
+    # SERVICEACCOUNT= '/var/run/secrets/kubernetes.io/serviceaccount'
+    # # Read this Pod's namespace
+    # NAMESPACE= File.read(SERVICEACCOUNT + "/namespace")
+    # # Read the ServiceAccount bearer token
+    # TOKEN= File.read(SERVICEACCOUNT + '/token')
+    # # Reference the internal certificate authority (CA)
+    # CACERT= SERVICEACCOUNT + '/ca.crt'
+    
+    # uri = URI('APISERVER' + '/api/v1/namespaces/' + NAMESPACE + '/pods')
+    # response = Farady.new(uri,
+    #   headers: {
+    #     'Authorization': 'Bearer'+ "#{TOKEN}",
+    #     'Accept': 'application/json',
+    #     'cacert': CACERT
+    #   }
+    # )
   end
 
   def start_workers
     # background WORKER with Sidekiq: 
     HardWorker.perform_async
     # ACTIVE_JOB with Sidekiq (intializer with REDIS_URL, config.active_job.queue_adapter)
-    HardJob.perform_later 
+    # HardJob.perform_later 
     return render json: { status: :no_content }
   rescue StandardError => e
     puts e.message
     render json: { status: 500}
   end
 end
+

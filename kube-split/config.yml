@@ -5,7 +5,7 @@ metadata:
 data:
   POSTGRES_HOST: "pg-svc" # <- name of the service that exposes the Postgres pod
   POSTGRES_DB: "ortkcbqt"
-  PGDATA: "/var/lib/postgresql/data"
+  PGDATA: "/var/lib/postgresql/data/1"
 
   RAILS_ENV: "production"
   RAILS_LOG_TO_STDOUT: "true"

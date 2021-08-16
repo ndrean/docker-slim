@@ -1,12 +1,24 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+# kind: Role # -> for namespaced
+kind: Role # ->
 metadata:
-  name: modify-pods
+  name: query-pods
+  # namespace: test
 rules:
   - apiGroups: [""]
-    resources:
-      - pods
-    verbs:
-      - get
-      - list
-      - delete
+    resources: ["pods"]
+    verbs: ["get", "watch", "list"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: query-pods
+subjects:
+  - kind: ServiceAccount
+    name: rails
+    namespace: test
+roleRef:
+  kind: Role
+  name: query-pods
+  apiGroup: rbac.authorization.k8s.io

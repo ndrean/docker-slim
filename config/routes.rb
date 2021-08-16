@@ -10,8 +10,12 @@ Rails.application.routes.draw do
   root to: 'pages#home'
 
   # React endpoints
-  # get '/incrCounters', to: 'pages#incr_counters'
+  # post '/incrCounters', to: "counters#create"
   get '/startWorkers', to: 'pages#start_workers'
   get '/getCounters', to: 'counters#get_counters'
-  # post '/incrCounters', to: "counters#create"
+
+  get '/ready', to: 'ready#index' 
+  # resources :ready, only: [:index]
+
+  
 end

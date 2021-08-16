@@ -4,13 +4,13 @@ kind: PersistentVolume
 metadata:
   name: pg-pv
   labels:
-    #   type: local
+    type: local-db
     app: pg
 spec:
-  storageClassName: standard
+  # storageClassName: standard
   capacity:
-    storage: 100Mi
+    storage: 150Mi
   accessModes:
     - ReadWriteMany
   hostPath: # for dvpt on single-node such as Minikube, to emulate network attached vol
-    path: "/tmp/data"
+    path: "/tmp/data/"

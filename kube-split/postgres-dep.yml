@@ -46,12 +46,12 @@ spec: # of the deployment
           imagePullPolicy: "IfNotPresent"
           resources:
             limits:
-              memory: "150Mi"
+              memory: "100Mi"
               cpu: "16m"
           ports:
             - containerPort: 5432
           volumeMounts:
-            - mountPath: "/var/lib/postgresql/data"
+            - mountPath: $(PGDATA)
               name: pg-pv # must match pv
               readOnly: false
           envFrom:
@@ -59,24 +59,33 @@ spec: # of the deployment
                 name: config
             - secretRef:
                 name: secrets
-          # env:
-          # - name: POSTGRES_PASSWORD
-          #   # value: "dockerpassword"
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: secrets
-          #       key: postgres_password
-          # - name: POSTGRES_USER
-          #   # value: "postgres"
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: secrets
-          #       key: postgres_user
-          # - name: DATABASE
-          #   value: "ortkcbqt"
-          # - name: PGDATA
-          #   value: /var/lib/postgresql/data
-
+          # readinessProbe:
+          #   exec:
+          #     command: [
+          #         "bash",
+          #         "-c",
+          #         "pg_isready",
+          #         "-U",
+          #         $POSTGRES_USER
+          #         "-h",
+          #         "localhost",
+          #         "-p",
+          #         "5432",
+          #       ]
+          #     # command:
+          #     #   - psql
+          #     #   - "- U"
+          #     #   - "postgres"
+          #     #   - "-d"
+          #     #   - "ortkcbqt"
+          #     #   - "-c"
+          #     #   - "SELECT 1;"
+          #     initialDelaySeconds: 60
+          #     periodSeconds: 60
+          #     timeoutSeconds: 15
+          #     failureThreshold: 3000
+          #  psql -w -U $POSTGRES_USER -h localhost -d $POSTGRES_DB -c 'SELECT 1;'
+          # pg_isready -U $POSTGRES_USER -h localhost -p 5432
 ---
 # we bind the resource PV to the pod
 apiVersion: v1
@@ -84,10 +93,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: pg-pvc
 spec:
-  storageClassName: standard
+  # storageClassName: standard
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 50Mi
-  #### volumeName: pg-pv
+      storage: 100Mi

@@ -8,7 +8,7 @@ class HardJob < ApplicationJob
   end
 
   def perform(*args)
-    puts Rails.logger.info ' !!!!!!!! I am a JOB, doing a heavy job: fetching an API ......!!!!!!!'
+    puts Rails.logger.info ' ==> I am a JOB, doing a heavy job: fetching an API ......!!!!!!!'
     
     obj = PagesHelper.get_api(2) || nil
     puts Rails.logger.info "JOB:.#{obj}..||..#{obj["title"]}...is...#{obj["completed"]}"

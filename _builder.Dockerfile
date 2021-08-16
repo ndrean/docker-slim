@@ -27,4 +27,5 @@ RUN yarn --check-files --silent --production && yarn cache clean
 
 COPY . ./
 
-RUN bundle exec rails assets:precompile
+RUN bundle exec rails webpacker:compile
+# assets:precompile

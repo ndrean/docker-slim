@@ -3,12 +3,11 @@ kind: PersistentVolume
 metadata:
   name: data
   labels:
-    #   type: local
     app: data
 spec:
-  storageClassName: hostpath
+  # storageClassName: "standard"
   capacity:
-    storage: 100Mi
+    storage: 150Mi
   accessModes:
     - ReadWriteMany
   hostPath: # for dvpt on single-node such as Minikube, to emulate network attached vol

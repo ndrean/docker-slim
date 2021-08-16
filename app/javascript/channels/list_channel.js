@@ -4,7 +4,7 @@ const listChannel = consumer.subscriptions.create(
   { channel: "ListChannel" },
   {
     connected() {
-      // Called when the subscription is ready for use on the server
+      this.perform("get_pods");
     },
 
     disconnected() {
@@ -12,7 +12,7 @@ const listChannel = consumer.subscriptions.create(
     },
 
     received(data) {
-      console.log(data);
+      // console.log(data);
     },
   }
 );

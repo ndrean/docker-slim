@@ -5,7 +5,7 @@ metadata:
   labels: # must match the service
     app: rails
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels: # which pods are we deploying
       app: rails
@@ -19,10 +19,17 @@ spec:
       labels: # must match service and replicaset matchlabel
         app: rails
     spec:
-      serviceAccountName: rails
+      serviceAccountName: rails #<--- test access k8 cli in pod
+
+      # initContainers:
+      #   - name: migrations-check
+      #     image: ndrean/rails-base
+      #     args:
+      #       - rails
+      #       - db:abort_if_pending_migrations
       containers:
         - name: backend
-          image: ndrean/rails-kube
+          image: ndrean/rails-base
           imagePullPolicy: "Always"
           resources:
             limits:
@@ -37,10 +44,13 @@ spec:
                 name: config
             - secretRef:
                 name: secrets
-          # env:
-          #   - name: REDIS_SIDEKIQ
-          #     value: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424/0"
-
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+              scheme: HTTP
+              initialDelaySeconds: 60
+              periodSeconds: 60
 ---
 apiVersion: v1
 kind: Service

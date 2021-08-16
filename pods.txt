@@ -1,8 +1,0 @@
-cable-dep-76fd6d96bc-zdgmf
-nginx-dep-559bfdf7d6-lnbq9
-pg-dep-0
-rails-dep-75dc5dcb67-g5qmf
-rails-dep-75dc5dcb67-jtjb9
-rails-dep-75dc5dcb67-rg7fr
-redis-dep-0
-sidekiq-dep-5d7bcb564d-rfjnd

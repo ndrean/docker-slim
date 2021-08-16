@@ -13,6 +13,8 @@ gem 'puma', '~> 5.0'
 gem 'webpacker', '~> 5.0'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
+
+gem 'faraday'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
 # Use Active Model has_secure_password
@@ -25,7 +27,7 @@ gem 'hiredis'
 
 gem 'sidekiq'
 gem 'sidekiq-failures', '~> 1.0'
-gem 'sidekiq_alive'
+#gem 'sidekiq_alive'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false

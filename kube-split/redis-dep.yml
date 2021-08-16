@@ -21,13 +21,13 @@ spec:
   serviceName: redis
   selector:
     matchLabels:
-      app: redis
+      app: redis # match spec.template.labels
   replicas: 1
   template:
     metadata:
       name: redis-pod
       labels:
-        app: redis
+        app: redis # match spec.selector.matchLabels
     spec:
       containers:
         - name: redis
@@ -40,6 +40,12 @@ spec:
             limits:
               cpu: "50m"
               memory: "50Mi"
+          livenessProbe:
+            exec:
+              command: ["redis-cli", "ping"]
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 3
           volumeMounts:
             # -  mountPath: /redis-master  # <- the config vol is mounted here
             #    name: config
@@ -48,8 +54,6 @@ spec:
               mountPath: "/data"
               readOnly: false
       # volumes:
-      #   - name: data
-      #     emptyDir: {}
       #   - name: config-redis
       #     configMap:
       #       name: redis-conf
@@ -60,8 +64,8 @@ spec:
     - metadata:
         name: data
       spec:
-        accessModes: ["ReadWriteMany"]
-        # storageClassName: "hostpath"
+        accessModes: ["ReadWriteMany"] # <- changed from many
+        # storageClassName: ""
         resources:
           requests:
-            storage: 50Mi
+            storage: 110Mi

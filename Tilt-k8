@@ -1,6 +1,0 @@
-# -*- mode: Python -*-
-
-k8s_yaml(['./kube-access/service-account.yml',
-   './kube-access/role.yml',
-   './kube-access/role-binding.yml',
-   './kube-access/pod.yml'])

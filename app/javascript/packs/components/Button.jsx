@@ -15,7 +15,13 @@ const Button = () => {
   useEffect(() => {
     async function initCounter() {
       try {
-        // listChannel.received = (data)=> { console.log(data)}
+        listChannel.received = (data) => {
+          console.log("data", data);
+          if (data) {
+            data.item.map(i=> console.log(i.name))
+          }
+          // if (data) console.log("k8: ", JSON.parse(data));
+        };
         hitChannel.received = (data) => {
           console.log(data);
           if (data) return setHitCounts(data.hits_count);
@@ -69,7 +75,7 @@ const Button = () => {
     <>
       <div className="flexed">
         <button className="button" onClick={handleClick}>
-          Click me!
+          Click me!!
         </button>
 
         {counters && (
