@@ -16,7 +16,7 @@ metadata:
   name: query-pods
 subjects:
   - kind: ServiceAccount
-    name: rails
+    name: sidekiq
     namespace: test
 roleRef:
   kind: Role

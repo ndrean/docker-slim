@@ -6,36 +6,48 @@ class CurlJob < ApplicationJob
   class Error < StandardError
   end
 
-  def perform(*args)
-    # Point to the internal API server hostname
-    # apiserver= 'https://kubernetes.default.svc'
+  def perform
+    
     # # Path to ServiceAccount token
     serviceaccount= '/var/run/secrets/kubernetes.io/serviceaccount'
     # # Read this Pod's namespace
     namespace=File.read("#{serviceaccount}/namespace")
-    # # Read this Pod's namespace
-    # token= File.read("#{serviceaccount}/token")
-    # # Reference the internal certificate authority (CA)
-    # cacert= "#{serviceaccount}/ca.crt"
-    # uri = URI("#{apiserver}/api/v1/namespaces/#{namespace}/pods")
-    # headers = {
-    #   'Authorization'=> "Bearer #{token}",
-    #   'Content-Type'=> 'application/json',
-    #   'Accept' => 'application/json',
-    #   'carcert' => "#{cacert}"
-    # }
-    # res={}
-    # res['net'] = Net::HTTP.get_response(uri, nil, headers).body
-    # puts res
+  
+    uri = "http://127.0.0.1:8001/api/v1/namespaces/#{namespace}/pods"
+    data = {}
+    
+    response = URI.open(uri).read
 
-    uri = URI("http://127.0.0.1:8001/api/v1/namespaces/#{namespace}/pods")
-    # data = {}
-    # data['response'] = Faraday.get(uri).body
-    response = Faraday.get(uri).body
-    data = JSON.parse(response)['items'].map {|item| item['metadata']['name'] }.map.with_index { |i,v| [v,i] }.to_h
-    puts data
-    # File.open('pods.json','w') { |f| f.write } #-> to be save in PGSQL
+    current_host = Socket.gethostname
+    result_array = JSON.parse(response)['items'].map { |item| item['metadata']['name'] }#.map.with_index { |i,v| [i,v] }.to_h
+    result_array.each do |host|
+      record  = Counter.find_or_create_by(hostname: host)
+      record.nb = 1 if !record.nb
+      record.nb += 1 if record.hostname == current_host
+      record.update(nb: record.nb )
+      data[host.to_sym] = {
+        nb: record.nb,
+        created_at:  record.created_at.strftime("%H:%M:%S:%L")
+      }
+    end
+    
     ActionCable.server.broadcast('list_channel', data.as_json)
+    puts data
+
+  rescue StandardError => e
+    puts e.message
   end
 end
-
+# Point to the internal API server hostname
+# apiserver= 'https://kubernetes.default.svc'
+# token= File.read("#{serviceaccount}/token")
+# Reference the internal certificate authority (CA)
+# cacert= "#{serviceaccount}/ca.crt"
+# request = URI.open("#{apiserver}/api/v1/namespaces/#{namespace}/pods",
+#   {
+#       'Authorization'=> "Bearer #{token}",
+#       'Content-Type'=> 'application/json',
+#       'Accept' => 'application/json',
+#       'cacert' => "#{cacert}"
+#     }
+#   )

@@ -63,7 +63,7 @@ k8s_yaml('./kube-split/cable-dep.yml')
 k8s_yaml('./kube-split/nginx-dep.yml')
 
 # k8s_resource('rails-dep', resource_deps=['pg-dep', 'redis-dep'])
-k8s_resource('sidekiq-dep', resource_deps=['redis-dep'])
+k8s_resource('sidekiq-dep', resource_deps=['redis-dep','pg-dep'])
 k8s_resource('cable-dep', resource_deps=['redis-dep'])
 k8s_resource('nginx-dep', resource_deps=['rails-dep', 'cable-dep'])
 
@@ -85,7 +85,7 @@ k8s_resource('db-migrate',
    trigger_mode=TRIGGER_MODE_MANUAL,
    auto_init=False
 )
-k8s_yaml('./kube-split/migrate.yml' )
+k8s_yaml('./kube-split/migrate.yml' ) # <- the label is 'db-migrate'
 
 local_resource('All pods',
    'kubectl get pods',

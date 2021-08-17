@@ -1,7 +1,7 @@
 import consumer from "./consumer";
 
-const counterChannel = consumer.subscriptions.create(
-  { channel: "CounterChannel" },
+const clickChannel = consumer.subscriptions.create(
+  { channel: "ClickChannel" },
   {
     connected() {
       console.log("click connected");
@@ -11,8 +11,8 @@ const counterChannel = consumer.subscriptions.create(
       // overwritten in Button.js
     },
     sending(data) {
-      this.perform("receiving", { countPG: data });
+      this.perform("receiving", data);
     },
   }
 );
-export default counterChannel;
+export default clickChannel;

@@ -15,20 +15,24 @@
   </head>
 
   <body>
-    <%= image_pack_tag 'media/images/kubernetes.png', class: "img", alt:"k8" %>
-    <%= image_pack_tag 'media/images/Rails.png', class: "img-large", alt:"rails" %>
-    <%= image_pack_tag 'media/images/docker2.png', class: "img", alt:"dokcer" %>
-    <%= image_pack_tag 'media/images/Redis.png',class: "img-large", alt:"redis" %> 
-    <%= image_pack_tag 'media/images/sidekiq.png', class: "img", alt:"sidekiq" %> 
-    <%= image_pack_tag 'media/images/Postgres.png', class: "img-large", alt:"pg" %>
-    <%= image_pack_tag 'media/images/Elephantsql.jpg', class: "img", alt:"elphtsql" %>
-    <%# image_pack_tag 'media/images/FrontReact.png', class: "img-med"  %>
-    <img src="<%= asset_pack_path 'media/images/FrontReact.png' %>" class="img-med" alt="logo"></img>
-    <%= image_pack_tag 'media/images/websocket.jpg', class: 'img', alt: 'ws' %>
+    
+    <header>
+      <%= image_pack_tag 'media/images/kubernetes.png', class: "img", alt:"k8" %>
+      <%= image_pack_tag 'media/images/Rails.png', class: "img-large", alt:"rails" %>
+      <%= image_pack_tag 'media/images/docker2.png', class: "img", alt:"dokcer" %>
+      <%= image_pack_tag 'media/images/Redis.png',class: "img-large", alt:"redis" %> 
+      <%= image_pack_tag 'media/images/sidekiq.png', class: "img", alt:"sidekiq" %> 
+      <%= image_pack_tag 'media/images/Postgres.png', class: "img-large", alt:"pg" %>
+      <%= image_pack_tag 'media/images/Elephantsql.jpg', class: "img", alt:"elphtsql" %>
+      <%# image_pack_tag 'media/images/FrontReact.png', class: "img-med"  %>
+      <img src="<%= asset_pack_path 'media/images/FrontReact.png' %>" class="img-med" alt="logo"></img>
+      <%= image_pack_tag 'media/images/websocket.jpg', class: 'img', alt: 'ws' %>
+    </header>
 
+  
     <%= yield %>
 
-    <h5>The Rails host is: <%= ENV['HOSTNAME'] %></h5>
+    
     <p>Browser's IP: <%= @origin %></p>
     <code>
       MASTER_KEY: <%= ENV.fetch('RAILS_MASTER_KEY','') %>

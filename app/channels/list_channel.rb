@@ -4,6 +4,7 @@ class ListChannel < ApplicationCable::Channel
   end
 
   def get_pods()
+    # stream the GET to the Kubernetes API (Sidekiq with sidecar K8 server)
     CurlJob.perform_later
   end
 

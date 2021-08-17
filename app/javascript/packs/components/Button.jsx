@@ -4,39 +4,40 @@ import fetchCounters from "../utils/fetchCounters.js";
 // import postCounters from "../utils/postCounters.js";
 import startWorkers from "../utils/startWorkers.js";
 
-import counterChannel from "../../channels/counter_channel.js";
+import clickChannel from "../../channels/click_channel.js";
 import hitChannel from "../../channels/hit_channel.js";
 import listChannel from "../../channels/list_channel.js";
 
 const Button = () => {
-  const [counters, setCounters] = useState({});
-  const [hitCounts, setHitCounts] = useState();
+  const [clickCount, setClickCount] = useState({});
+  const [hitCount, setHitCount] = useState({});
+  const [pods, setPods] = useState({});
 
   useEffect(() => {
     async function initCounter() {
       try {
         listChannel.received = (data) => {
           console.log("data", data);
-          if (data) {
-            data.item.map(i=> console.log(i.name))
-          }
-          // if (data) console.log("k8: ", JSON.parse(data));
+          setPods(data);
         };
         hitChannel.received = (data) => {
           console.log(data);
-          if (data) return setHitCounts(data.hits_count);
+          if (data) return setHitCount({ hitCount: data.hitCount });
         };
 
         let i = 0;
-        counterChannel.received = ({ countPG }) => {
-          if (countPG) {
+        clickChannel.received = (data) => {
+          if (data) {
+            console.log(data);
             i = 1;
-            return setCounters({ countPG });
+            const { clickCount } = data;
+            return setClickCount({ clickCount });
           }
         };
         if (i === 0) {
-          const { countPG } = await fetchCounters("/getCounters");
-          setCounters({ countPG: Number(countPG) });
+          const { clickCount, hitCount } = await fetchCounters("/getCounters");
+          setClickCount({ clickCount: Number(clickCount) });
+          setHitCount({ hitCount: Number(hitCount) });
         }
       } catch (err) {
         console.warn(err);
@@ -49,10 +50,12 @@ const Button = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      let { countPG } = counters;
-      if (!countPG) countPG = 0;
-      countPG += 1;
-      counterChannel.sending(countPG);
+      setClickCount((prev) => {
+        const update = prev.clickCount + 1;
+        clickChannel.sending({ clickCount: update });
+        return { clickCount: update };
+      });
+
       await startWorkers().catch((err) => console.log(err));
       // await Promise.any([
       //   // postCounters("/incrCounters", { countPG })
@@ -78,13 +81,34 @@ const Button = () => {
           Click me!!
         </button>
 
-        {counters && (
-          <div>
-            <h1>Click counter: {counters.countPG}</h1>
-            <br />
-            <h1>Total page hits: {hitCounts}</h1>
-          </div>
-        )}
+        {/* {(hitCount || clickCout) && ( */}
+        <div>
+          <h1>Click counter: {clickCount?.clickCount}</h1>
+          <br />
+          <h1>Page hits: {hitCount?.hitCount}</h1>
+        </div>
+        {/* )} */}
+      </div>
+      <br />
+
+      <div className="aligned flexed">
+        <table style={{ border: "1", rules: "rows" }}>
+          <tr>
+            <th>Pod_ID</th>
+            <th>Counts</th>
+            <th>Create at</th>
+          </tr>
+          {pods &&
+            Object.keys(pods).map((pod) => {
+              return (
+                <tr>
+                  <td>{pod}</td>
+                  <td>{pods[pod]?.nb}</td>
+                  <td>{pods[pod]?.created_at}</td>
+                </tr>
+              );
+            })}
+        </table>
       </div>
     </>
   );

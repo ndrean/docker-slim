@@ -19,7 +19,7 @@ spec:
       labels: # must match service and replicaset matchlabel
         app: rails
     spec:
-      serviceAccountName: rails #<--- test access k8 cli in pod
+      # serviceAccountName: rails #<--- test access k8 cli in pod
 
       # initContainers:
       #   - name: migrations-check
