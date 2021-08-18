@@ -18,13 +18,13 @@ class CurlJob < ApplicationJob
     
     response = URI.open(uri).read
 
-    current_host = Socket.gethostname
+    # current_host = Socket.gethostname
     result_array = JSON.parse(response)['items'].map { |item| item['metadata']['name'] }#.map.with_index { |i,v| [i,v] }.to_h
     result_array.each do |host|
       record  = Counter.find_or_create_by(hostname: host)
       record.nb = 1 if !record.nb
-      record.nb += 1 if record.hostname == current_host
-      record.update(nb: record.nb )
+      # record.nb += 1 if record.hostname == current_host
+      # record.update(nb: record.nb )
       data[host.to_sym] = {
         nb: record.nb,
         created_at:  record.created_at.strftime("%H:%M:%S:%L")

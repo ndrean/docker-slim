@@ -31,7 +31,7 @@ class PagesController < ApplicationController
   def start_workers
     # background WORKER with Sidekiq: 
     HardWorker.perform_async
-    return render json: { status: :no_content }
+    return render json: {status: :no_content}
   rescue StandardError => e
     puts e.message
     render json: { status: 500}

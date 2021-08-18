@@ -5,7 +5,7 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 *.rdb
 # Ignore bundler config.
-/.bundle
+.bundle
 
 # Ignore all logfiles and tempfiles.
 /log/*

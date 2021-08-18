@@ -5,7 +5,7 @@ metadata:
   labels: # must match the service
     app: rails
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels: # which pods are we deploying
       app: rails
@@ -35,6 +35,7 @@ spec:
             limits:
               cpu: "150m"
               memory: "256Mi"
+          # command: ["/bin/sh", "-c", "sleep 10m"]
           command: ["bundle"]
           args: ["exec", "rails", "server", "-b", "0.0.0.0"]
           ports:
@@ -49,7 +50,7 @@ spec:
               path: /ready
               port: 3000
               scheme: HTTP
-              initialDelaySeconds: 60
+              initialDelaySeconds: 120
               periodSeconds: 60
 ---
 apiVersion: v1

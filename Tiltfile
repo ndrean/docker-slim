@@ -6,7 +6,7 @@ k8s_yaml([
    './kube-split/nginx-config.yml',
    './kube-split/pg-db-pv.yml', 
    './kube-split/redis-pv.yml',
-   #'./kube-split/k8-serv-dep.yml'
+   # './kube-split/k8-serv-dep.yml'
 ])
 
 k8s_yaml('./kube-split/postgres-dep.yml')
@@ -14,47 +14,60 @@ k8s_yaml('./kube-split/redis-dep.yml')
 
 k8s_yaml(['./kube-split/role.yml', './kube-split/service-account.yml'])
 
+docker_build('ndrean/serverk8-proxy',
+   '.',
+   dockerfile='./docker/k8.Dockerfile'
+)
 
-docker_build( 'ndrean/builder',
+docker_build( 'builder',
   '.', 
-  dockerfile="_builder.Dockerfile",
+  dockerfile="./docker/builder.Dockerfile", # <- Bob
   build_args={
      "RUBY_VERSION": "3.0.2-alpine",
      "NODE_ENV": "production",
      "RAILS_ENV": "production",
-     "BUNDLER_VERSION": "2.2.25"
-  },
-  only=['./app','./public/','./package.json', './yarn.lock','./Gemfile','./Gemfile.lock','./_builder.Dockerfile'],
-  live_update=[sync('./app','/app/')],
-  ignore=['./Tiltfile','./kube-split/']
+     "BUNDLER_VERSION": "2.2.25",
+   },
+   # only=['app','public','package.json', 'yarn.lock','Gemfile','Gemfile.lock'],
+   live_update=[sync('app','/app/')],
+   ignore=['./Tiltfile','./kube-split/','./docker/']
 )
 
-docker_build("ndrean/nginx-ws",
-  ".",
-  dockerfile="_nginx-split.Dockerfile",
-  build_args={
-     "RUBY_VERSION": "3.0.2-alpine",
-     "NODE_ENV": "production",
-     "RAILS_ENV": "production",
-     "BUNDLER_VERSION": "2.2.25"
-  },
-  only=['_nginx-split.Dockerfile','./app','./package.json', './yarn.lock','./Gemfile','./Gemfile.lock'],
-  live_update=[sync('./app','/app/app')],
-  ignore=['./Tiltfile','./kube-split/']
+docker_build('ndrean/rails-base',
+   '.',
+   build_args={
+     "RUBY_VERSION": "3.0.2-alpine",      
+     "RAILS_ENV": "production",   
+     "RAILS_LOG_TO_STDOUT": "true",
+   },
+   # only=['app'],
+   # only=['app','bin', 'package.json', 'yarn.lock','Gemfile','Gemfile.lock'],
+   dockerfile='./docker/rails.Dockerfile',
+   live_update=[sync('app','/app/')],
+   ignore=['./Tiltfile','./kube-split/','./docker/']
 )
 
-custom_build('ndrean/rails-base',
-  'docker build -t $EXPECTED_REF \
-  --build-arg RUBY_VERSION=3.0.2-alpine \
-  --build-arg NODE_ENV=production \
-  --build-arg RAILS_ENV=production \
-  --build-arg RAILS_SERVE_STATIC_FILES=false \
-  --build-arg BUNDLER_VERSION=2.2.25 \
-  -f _alpine.prod.Dockerfile .',
-  ['.'],
-  live_update=[sync('./app','/app/app')] ,
-  ignore=['./Tiltfile','./kube-split/']
-)
+# custom_build('ndrean/rails-base',
+#   'docker build -t $EXPECTED_REF \
+#   --build-arg RUBY_VERSION=3.0.2-alpine \
+#   --build-arg RAILS_ENV=production \
+#   --build-arg RAILS_LOG_TO_STDOUT=true \
+#   -f docker/rails.Dockerfile .',
+#   ['.'],
+# #   live_update=[sync('./app','/app/')] ,
+#   ignore=['./Tiltfile','./kube-split/','./docker/']
+# )
+
+
+docker_build('ndrean/nginx-ws',
+   '.',
+   dockerfile='./docker/nginx-split.Dockerfile',
+   # only=['app'],
+   # only=['./app','./package.json', './yarn.lock','./Gemfile','./Gemfile.lock','public'],
+   # live_update=[sync('./app','/app/')],
+   ignore=['./Tiltfile','./kube-split/','./docker/']
+ )
+
 
 
 k8s_yaml('./kube-split/rails-dep.yml')
@@ -62,7 +75,7 @@ k8s_yaml('./kube-split/sidekiq-dep.yml')
 k8s_yaml('./kube-split/cable-dep.yml')
 k8s_yaml('./kube-split/nginx-dep.yml')
 
-# k8s_resource('rails-dep', resource_deps=['pg-dep', 'redis-dep'])
+k8s_resource('rails-dep', resource_deps=['pg-dep', 'redis-dep'])
 k8s_resource('sidekiq-dep', resource_deps=['redis-dep','pg-dep'])
 k8s_resource('cable-dep', resource_deps=['redis-dep'])
 k8s_resource('nginx-dep', resource_deps=['rails-dep', 'cable-dep'])
@@ -73,12 +86,6 @@ k8s_resource('nginx-dep', resource_deps=['rails-dep', 'cable-dep'])
 #   kubectl exec $POD_NAME -- bundle exec rails db:migrate' ,resource_deps=['rails-dep','sidekiq-dep','cable-dep',','nginx-dep'])
 
 
-# local_resource('migrate',
-#    'kubectl apply -f ./kube-split/migrate.yml',
-#    resource_deps=['rails-dep','pg-dep'],
-#    trigger_mode=TRIGGER_MODE_MANUAL,
-#    auto_init=False
-# )
 
 k8s_resource('db-migrate', 
    resource_deps=['rails-dep','pg-dep'],
@@ -91,7 +98,6 @@ local_resource('All pods',
    'kubectl get pods',
    resource_deps=['rails-dep','sidekiq-dep','cable-dep','nginx-dep']
 )
-
 
 local_resource('Rails pods',
    "kubectl get pods -l app=rails -o go-template --template '{{range .items}}{{.metadata.name}}{{\"\n\"}}{{end}}' -o=name ",
