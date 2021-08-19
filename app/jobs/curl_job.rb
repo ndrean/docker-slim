@@ -1,6 +1,6 @@
 class CurlJob < ApplicationJob
-    require 'faraday'
-    
+    require 'open3'
+    require 'oj'
     queue_as :default
     
   class Error < StandardError
@@ -8,26 +8,29 @@ class CurlJob < ApplicationJob
 
   def perform
     
-    # # Path to ServiceAccount token
+    # Path to ServiceAccount token
     serviceaccount= '/var/run/secrets/kubernetes.io/serviceaccount'
-    # # Read this Pod's namespace
     namespace=File.read("#{serviceaccount}/namespace")
-  
-    uri = "http://127.0.0.1:8001/api/v1/namespaces/#{namespace}/pods"
-    data = {}
-    
-    response = URI.open(uri).read
+    apiserver= 'https://kubernetes.default.svc'
+    token= File.read("#{serviceaccount}/token")
+    cacert= "#{serviceaccount}/ca.crt"
+    request = `curl --cacert #{cacert} --header "Authorization: Bearer #{token}" #{apiserver}/api/v1/namespaces/#{namespace}/pods `
 
-    # current_host = Socket.gethostname
-    result_array = JSON.parse(response)['items'].map { |item| item['metadata']['name'] }#.map.with_index { |i,v| [i,v] }.to_h
+    # with proxy the side-car k8 server
+    # uri = "http://127.0.0.1:8001/api/v1/namespaces/#{namespace}/pods"
+    # data = URI.open(uri).read
+
+    data = {}
+
+    result_array = Oj.load(request)['items'].map { |item| item['metadata']['name'] }#.map.with_index { |i,v| [i,v] }.to_h
     result_array.each do |host|
       record  = Counter.find_or_create_by(hostname: host)
       record.nb = 1 if !record.nb
-      # record.nb += 1 if record.hostname == current_host
-      # record.update(nb: record.nb )
+      record.nb += 1 if record.hostname == REDIS.get('railsID')
+      record.update(nb: record.nb )
       data[host.to_sym] = {
         nb: record.nb,
-        created_at:  record.created_at.strftime("%H:%M:%S:%L")
+        created_at:  record.created_at.strftime("%H:%M:%S:%L"),
       }
     end
     
@@ -38,11 +41,7 @@ class CurlJob < ApplicationJob
     puts e.message
   end
 end
-# Point to the internal API server hostname
-# apiserver= 'https://kubernetes.default.svc'
-# token= File.read("#{serviceaccount}/token")
-# Reference the internal certificate authority (CA)
-# cacert= "#{serviceaccount}/ca.crt"
+#
 # request = URI.open("#{apiserver}/api/v1/namespaces/#{namespace}/pods",
 #   {
 #       'Authorization'=> "Bearer #{token}",

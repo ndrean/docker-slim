@@ -4,21 +4,16 @@ FROM ruby:${RUBY_VERSION:-3.0.2-alpine}
 ARG BUNDLER_VERSION
 ARG NODE_ENV
 ARG RAILS_ENV
-# ARG BUNDLE_PATH
-
-# ENTRYPOINT ["./unsetpath.sh"]
 
 ENV BUNDLER_VERSION=${BUNDLER_VERSION} \
    RAILS_ENV=${RAILS_ENV} \
    NODE_ENV=${NODE_ENV}
-# BUNDLE_PATH=${BUNDLE_PATH}
 
 RUN apk -U upgrade && apk add --no-cache \
    postgresql-dev nodejs yarn build-base tzdata
 
 ENV PATH /app/bin:$PATH
 WORKDIR /app
-
 
 COPY Gemfile Gemfile.lock package.json yarn.lock ./
 

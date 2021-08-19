@@ -82,27 +82,37 @@ const Button = () => {
         </button>
 
         <div className="counters">
-          <h1>Click count: {clickCount?.clickCount}</h1>
+          <h1>
+            Click count: <span>{clickCount?.clickCount}</span>
+          </h1>
           <br />
-          <h1>Page hits: {hitCount?.hitCount}</h1>
+          <h1>
+            Page hits: <span>{hitCount?.hitCount}</span>
+          </h1>
         </div>
         <div className="flexed">
-          <table style={{ border: "1", rules: "rows" }}>
-            <tr>
-              <th>Pod_ID</th>
-              <th>Counts</th>
-              <th>Created at</th>
-            </tr>
-            {pods &&
-              Object.keys(pods).map((pod) => {
-                return (
-                  <tr>
-                    <td>{pod}</td>
-                    <td>{pods[pod]?.nb}</td>
-                    <td>{pods[pod]?.created_at}</td>
-                  </tr>
-                );
-              })}
+          <table className="styled-table">
+            <thead>
+              <tr>
+                <th>Pod_ID</th>
+                <th>Counts</th>
+                <th>Created at</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pods &&
+                Object.keys(pods).map((pod) => {
+                  return (
+                    <tr>
+                      <td>{pod}</td>
+                      <td>
+                        <span className="badge">{pods[pod]?.nb}</span>
+                      </td>
+                      <td>{pods[pod]?.created_at}</td>
+                    </tr>
+                  );
+                })}
+            </tbody>
           </table>
         </div>
       </div>

@@ -18,7 +18,7 @@ class PagesController < ApplicationController
       one = ActiveRecord::Base.connection.execute("SELECT 1").getvalue(0,0)
       raise PagesController::Error.new("PG is down") if (one != 1)
       puts "PG is UP"
-    rescue StandError => e
+    rescue StandardError => e
       puts e.message
     end
 
@@ -26,6 +26,8 @@ class PagesController < ApplicationController
     SidekiqHelper.check
     
     @origin = request.remote_ip
+
+    REDIS.set('railsID', ENV['HOSTNAME'])
   end
 
   def start_workers

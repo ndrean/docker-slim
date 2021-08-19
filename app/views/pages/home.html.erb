@@ -1,8 +1,13 @@
-<h2>Rails app running on K8s,  with PostgreSQL & Redis database, running the queries with jobs and broadcasting back with Websockets</h2>
+<h1 class='title'>Rails app running on K8s</h1>
+
+<h3>Stack: PostgreSQL, Redis, Sidekiq, ActionCable, React </h3>
 <br>
-<h3> Open another browser to check the web sockets</h3>
+<h3>Open another browser to check the web sockets. Queries with jobs and broadcasting back with Websockets and call to k8 API</h3>
+
 <br>
-<h3>Rails host: <%= ENV['HOSTNAME'] %></h3>
+<h3>Rails host: <span class="badge"><%= ENV['HOSTNAME'] %></span></h3>
+<br>
+<p>Browser's IP: <%= @origin %></p>
 <br>
 <div id='root'></div>
 

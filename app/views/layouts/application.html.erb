@@ -16,7 +16,7 @@
 
   <body>
     
-    <header>
+    <header class='images'>
       <%= image_pack_tag 'media/images/kubernetes.png', class: "img", alt:"k8" %>
       <%= image_pack_tag 'media/images/Rails.png', class: "img-large", alt:"rails" %>
       <%= image_pack_tag 'media/images/docker2.png', class: "img", alt:"dokcer" %>
@@ -33,7 +33,6 @@
     <%= yield %>
 
     
-    <p>Browser's IP: <%= @origin %></p>
     <code>
       MASTER_KEY: <%= ENV.fetch('RAILS_MASTER_KEY','') %>
     </code>

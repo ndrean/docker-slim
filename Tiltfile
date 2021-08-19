@@ -14,10 +14,10 @@ k8s_yaml('./kube-split/redis-dep.yml')
 
 k8s_yaml(['./kube-split/role.yml', './kube-split/service-account.yml'])
 
-docker_build('ndrean/serverk8-proxy',
-   '.',
-   dockerfile='./docker/k8.Dockerfile'
-)
+# docker_build('ndrean/serverk8-proxy',
+#    '.',
+#    dockerfile='./docker/k8.Dockerfile'
+# )
 
 docker_build( 'builder',
   '.', 
@@ -62,9 +62,6 @@ docker_build('ndrean/rails-base',
 docker_build('ndrean/nginx-ws',
    '.',
    dockerfile='./docker/nginx-split.Dockerfile',
-   # only=['app'],
-   # only=['./app','./package.json', './yarn.lock','./Gemfile','./Gemfile.lock','public'],
-   # live_update=[sync('./app','/app/')],
    ignore=['./Tiltfile','./kube-split/','./docker/']
  )
 
