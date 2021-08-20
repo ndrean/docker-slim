@@ -1,24 +1,24 @@
+kind: Role #<- more permissions with ClusterRole (for eg nodes)
 apiVersion: rbac.authorization.k8s.io/v1
-# kind: Role # -> for namespaced
-kind: Role # ->
 metadata:
-  name: query-pods
+  name: query-pods #<- match rolebinding.roleref.name
   # namespace: test
 rules:
-  - apiGroups: [""]
-    resources: ["pods"]
+  - apiGroups: [""] #<- core API group
+    resources: ["pods", "service"]
     verbs: ["get", "watch", "list"]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: RoleBinding #<- ClusterRoleBnding if ClusterRole
 metadata:
   name: query-pods
+  # namespace: test <- none if ClusterRole
 subjects:
   - kind: ServiceAccount
     name: sidekiq
-    namespace: test
+    # apiGroup: rbac.authorization.k8s.io ??
 roleRef:
   kind: Role
-  name: query-pods
+  name: query-pods #<- must match role.metadata.name
   apiGroup: rbac.authorization.k8s.io

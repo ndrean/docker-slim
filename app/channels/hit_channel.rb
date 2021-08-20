@@ -1,12 +1,15 @@
 class HitChannel < ApplicationCable::Channel
   def subscribed
     stream_from "hit_channel" # pubsub
+    HitJob.perform_later #<- on connection()
   end
 
-    # the "hits_channel.js" has a "connected" method that will call
-    #  the "HitsChannel::hits" method to increment and broadcast 
+    # the "hitsChannel.connected()" method always calls "HitChannel::subscribed"
+    # so we can put "HitJob.perform_later" in it.
+    # Alternatively, since we defined "this.perform("trigger_hits")", it will call
+    # the "HitsChannel::trigger_hits" method.
   def trigger_hits
-    HitJob.perform_later
+    # HitJob.perform_later
   end
   
   # to illustrate the "send"
