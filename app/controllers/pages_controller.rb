@@ -1,9 +1,6 @@
 class PagesController < ApplicationController
   include SidekiqHelper
-  class Error < StandardError
-  end
 
-  # skip_before_action :verify_authenticity_token
 
   def home    
     # <- test Redis database: to be rescued
@@ -27,6 +24,7 @@ class PagesController < ApplicationController
     
     @origin = request.remote_ip
 
+    #<- grab Rails podID
     REDIS.set('railsID', ENV['HOSTNAME'])
   end
 

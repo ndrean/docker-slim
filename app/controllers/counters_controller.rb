@@ -1,6 +1,4 @@
 class CountersController < ApplicationController
-   class Error < StandardError
-   end
 
    def get_counters
       begin

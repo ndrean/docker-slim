@@ -7,15 +7,11 @@ class HitJob < ApplicationJob
       record = Counter.find_or_create_by(hostname: host_name)
       !record.nb ? (record.nb = 1) : (record.nb += 1)
       record.update(nb: record.nb )
-
       data = {
          'hitCount' => REDIS.get('hitCount').to_i,
          host_name.to_sym => record.nb,
       }
-   
-      ActionCable.server.broadcast('hit_channel', data.as_json)
-      puts data
-      
+      ActionCable.server.broadcast('hit_channel', data.as_json)      
    rescue StandardError => e
       puts e.message
    end

@@ -4,8 +4,11 @@ const hitChannel = consumer.subscriptions.create(
   { channel: "HitChannel" },
   {
     connected() {
+      // callback is Hitchannel::subscribed.rb
+
       // calling "hits_channel::trigger_hits" in .rb
       this.perform("trigger_hits");
+
       // calling hits_channel::receive in .rb
       this.send({ msg: "new client connected" });
     },

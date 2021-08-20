@@ -17,18 +17,15 @@ const Button = () => {
     async function initCounter() {
       try {
         listChannel.received = (data) => {
-          console.log("data", data);
           setPods(data);
         };
         hitChannel.received = (data) => {
-          console.log(data);
           if (data) return setHitCount({ hitCount: data.hitCount });
         };
 
         let i = 0;
         clickChannel.received = (data) => {
           if (data) {
-            console.log(data);
             i = 1;
             const { clickCount } = data;
             return setClickCount({ clickCount });
@@ -50,11 +47,11 @@ const Button = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      setClickCount((prev) => {
-        const update = prev.clickCount + 1;
-        clickChannel.sending({ clickCount: update });
-        return { clickCount: update };
-      });
+      let update;
+      clickCount.clickCount === 0
+        ? (update = 1)
+        : (update = clickCount.clickCount + 1);
+      clickChannel.sending({ clickCount: update });
 
       await startWorkers().catch((err) => console.log(err));
       // await Promise.any([

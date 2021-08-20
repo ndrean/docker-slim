@@ -7,12 +7,10 @@ const listChannel = consumer.subscriptions.create(
       this.perform("get_pods");
     },
 
-    disconnected() {
-      // Called when the subscription has been terminated by the server
-    },
+    disconnected() {},
 
     received(data) {
-      // console.log(data);
+      // overwritten in Button.js
     },
   }
 );

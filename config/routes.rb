@@ -16,5 +16,4 @@ Rails.application.routes.draw do
 
   get '/ready', to: 'ready#index' 
   # resources :ready, only: [:index]
-
 end

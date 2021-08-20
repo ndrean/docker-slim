@@ -59,33 +59,6 @@ spec: # of the deployment
                 name: config
             - secretRef:
                 name: secrets
-          # readinessProbe:
-          #   exec:
-          #     command: [
-          #         "bash",
-          #         "-c",
-          #         "pg_isready",
-          #         "-U",
-          #         $POSTGRES_USER
-          #         "-h",
-          #         "localhost",
-          #         "-p",
-          #         "5432",
-          #       ]
-          #     # command:
-          #     #   - psql
-          #     #   - "- U"
-          #     #   - "postgres"
-          #     #   - "-d"
-          #     #   - "ortkcbqt"
-          #     #   - "-c"
-          #     #   - "SELECT 1;"
-          #     initialDelaySeconds: 60
-          #     periodSeconds: 60
-          #     timeoutSeconds: 15
-          #     failureThreshold: 3000
-          #  psql -w -U $POSTGRES_USER -h localhost -d $POSTGRES_DB -c 'SELECT 1;'
-          # pg_isready -U $POSTGRES_USER -h localhost -p 5432
 ---
 # we bind the resource PV to the pod
 apiVersion: v1
@@ -95,7 +68,7 @@ metadata:
 spec:
   # storageClassName: standard
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 100Mi

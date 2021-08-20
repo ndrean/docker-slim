@@ -1,7 +1,5 @@
 module SidekiqHelper
    require 'sidekiq/monitor'
-   class Error < StandardError
-   end
 
    def self.check
       begin

@@ -5,7 +5,7 @@ metadata:
   labels: # must match the service
     app: rails
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels: # which pods are we deploying
       app: rails
@@ -51,7 +51,7 @@ spec:
               port: 3000
               scheme: HTTP
             initialDelaySeconds: 30
-            periodSeconds: 60
+            periodSeconds: 30
             timeoutSeconds: 2
 ---
 apiVersion: v1

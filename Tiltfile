@@ -29,7 +29,7 @@ docker_build( 'builder',
      "BUNDLER_VERSION": "2.2.25",
    },
    # only=['app','public','package.json', 'yarn.lock','Gemfile','Gemfile.lock'],
-   live_update=[sync('app','/app/')],
+   live_update=[sync('app','/app/app/')],
    ignore=['./Tiltfile','./kube-split/','./docker/']
 )
 
@@ -43,7 +43,7 @@ docker_build('ndrean/rails-base',
    # only=['app'],
    # only=['app','bin', 'package.json', 'yarn.lock','Gemfile','Gemfile.lock'],
    dockerfile='./docker/rails.Dockerfile',
-   live_update=[sync('app','/app/')],
+   live_update=[sync('app','/app/app/')],
    ignore=['./Tiltfile','./kube-split/','./docker/']
 )
 
@@ -62,6 +62,7 @@ docker_build('ndrean/rails-base',
 docker_build('ndrean/nginx-ws',
    '.',
    dockerfile='./docker/nginx-split.Dockerfile',
+   live_update=[sync('app','/app/app/')],
    ignore=['./Tiltfile','./kube-split/','./docker/']
  )
 

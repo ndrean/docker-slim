@@ -1,13 +1,8 @@
 class CurlJob < ApplicationJob
-    require 'open3'
     require 'oj'
     queue_as :default
-    
-  class Error < StandardError
-  end
 
   def perform
-    
     # Path to ServiceAccount token
     serviceaccount= '/var/run/secrets/kubernetes.io/serviceaccount'
     namespace=File.read("#{serviceaccount}/namespace")
@@ -21,32 +16,41 @@ class CurlJob < ApplicationJob
     # data = URI.open(uri).read
 
     data = {}
-
-    result_array = Oj.load(request)['items'].map { |item| item['metadata']['name'] }#.map.with_index { |i,v| [i,v] }.to_h
-    result_array.each do |host|
-      record  = Counter.find_or_create_by(hostname: host)
-      record.nb = 1 if !record.nb
-      record.nb += 1 if record.hostname == REDIS.get('railsID')
-      record.update(nb: record.nb )
-      data[host.to_sym] = {
-        nb: record.nb,
-        created_at:  record.created_at.strftime("%H:%M:%S:%L"),
+    parsed_data = Oj.load(request)['items'].map { |item| item['metadata']['name'] }#.map.with_index { |i,v| [i,v] }.to_h
+    
+    # <- too much calls to db
+    # parsed_data.each do |host|
+    #   record  = Counter.find_or_create_by(hostname: host)
+    #   record.nb = 1 if !record.nb
+    #   record.nb += 1 if record.hostname == REDIS.get('railsID')
+    #   # record.update(nb: record.nb )
+    #   data[host.to_sym] = {
+    #     nb: record.nb,
+    #     created_at:  record.created_at.strftime("%H:%M:%S:%L"),
+    #   }
+    # end
+    
+    existing_records = Counter.where(hostname: parsed_data)
+    existing_records.each do |record_obj| 
+      record_obj.nb += 1 if record_obj.hostname == REDIS.get('railsID')
+      record_obj.update(nb: record_obj.nb)
+      data[record_obj.hostname.to_sym] = {
+        nb: record_obj.nb,
+        created_at:  record_obj.created_at.strftime("%H:%M:%S:%L"),
       }
     end
-    
-    ActionCable.server.broadcast('list_channel', data.as_json)
-    puts data
+    new_records = parsed_data - existing_records.pluck(:hostname)
+    new_records.each { |record|  
+      new_record = Counter.create!(hostname: record, nb: 1)  
+      data[record.to_sym] = {
+        nb: 1,
+        created_at:  new_record.created_at.strftime("%H:%M:%S:%L"),
+      }
+    }
 
+    ActionCable.server.broadcast('list_channel', data.as_json)
+    
   rescue StandardError => e
     puts e.message
   end
 end
-#
-# request = URI.open("#{apiserver}/api/v1/namespaces/#{namespace}/pods",
-#   {
-#       'Authorization'=> "Bearer #{token}",
-#       'Content-Type'=> 'application/json',
-#       'Accept' => 'application/json',
-#       'cacert' => "#{cacert}"
-#     }
-#   )
