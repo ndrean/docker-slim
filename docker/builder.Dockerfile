@@ -1,34 +1,34 @@
-ARG RUBY_VERSION
-FROM ruby:${RUBY_VERSION:-3.0.2-alpine}
+ARG   RUBY_VERSION
+FROM  ruby:${RUBY_VERSION:-3.0.2-alpine}
 
-ARG BUNDLER_VERSION
-ARG NODE_ENV
-ARG RAILS_ENV
+ARG   BUNDLER_VERSION
+ARG   NODE_ENV
+ARG   RAILS_ENV
 
-ENV BUNDLER_VERSION=${BUNDLER_VERSION} \
+ENV   BUNDLER_VERSION=${BUNDLER_VERSION} \
    RAILS_ENV=${RAILS_ENV} \
    NODE_ENV=${NODE_ENV}
 
-RUN apk -U upgrade && apk add --no-cache \
-   postgresql-dev nodejs yarn build-base tzdata
+RUN   apk -U upgrade && apk add --no-cache \
+   postgresql-dev nodejs yarn build-base tzdata curl
 
-ENV PATH /app/bin:$PATH
+ENV   PATH /app/bin:$PATH
 WORKDIR /app
 
-COPY Gemfile Gemfile.lock package.json yarn.lock ./
+COPY  Gemfile Gemfile.lock package.json yarn.lock ./
 
-ENV LANG=C.UTF-8 \
+ENV   LANG=C.UTF-8 \
    BUNDLE_JOBS=4 \
    BUNDLE_RETRY=3 \
    BUNDLE_PATH='vendor/bundle' 
 
-RUN gem install bundler:${BUNDLER_VERSION} --no-document \
+RUN   gem install bundler:${BUNDLER_VERSION} --no-document \
    && bundle config set --without 'development test' \
    && bundle install --quiet \
    && rm -rf $GEM_HOME/cache/*
 
-RUN yarn --check-files --silent --production && yarn cache clean
+RUN   yarn --check-files --silent --production && yarn cache clean
 
-COPY . ./
+COPY  . ./
 
-RUN bundle exec rails webpacker:compile assets:clean
+RUN   bundle exec rails webpacker:compile assets:clean

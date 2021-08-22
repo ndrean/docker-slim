@@ -1,4 +1,4 @@
-FROM builder AS bob
+FROM ndrean/rails-base AS bob
 
 FROM nginx:1.21.1-alpine
 

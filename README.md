@@ -12,7 +12,29 @@ Accept': 'application/json',
 'cacert': cacert
 }
 
-# Kubernets API
+# Webpack
+
+<https://medium.com/@leoliang.climber/splitchunks-for-webpacker-in-rails-5-2-4a6812a68b76>
+<https://stackoverflow.com/questions/65858869/webpacker-cant-find-application-css-in-app-public-packs-manifest-json>
+
+In "config/webpack/environment.js", add: `environment.splitChunks()`
+
+Use `javascript_packs_with_chunks_tag` in your view instead of `javascript_pack_tag`
+
+In "/config.webpacker.yml' (assets are compiled in the image):
+
+```yml
+development:
+  <<: *default
+  compile: true
+  # assets are not precompiled in the image
+production:
+  <<: *default
+  compile: false
+# assets are precomiled in the image
+```
+
+---
 
 Running `kubectl`command from within a pod <https://trstringer.com/kubectl-from-within-pod/>
 

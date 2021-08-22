@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rails-dep
+  name: cable-dep
   labels: # must match the service
-    app: rails
+    app: cable
 spec:
   replicas: 1
   selector:
     matchLabels: # which pods are we deploying
-      app: rails
+      app: cable
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -17,56 +17,44 @@ spec:
   template:
     metadata:
       labels: # must match service and replicaset matchlabel
-        app: rails
+        app: cable
     spec:
-      # serviceAccountName: rails #<--- test access k8 cli in pod
-
-      # initContainers:
-      #   - name: migrations-check
-      #     image: ndrean/rails-base
-      #     args:
-      #       - rails
-      #       - db:abort_if_pending_migrations
       containers:
-        - name: backend
-          image: ndrean/rails-base
+        - name: cable
+          image: builder-dev
           imagePullPolicy: "Always"
           resources:
             limits:
               cpu: "150m"
               memory: "256Mi"
           command: ["bundle"]
-          args: ["exec", "rails", "server", "-b", "0.0.0.0"]
+          args: ["exec", "puma", "-p", "28080", "./cable/config.ru"]
           ports:
-            - containerPort: 3000
+            - containerPort: 28080
           envFrom:
             - configMapRef:
                 name: config
             - secretRef:
                 name: secrets
-          readinessProbe:
-            httpGet:
-              path: /ready
-              port: 3000
-              scheme: HTTP
-            initialDelaySeconds: 30
-            periodSeconds: 30
-            timeoutSeconds: 2
+          # env:
+          #   - name: REDIS_SIDEKIQ
+          #     value: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424/0"
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: rails-svc
+  name: cable-svc
   labels:
-    app: rails
+    app: cable
 spec:
   selector:
-    app: rails
-  type: NodePort #ClusterIP # default type
+    app: cable
+  type: ClusterIP # default type
   ports:
     - protocol: TCP
       # port exposed by the service
-      port: 3000
+      port: 28080
       # the port the app is listening on targetPort
-      targetPort: 3000
+      targetPort: 28080
       name: http

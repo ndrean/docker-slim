@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import fetchCounters from "../utils/fetchCounters.js";
 // import postCounters from "../utils/postCounters.js";
 import startWorkers from "../utils/startWorkers.js";
@@ -75,7 +74,7 @@ const Button = () => {
     <>
       <div className="flexed">
         <button className="button" onClick={handleClick}>
-          Click me!!
+          Click me!!**
         </button>
 
         <div className="counters">
@@ -98,9 +97,9 @@ const Button = () => {
             </thead>
             <tbody>
               {pods &&
-                Object.keys(pods).map((pod) => {
+                Object.keys(pods).map((pod, idx) => {
                   return (
-                    <tr>
+                    <tr key={idx}>
                       <td>{pod}</td>
                       <td>
                         <span className="badge">{pods[pod]?.nb}</span>

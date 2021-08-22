@@ -1,12 +1,13 @@
 # -*- mode: Python -*-
 
+# load('ext://restart_process', 'docker_build_with_restart')
+
 k8s_yaml([
    './kube-split/config.yml',
    './kube-split/secrets.yml',
    './kube-split/nginx-config.yml',
    './kube-split/pg-db-pv.yml', 
    './kube-split/redis-pv.yml',
-   # './kube-split/k8-serv-dep.yml'
 ])
 
 k8s_yaml('./kube-split/postgres-dep.yml')
@@ -14,10 +15,12 @@ k8s_yaml('./kube-split/redis-dep.yml')
 
 k8s_yaml(['./kube-split/role.yml', './kube-split/service-account.yml'])
 
+# k8-server side-car to Sidekiq -> add container in Sidekiq-dep.yml
 # docker_build('ndrean/serverk8-proxy',
 #    '.',
 #    dockerfile='./docker/k8.Dockerfile'
 # )
+
 
 docker_build( 'builder',
   '.', 
@@ -28,8 +31,6 @@ docker_build( 'builder',
      "RAILS_ENV": "production",
      "BUNDLER_VERSION": "2.2.25",
    },
-   # only=['app','public','package.json', 'yarn.lock','Gemfile','Gemfile.lock'],
-   live_update=[sync('app','/app/app/')],
    ignore=['./Tiltfile','./kube-split/','./docker/']
 )
 
@@ -40,32 +41,17 @@ docker_build('ndrean/rails-base',
      "RAILS_ENV": "production",   
      "RAILS_LOG_TO_STDOUT": "true",
    },
-   # only=['app'],
-   # only=['app','bin', 'package.json', 'yarn.lock','Gemfile','Gemfile.lock'],
    dockerfile='./docker/rails.Dockerfile',
-   live_update=[sync('app','/app/app/')],
-   ignore=['./Tiltfile','./kube-split/','./docker/']
+   ignore=['./Tiltfile','./kube-split/','./docker/', 'README.md']
 )
-
-# custom_build('ndrean/rails-base',
-#   'docker build -t $EXPECTED_REF \
-#   --build-arg RUBY_VERSION=3.0.2-alpine \
-#   --build-arg RAILS_ENV=production \
-#   --build-arg RAILS_LOG_TO_STDOUT=true \
-#   -f docker/rails.Dockerfile .',
-#   ['.'],
-# #   live_update=[sync('./app','/app/')] ,
-#   ignore=['./Tiltfile','./kube-split/','./docker/']
-# )
 
 
 docker_build('ndrean/nginx-ws',
    '.',
    dockerfile='./docker/nginx-split.Dockerfile',
-   live_update=[sync('app','/app/app/')],
-   ignore=['./Tiltfile','./kube-split/','./docker/']
+   only=['app','public'],
+   ignore=['README.md']
  )
-
 
 
 k8s_yaml('./kube-split/rails-dep.yml')
@@ -79,14 +65,8 @@ k8s_resource('cable-dep', resource_deps=['redis-dep'])
 k8s_resource('nginx-dep', resource_deps=['rails-dep', 'cable-dep'])
 
 
-#local_resource('migrate', '
-#   export POD_NAME=$(kubectl get pods -l app=rails -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}') &&
-#   kubectl exec $POD_NAME -- bundle exec rails db:migrate' ,resource_deps=['rails-dep','sidekiq-dep','cable-dep',','nginx-dep'])
-
-
-
 k8s_resource('db-migrate', 
-   resource_deps=['rails-dep','pg-dep'],
+   resource_deps=['pg-dep','rails-dep'],
    trigger_mode=TRIGGER_MODE_MANUAL,
    auto_init=False
 )
@@ -104,6 +84,7 @@ local_resource('Rails pods',
 
 allow_k8s_contexts('minikube')
 k8s_resource('nginx-dep', port_forwards='31000')
+
 
 
 

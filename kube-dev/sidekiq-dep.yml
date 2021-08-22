@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sidekiq-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      instance: sidekiq
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        # app: rails
+        instance: sidekiq
+    spec:
+      serviceAccountName: sidekiq
+      containers:
+        - name: sidekiq
+          image: builder-dev
+          imagePullPolicy: "Always"
+          resources:
+            limits:
+              cpu: "350m"
+              memory: "200Mi"
+          command: ["bundle"]
+          args: ["exec", "sidekiq", "-C", "./config/sidekiq.yml"]
+          envFrom:
+            - configMapRef:
+                name: config
+            - secretRef:
+                name: secrets

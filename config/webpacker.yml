@@ -10,8 +10,7 @@ default: &default
 
   # Additional paths webpack should lookup modules
   # ['app/assets', 'engine/foo/app/assets']
-  additional_paths: ['app/javascript/images']
-
+  additional_paths: ["app/javascript/images"]
 
   # Reload manifest.json on all requests so we reload latest compiled packs
   cache_manifest: false
@@ -51,15 +50,15 @@ default: &default
 
 development:
   <<: *default
-  compile: true
+  compile: true # <- from true
 
   # Reference: https://webpack.js.org/configuration/dev-server/
   dev_server:
     https: false
-    host: localhost
+    host: localhost #<- from localhost
     port: 3035
     public: localhost:3035
-    hmr: false
+    hmr: true #<- from false
     # Inline should be set to true if using HMR
     inline: true
     overlay: true
@@ -69,10 +68,9 @@ development:
     quiet: false
     pretty: false
     headers:
-      'Access-Control-Allow-Origin': '*'
+      "Access-Control-Allow-Origin": "*"
     watch_options:
-      ignored: '**/node_modules/**'
-
+      ignored: "**/node_modules/**"
 
 test:
   <<: *default
@@ -85,7 +83,7 @@ production:
   <<: *default
 
   # Production depends on precompilation of packs prior to booting for performance.
-  compile: false
+  compile: false #<- from "false"
 
   # Extract and emit a css file
   extract_css: true

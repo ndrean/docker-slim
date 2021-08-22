@@ -3,6 +3,14 @@ default: &default
   encoding: unicode
   pool: <%= ENV.fetch('RAILS_MAX_THREADS', 5 ) %>
 
+development:
+  <<: *default
+  # url: <%= ENV.fetch('POSTGRES_URL','') %> # <- pg-local supp
+  username: <%= ENV.fetch('POSTGRES_USER','') %>
+  password: <%= ENV.fetch('POSTGRES_PASSWORD','') %>
+  host: <%= ENV.fetch('POSTGRES_HOST','') %>
+  database: <%= ENV.fetch('POSTGRES_DB','') %>
+
 production:
   <<: *default
   # url: <%= ENV.fetch('POSTGRES_URL','') %> # <- pg-local supp

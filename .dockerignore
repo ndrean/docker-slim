@@ -6,10 +6,9 @@
 
 .byebug_history
 .rspec
-tmp/cache
-tmp/miniprofiler
-tmp/sockets
-log
+
+
+
 test
 config/deploy
 
