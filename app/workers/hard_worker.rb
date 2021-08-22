@@ -3,7 +3,7 @@ class HardWorker
   include PagesHelper
 
   def perform(*args)
-    p Rails.logger.info ' !!!!!!! I am a WORKER, doing a heavy work: CURL to Google ......!!!!!!!'
+    p Rails.logger.info ' ! I am a WORKER, doing a heavy work: CURL to Google ......!!!!!!!'
 
     obj = PagesHelper.scrap(1)
     puts Rails.logger.info "WORKER:..#{obj}..||..#{obj["title"]}...is...#{obj["completed"]}"
