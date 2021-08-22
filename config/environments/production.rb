@@ -91,8 +91,7 @@ Rails.application.configure do
 
   # Separate Action Cable into its own process.
   config.action_cable.url = ENV.fetch('CABLE_URL', 'ws://localhost:28080/cable')
-  config.action_cable.allowed_request_origins = ENV.fetch('ALLOWED_ORIGINS', %r{http://localhost*})
-    
+  config.action_cable.allowed_request_origins = ['http://localhost:4000','http://localhost:9000']
   # config.action_cable.disable_request_forgery_protection = true
   
   # Inserts middleware to perform automatic connection switching.
