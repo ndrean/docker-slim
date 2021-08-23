@@ -11,6 +11,7 @@ class CurlJob < ApplicationJob
     cacert= "#{serviceaccount}/ca.crt"
     request = `curl --cacert #{cacert} --header "Authorization: Bearer #{token}" #{apiserver}/api/v1/namespaces/#{namespace}/pods `
 
+
     # with proxy the side-car k8 server
     # uri = "http://127.0.0.1:8001/api/v1/namespaces/#{namespace}/pods"
     # data = URI.open(uri).read

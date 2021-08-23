@@ -68,6 +68,10 @@ Rails.application.configure do
     Bullet.rails_logger = true
   end
 
+  # config.action_cable.disable_request_forgery_protection = true #V1
+  # config.action_cable.url = ENV.fetch('CABLE_URL', 'ws://localhost:28080/cable')
+  config.action_cable.allowed_request_origins = ['http://rails-svc:31000']
+
   # config.action_cable.url = 'ws://localhost:28080/cable'
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true

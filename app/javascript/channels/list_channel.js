@@ -4,6 +4,7 @@ const listChannel = consumer.subscriptions.create(
   { channel: "ListChannel" },
   {
     connected() {
+      console.log("list connected");
       this.perform("get_pods");
     },
 

@@ -11,7 +11,7 @@ Turbolinks.start();
 const images = require.context("../images", true);
 const imagePath = (name) => images(name, true);
 
-import Button from "./components/Button.jsx";
+import Button from "./components/Button.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   ReactDOM.render(<Button />, document.getElementById("root"));

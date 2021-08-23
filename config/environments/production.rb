@@ -31,7 +31,10 @@ Rails.application.configure do
   # config.action_cable.url = 'ws://cable-svc:28080/cable'
   # config.action_cable.allowed_request_origins = %r{http://localhost*}
   config.action_cable.disable_request_forgery_protection = true #V1
-
+  
+  # config.action_cable.url = ENV.fetch('CABLE_URL', 'ws://localhost:28080/cable')
+  # config.action_cable.allowed_request_origins = ['http://rails-svc:31000']
+  
   
   
   # Specifies the header that your server uses for sending files.

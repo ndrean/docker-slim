@@ -19,55 +19,24 @@ spec:
       labels: # must match service and replicaset matchlabel
         app: rails
     spec:
-      # serviceAccountName: rails #<--- access for k8-server if side-car
-      # initContainers:
-      #   - name: migrations-check
-      #     image: ndrean/rails-base
-      #     args:
-      #       - rails
-      #       - db:abort_if_pending_migrations
       containers:
-        - name: frontend
-          image: builder-dev
-          imagePullPolicy: "Always"
-          command: ["./bin/webpack-dev-server"]
-          ports:
-            - containerPort: 3035
-          # resources:
-          #   limits:
-          #     cpu: "250m"
-          #     memory: "100Mi"
-          envFrom:
-            - configMapRef:
-                name: config
-            - secretRef:
-                name: secrets
-          env:
-            - name: WEBPACKER_DEV_SERVER_HOST
-              value: "0.0.0.0"
-        - name: cable
-          image: builder-dev
-          imagePullPolicy: "Always"
-          # resources:
-          #   limits:
-          #     cpu: "250m"
-          #     memory: "150Mi"
-          command: ["bundle"]
-          args: ["exec", "puma", "-p", "28080", "./cable/config.ru"]
-          ports:
-            - containerPort: 28080
-          envFrom:
-            - configMapRef:
-                name: config
-            - secretRef:
-                name: secrets
+        # - name: frontend
+        #   image: builder-dev3
+        #   imagePullPolicy: "Always"
+        #   command: ["./bin/webpack-dev-server"]
+        #   ports:
+        #     - containerPort: 3035
+        #   envFrom:
+        #     - configMapRef:
+        #         name: config
+        #     - secretRef:
+        #         name: secrets
+        #   env:
+        #     - name: WEBPACKER_DEV_SERVER_HOST
+        #       value: "0.0.0.0"
         - name: backend
-          image: builder-dev
+          image: builder-dev3
           imagePullPolicy: "Always"
-          # resources:
-          #   limits:
-          #     cpu: "250m"
-          #     memory: "150Mi"
           command: ["bundle"]
           args: ["exec", "rails", "server", "-b", "0.0.0.0"]
           ports:
@@ -77,17 +46,17 @@ spec:
                 name: config
             - secretRef:
                 name: secrets
-          env:
-            - name: WEBPACKER_DEV_SERVER_HOST
-              value: "frontend"
-          # readinessProbe:
-          #   httpGet:
-          #     path: /ready
-          #     port: 3000
-          #     scheme: HTTP
-          #   initialDelaySeconds: 30
-          #   periodSeconds: 30
-          #   timeoutSeconds: 2
+        # env:
+        #     - name: WEBPACKER_DEV_SERVER_HOST
+        #       value: "frontend"
+        # readinessProbe:
+        #   httpGet:
+        #     path: /ready
+        #     port: 3000
+        #     scheme: HTTP
+        #   initialDelaySeconds: 30
+        #   periodSeconds: 30
+        #   timeoutSeconds: 2
 
 ---
 apiVersion: v1

@@ -7,8 +7,8 @@ ARG RAILS_ENV
 
 ENV BUNDLER_VERSION=${BUNDLER_VERSION} \
    RAILS_ENV=${RAILS_ENV} \
-   NODE_ENV=${NODE_ENV} \
-   RAILS_SERVE_STATIC_FILES=true
+   NODE_ENV=${NODE_ENV}
+# RAILS_SERVE_STATIC_FILES=true <- default dev
 
 RUN apk -U upgrade && apk add --no-cache \
    postgresql-dev nodejs yarn build-base tzdata curl \
@@ -35,4 +35,5 @@ RUN yarn --check-files --silent  && yarn cache clean
 
 COPY . ./
 
-# RUN bundle exec rails webpacker:compile assets:clean
+# <- need to compile the first time ???????????
+# RUN bundle exec rails webpacker:compile assets:clean 

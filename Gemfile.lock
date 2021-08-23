@@ -95,7 +95,6 @@ GEM
     nokogiri (1.12.3-x86_64-darwin)
       racc (~> 1.4)
     oj (3.13.2)
-    open3 (0.1.1)
     pg (1.2.3)
     puma (5.4.0)
       nio4r (~> 2.0)
@@ -165,7 +164,7 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webpacker (5.4.0)
+    webpacker (5.4.2)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
@@ -185,7 +184,6 @@ DEPENDENCIES
   hiredis
   listen (~> 3.3)
   oj
-  open3
   pg (~> 1.1)
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)
@@ -203,4 +201,4 @@ RUBY VERSION
    ruby 3.0.2p107
 
 BUNDLED WITH
-   2.2.25
+   2.2.26

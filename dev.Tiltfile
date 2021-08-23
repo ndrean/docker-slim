@@ -13,14 +13,14 @@ k8s_yaml('./kube-split/redis-dep.yml')
 k8s_yaml(['./kube-split/role.yml', './kube-split/service-account.yml'])
 
 
-docker_build( 'builder-dev',
+docker_build( 'builder-dev3',
   '.', 
   dockerfile="./docker/dev.Dockerfile", 
   build_args={
      "RUBY_VERSION": "3.0.2-alpine", #-slim-buster <- apt.Dockerfile
      "NODE_ENV": "development",
      "RAILS_ENV": "development",
-     "BUNDLER_VERSION": "2.2.25",
+     "BUNDLER_VERSION": "2.2.26",
    },
    live_update=[sync('app','/app/app/')],
    ignore=['tmp','log', 'README.md']
