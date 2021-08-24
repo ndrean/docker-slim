@@ -3,7 +3,8 @@ kind: Role
 metadata:
   name: modify-pods
 rules:
-  - apiGroups: [""]
+  - apiGroups:
+      - ""
     resources:
       - pods
     verbs:

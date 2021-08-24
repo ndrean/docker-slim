@@ -64,7 +64,7 @@ spec:
     - metadata:
         name: data
       spec:
-        accessModes: ["ReadWriteMany"] # <- changed from many
+        accessModes: ["ReadWriteOnce"]
         # storageClassName: ""
         resources:
           requests:

@@ -11,13 +11,11 @@ class PagesController < ApplicationController
     Rails.logger.info( "Redis db:  #{res}")
     
     # PSQL <- test PG connection
-    begin
-      one = ActiveRecord::Base.connection.execute("SELECT 1").getvalue(0,0)
-      raise PagesController::Error.new("PG is down") if (one != 1)
-      puts "PG is UP"
-    rescue StandardError => e
-      puts e.message
-    end
+    
+    one = ActiveRecord::Base.connection.execute("SELECT 1").getvalue(0,0)
+    raise PagesController::Error.new("PG is down") if (one != 1)
+    puts "PG is UP"
+  
 
     # <- rescued Sidekiq test
     SidekiqHelper.check
@@ -26,6 +24,9 @@ class PagesController < ApplicationController
 
     #<- grab Rails podID
     REDIS.set('railsID', ENV['HOSTNAME'])
+
+  rescue StandardError => e
+      puts e.message
   end
 
   def start_workers

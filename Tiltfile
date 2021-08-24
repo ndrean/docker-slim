@@ -29,7 +29,7 @@ docker_build( 'builder',
      "RUBY_VERSION": "3.0.2-alpine",
      "NODE_ENV": "production",
      "RAILS_ENV": "production",
-     "BUNDLER_VERSION": "2.2.25",
+     "BUNDLER_VERSION": "2.2.26",
    },
    ignore=['./Tiltfile','./kube-split/','./docker/']
 )

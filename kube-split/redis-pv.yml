@@ -9,6 +9,6 @@ spec:
   capacity:
     storage: 150Mi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   hostPath: # for dvpt on single-node such as Minikube, to emulate network attached vol
     path: "/data"
