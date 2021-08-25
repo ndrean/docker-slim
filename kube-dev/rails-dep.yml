@@ -35,7 +35,7 @@ spec:
         #     - name: WEBPACKER_DEV_SERVER_HOST
         #       value: "0.0.0.0"
         - name: backend
-          image: builder-dev3
+          image: builder-dev3 #ndrean/builder-dev3
           imagePullPolicy: "Always"
           command: ["bundle"]
           args: ["exec", "rails", "server", "-b", "0.0.0.0"]

@@ -6,6 +6,8 @@ metadata:
   labels:
     type: local
     app: pg
+  annotations:
+    tilt.dev/down-policy: keep
 spec:
   # storageClassName: standard
   capacity:

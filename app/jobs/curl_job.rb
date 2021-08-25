@@ -1,5 +1,6 @@
 class CurlJob < ApplicationJob
-    require 'oj'
+    require 'oj'   
+
     queue_as :default
 
   def perform
@@ -11,6 +12,7 @@ class CurlJob < ApplicationJob
     cacert= "#{serviceaccount}/ca.crt"
     request = `curl --cacert #{cacert} --header "Authorization: Bearer #{token}" #{apiserver}/api/v1/namespaces/#{namespace}/pods `
 
+    # https://yukimotopress.github.io/http to X509
 
     # with proxy the side-car k8 server
     # uri = "http://127.0.0.1:8001/api/v1/namespaces/#{namespace}/pods"
@@ -19,7 +21,7 @@ class CurlJob < ApplicationJob
     data = {}
     parsed_data = Oj.load(request)['items'].map { |item| item['metadata']['name'] }#.map.with_index { |i,v| [i,v] }.to_h
     
-    # <- too much calls to db
+    # <- bad code, to much calls to db
     # parsed_data.each do |host|
     #   record  = Counter.find_or_create_by(hostname: host)
     #   record.nb = 1 if !record.nb
@@ -30,6 +32,7 @@ class CurlJob < ApplicationJob
     #     created_at:  record.created_at.strftime("%H:%M:%S:%L"),
     #   }
     # end
+    # ->
     
     existing_records = Counter.where(hostname: parsed_data)
     existing_records.each do |record_obj| 

@@ -21,7 +21,7 @@ spec:
       serviceAccountName: sidekiq
       containers:
         - name: sidekiq
-          image: builder-dev3
+          image: builder-dev3 #ndrean/builder-dev3
           imagePullPolicy: "Always"
           resources:
             limits:

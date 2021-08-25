@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redis-svc
+  annotations:
+    tilt.dev/down-policy: keep
 spec:
   ports:
     - port: 6379
@@ -17,6 +19,8 @@ metadata:
   name: redis-dep
   labels:
     app: redis
+  annotations:
+    tilt.dev/down-policy: keep
 spec:
   serviceName: redis
   selector:

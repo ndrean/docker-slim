@@ -21,6 +21,8 @@ metadata:
   name: pg-dep
   labels:
     app: pg
+  annotations:
+    tilt.dev/down-policy: keep
 spec: # of the deployment
   serviceName: pg-dep
   replicas: 1
@@ -65,6 +67,8 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: pg-pvc
+  annotations:
+    tilt.dev/down-policy: keep
 spec:
   # storageClassName: standard
   accessModes:

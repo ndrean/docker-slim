@@ -5,9 +5,9 @@ ARG BUNDLER_VERSION
 ARG NODE_ENV
 ARG RAILS_ENV
 
-ENV BUNDLER_VERSION=${BUNDLER_VERSION} \
-   RAILS_ENV=${RAILS_ENV} \
-   NODE_ENV=${NODE_ENV}
+ENV BUNDLER_VERSION=${BUNDLER_VERSION:-2.2.26} \
+   RAILS_ENV=${RAILS_ENV:-development} \
+   NODE_ENV=${NODE_ENV:-development}
 # RAILS_SERVE_STATIC_FILES=true <- default dev
 
 RUN apk -U upgrade && apk add --no-cache \
