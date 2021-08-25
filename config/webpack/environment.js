@@ -1,3 +1,4 @@
 const { environment } = require("@rails/webpacker");
-environment.splitChunks();
+const webpack = require("webpack");
+// environment.splitChunks();
 module.exports = environment;

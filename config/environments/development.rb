@@ -70,7 +70,7 @@ Rails.application.configure do
 
   # config.action_cable.disable_request_forgery_protection = true #V1
   # config.action_cable.url = ENV.fetch('CABLE_URL', 'ws://localhost:28080/cable')
-  config.action_cable.allowed_request_origins = ['http://rails-svc:31000']
+  config.action_cable.allowed_request_origins = ['http://localhost:31000']
 
   # config.action_cable.url = 'ws://localhost:28080/cable'
   # Raises error for missing translations.
@@ -83,7 +83,7 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.hosts = ["rails-svc","localhost", "frontend"]
+  # config.hosts = ["rails-svc","localhost", "frontend"]
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 end

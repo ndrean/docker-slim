@@ -2,17 +2,7 @@
 
 <https://gist.github.com/jferris/1aba7433f5318715bda66b98c1d953f0>
 
-require 'uri'
-require 'net/http'
-
-uri = UIR(""#{apiserver}/api/v1/namespaces/#{namespace}/pods")
-uri.headers = {
-'Authorization': 'Bearer '+ "#{token}",
-Accept': 'application/json',
-'cacert': cacert
-}
-
-# yq
+## yq
 
 `yp -ooutput=json pod.yml` or `yq -o=j pod.yml`
 <https://mikefarah.gitbook.io/yq/usage/convert>
@@ -21,14 +11,18 @@ Accept': 'application/json',
 for f in *.yml; do yq eval -j=o $f > $f.json; done
 ```
 
-# Webpack
+## Webpack
 
 <https://medium.com/@leoliang.climber/splitchunks-for-webpacker-in-rails-5-2-4a6812a68b76>
 <https://stackoverflow.com/questions/65858869/webpacker-cant-find-application-css-in-app-public-packs-manifest-json>
 
+### Chunks
+
 In "config/webpack/environment.js", add: `environment.splitChunks()`
 
 Use `javascript_packs_with_chunks_tag` in your view instead of `javascript_pack_tag`
+
+### Config
 
 In "/config.webpacker.yml' (assets are compiled in the image):
 
@@ -43,7 +37,35 @@ production:
 # assets are precomiled in the image
 ```
 
----
+### Set up
+
+```sh
+app/packs:
+  ├── entrypoints:
+  │   # Only Webpack entry files here
+  │   └── application.js
+  │   └── application.css
+  └── src:
+  │   └── my_component.js
+  └── stylesheets:
+  │   └── my_styles.css
+  └── images:
+      └── logo.svg
+```
+
+```sh
+yarn add webpacker@https://github.com/rails/webpacker.git
+#-> change to gem 'webpacker', '6.0.0.rc1' in Gemfile
+bundle
+bundle exec rails webpacker:install
+yarn add react react-dom @babel/preset-react prop-types babel-plugin-transform-react-remove-prop-types
+yarn add css-loader style-loader mini-css-extract-plugin css-minimizer-webpack-plugin
+yarn add babel-plugin-macros
+yarn add @babel/helper-plugin-utils
+
+```
+
+## Kubernetes API
 
 Running `kubectl`command from within a pod <https://trstringer.com/kubectl-from-within-pod/>
 
@@ -147,10 +169,6 @@ CREATE TABLE COUNTERS (id serial PRIMARY KEY, nb integer, created_at TIMESTAMP, 
 `REMOTE_URL=postgres://ortkcbqt:fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd@batyr.db.elephantsql.com/ortkcbqt`
 
 where the user and database name is "ortkcbqt" followed by the password.
-
-## Note on K8
-
-You to create a namespace "test" for testing when doing this kind of things. You just do `kubectl create ns test`, then you do all your tests in this namespace (by adding `-n test`). Once you have finished, you just do `kubectl delete ns test`, and you are done.
 
 ## Note on Rails errors
 

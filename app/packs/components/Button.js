@@ -3,9 +3,9 @@ import fetchCounters from "../utils/fetchCounters.js";
 // import postCounters from "../utils/postCounters.js";
 import startWorkers from "../utils/startWorkers.js";
 
-import clickChannel from "../../channels/click_channel.js";
-import hitChannel from "../../channels/hit_channel.js";
-import listChannel from "../../channels/list_channel.js";
+import clickChannel from "../channels/click_channel.js";
+import hitChannel from "../channels/hit_channel.js";
+import listChannel from "../channels/list_channel.js";
 
 const Button = () => {
   const [clickCount, setClickCount] = useState({});
@@ -74,7 +74,7 @@ const Button = () => {
     <>
       <div className="flexed">
         <button className="button" onClick={handleClick}>
-          Click me!!**
+          Click me!!
         </button>
 
         <div className="counters">
