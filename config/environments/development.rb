@@ -54,7 +54,7 @@ Rails.application.configure do
   
 
   # Action Cable embedded with Rails, use ".url" on localhost and pass meta_tag
-  # config.action_cable.url = "ws://localhost:5000/cable" 
+  config.action_cable.url = "ws://localhost:28080/cable" 
 
   # ActionCable standalone;: remove ".url" and set -> in 'createConsumer(ws:localhost:28080/cable')
   

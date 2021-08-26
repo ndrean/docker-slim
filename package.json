@@ -8,6 +8,8 @@
     "@rails/webpacker": "5.4.0",
     "actioncable": "^5.2.6",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "preact": "^10.5.14",
+    "preact-compat": "^3.19.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
