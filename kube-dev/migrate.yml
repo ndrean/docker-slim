@@ -8,7 +8,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: db-migrate
-          image: builder-dev3
+          image: ndrean/builder-dev3
           imagePullPolicy: IfNotPresent
           command: ["bundle"]
           args: ["exec", "rails", "db:migrate"]

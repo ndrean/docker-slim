@@ -24,12 +24,6 @@ class PagesController < ApplicationController
 
     #<- grab Rails podID
     REDIS.set('railsID', ENV['HOSTNAME'])
-    
-    respond_to do |format|
-      format.html
-    end
-  # rescue StandardError => e
-  #     puts e.message
   end
 
   def start_workers

@@ -1,6 +1,9 @@
 import { csrfToken } from "@rails/ujs";
 
 export default async (path, object) => {
+  console.log(
+    document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+  );
   return fetch(path, {
     method: "POST",
     headers: {

@@ -1,11 +1,4 @@
-const { webpackConfig, merge } = require("@rails/webpacker");
-const customConfig = {
-  resolve: {
-    alias: {
-      React: "react",
-      ReactDOM: "react-dom",
-    },
-    extensions: ["css"],
-  },
-};
-module.exports = merge(webpackConfig, customConfig);
+const { webpackConfig, merge } = require('@rails/webpacker')
+
+const customConfig = require('./custom.js')
+module.exports = merge(webpackConfig, customConfig)

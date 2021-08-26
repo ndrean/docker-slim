@@ -4,6 +4,8 @@ metadata:
   name: data
   labels:
     app: data
+  annotations:
+    tilt.dev/down-policy: keep
 spec:
   # storageClassName: "standard"
   capacity:

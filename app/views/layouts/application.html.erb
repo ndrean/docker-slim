@@ -9,25 +9,26 @@
     <%= action_cable_meta_tag %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %> 
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %> 
     <%# javascript_packs_with_chunks_tag 'application', 'data-turbolinks-track': 'reload' %>
     <!-- in "webpack.environment.js", added `environment.splitChunks()` -->
+    <%= javascript_pack_tag "application" %>
   </head>
 
   <body>
     
     <header class='images'>
-      <%= image_pack_tag 'media/images/kubernetes.png', class: "img", alt:"k8" %>
-      <%= image_pack_tag 'media/images/Rails.png', class: "img-large", alt:"rails" %>
-      <%= image_pack_tag 'media/images/docker2.png', class: "img", alt:"dokcer" %>
-      <%= image_pack_tag 'media/images/Redis.png',class: "img-large", alt:"redis" %> 
-      <%= image_pack_tag 'media/images/sidekiq.png', class: "img", alt:"sidekiq" %> 
-      <%= image_pack_tag 'media/images/Postgres.png', class: "img-large", alt:"pg" %>
-      <%= image_pack_tag 'media/images/Elephantsql.jpg', class: "img", alt:"elphtsql" %>
-      <%# image_pack_tag 'media/images/FrontReact.png', class: "img-med"  %>
-      <img src="<%= asset_pack_path 'media/images/FrontReact.png' %>" class="img-med" alt="logo"></img>
-      <%= image_pack_tag 'media/images/websocket.jpg', class: 'img', alt: 'ws' %>
+      <%= image_pack_tag 'kubernetes.png', class: "img", alt:"k8" %>
+      <%= image_pack_tag 'Rails.png', class: "img-large", alt:"rails" %>
+      <%= image_pack_tag 'docker2.png', class: "img", alt:"dokcer" %>
+      <%= image_pack_tag 'Redis.png',class: "img-large", alt:"redis" %> 
+      <%= image_pack_tag 'sidekiq.png', class: "img", alt:"sidekiq" %> 
+      <%= image_pack_tag 'Postgres.png', class: "img-large", alt:"pg" %>
+      <%= image_pack_tag 'Elephantsql.jpg', class: "img", alt:"elphtsql" %>
+      <%= image_pack_tag 'FrontReact.png', class: "img-med"  %>
+      <!-- <img src="<%# asset_pack_path 'images/FrontReact.png' %>" class="img-med" alt="logo"></img> -->
+      <%= image_pack_tag 'websocket.jpg', class: 'img', alt: 'ws' %>
     </header>
 
   

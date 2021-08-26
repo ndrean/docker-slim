@@ -3,7 +3,7 @@ import Turbolinks from "turbolinks";
 import "./application.css";
 import React from "react";
 import ReactDOM from "react-dom";
-import "../../channels";
+import "../channels";
 
 Rails.start();
 Turbolinks.start();
