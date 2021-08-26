@@ -13,6 +13,6 @@ const imagePath = (name) => images(name, true);
 
 import Button from "../components/Button.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("turbolinks:load", () => {
   ReactDOM.render(<Button />, document.getElementById("root"));
 });

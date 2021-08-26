@@ -52,6 +52,10 @@ spec:
         #   env:
         #     - name: WEBPACKER_DEV_SERVER_HOST
         #       value: "0.0.0.0"
+        #     - name: WEBPACKER_DEV_SERVER_INLINE
+        #       value: "true"
+        #     - name: WEBPACKER_DEV_SERVER_HOT
+        #       value: "false"
         - name: backend
           image: builder-dev3
           imagePullPolicy: "Always"
@@ -66,7 +70,11 @@ spec:
                 name: secrets
           # env:
           #   - name: WEBPACKER_DEV_SERVER_HOST
-          #     value: "frontend"
+          #     value: "0.0.0.0"
+          #   - name: WEBPACKER_DEV_SERVER_INLINE
+          #     value: "true"
+          #   - name: WEBPACKER_DEV_SERVER_HOT
+          #     value: "false"
           readinessProbe:
             httpGet:
               path: /ready

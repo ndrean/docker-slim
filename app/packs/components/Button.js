@@ -13,18 +13,19 @@ const Button = () => {
   const [pods, setPods] = useState({});
 
   useEffect(() => {
+    let init = true;
     async function initCounter() {
       try {
         listChannel.received = (data) => {
-          setPods(data);
+          if (init) setPods(data);
         };
         hitChannel.received = (data) => {
-          if (data) return setHitCount({ hitCount: data.hitCount });
+          if (data && init) return setHitCount({ hitCount: data.hitCount });
         };
 
         let i = 0;
         clickChannel.received = (data) => {
-          if (data) {
+          if (data && init) {
             i = 1;
             const { clickCount } = data;
             return setClickCount({ clickCount });
@@ -32,8 +33,10 @@ const Button = () => {
         };
         if (i === 0) {
           const { clickCount, hitCount } = await fetchCounters("/getCounters");
-          setClickCount({ clickCount: Number(clickCount) });
-          setHitCount({ hitCount: Number(hitCount) });
+          if (init) {
+            setClickCount({ clickCount: Number(clickCount) });
+            setHitCount({ hitCount: Number(hitCount) });
+          }
         }
       } catch (err) {
         console.warn(err);
@@ -41,6 +44,7 @@ const Button = () => {
       }
     }
     initCounter();
+    return () => (init = false);
   }, []);
 
   const handleClick = async (e) => {
@@ -50,6 +54,7 @@ const Button = () => {
       clickCount.clickCount === 0
         ? (update = 1)
         : (update = clickCount.clickCount + 1);
+      console.log("click! :", update);
       clickChannel.sending({ clickCount: update });
 
       await startWorkers().catch((err) => console.log(err));
@@ -74,9 +79,8 @@ const Button = () => {
     <>
       <div className="flexed">
         <button className="button" onClick={handleClick}>
-          Click me!!**
+          Click me!!
         </button>
-
         <div className="counters">
           <h1>
             Click count: <span>{clickCount?.clickCount}</span>

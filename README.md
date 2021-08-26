@@ -11,6 +11,77 @@
 for f in *.yml; do yq eval -j=o $f > $f.json; done
 ```
 
+## Wepacker 6
+
+```sh
+yarn add https://github.com/rails/webpacker.git
+./bin/bundle install
+./bin/rails webpacker:install
+yarn install
+
+yarn add turbolinks @rails/ujs
+yarn add react react-dom @babel/preset-react
+yarn add css-loader style-loader mini-css-extract-plugin css-minimizer-webpack-plugin
+```
+
+```html
+<head>
+  <%= javascript_pack_tag 'application' %> <%= stylesheet_pack_tag 'application'
+  %>
+</head>
+```
+
+```sh
+#tree app/packs
+app/packs
+├── channels
+│   ├── click_channel.js
+│   ├── consumer.js
+│   ├── hit_channel.js
+│   ├── index.js
+│   └── list_channel.js
+├── components
+│   └── Button.js
+├── entrypoints
+│   ├── application.css
+│   └── application.js
+├── images
+│   ├── Elephantsql.jpg
+│   ├── FrontReact.png
+│   ├── Postgres.png
+│   ├── Rails.png
+│   ├── Redis.png
+│   ├── docker2.png
+│   ├── kubernetes.png
+│   ├── ruby.jpg
+│   ├── sidekiq.png
+│   └── websocket.jpg
+├── stylesheets
+│   └── application.css
+└── utils
+    ├── fetchCounters.js
+    ├── postCounters.js
+    └── startWorkers.js
+```
+
+```js
+//  /webpack/base.js
+const { webpackConfig, merge } = require("@rails/webpacker");
+const customConfig = require("./custom.js");
+module.exports = merge(webpackConfig, customConfig);
+
+// custom.js
+module.exports = {
+  resolve: {
+    alias: {
+      React: "react",
+      ReactDOM: "react-dom",
+    },
+    extensions: ["css"],
+  },
+};
+```
+
 ## Webpack
 
 <https://medium.com/@leoliang.climber/splitchunks-for-webpacker-in-rails-5-2-4a6812a68b76>
