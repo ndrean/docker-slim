@@ -2,6 +2,8 @@
 
 <https://gist.github.com/jferris/1aba7433f5318715bda66b98c1d953f0>
 
+<https://gist.github.com/mwlang/99e25ce45f9992a51b34079bfab0a90d>
+
 require 'uri'
 require 'net/http'
 

@@ -9,6 +9,7 @@ k8s_yaml([
 
 k8s_yaml('./kube-split/postgres-dep.yml')
 k8s_yaml('./kube-split/redis-dep.yml')
+# metadata.annotations.tilt.dev/down-policy: keep
 
 k8s_yaml(['./kube-split/role.yml', './kube-split/service-account.yml'])
 
@@ -31,8 +32,8 @@ k8s_yaml('./kube-dev/rails-dep.yml')
 k8s_yaml('./kube-dev/sidekiq-dep.yml')
 # k8s_yaml('./kube-dev/cable-dep.yml')
 
-k8s_resource('rails-dep', resource_deps=['pg-dep', 'redis-dep', 'db-migrate'])
-k8s_resource('sidekiq-dep', resource_deps=['redis-dep','pg-dep', 'db-migrate'])
+k8s_resource('rails-dep', resource_deps=['pg-dep', 'redis-dep','db-migrate'])
+k8s_resource('sidekiq-dep', resource_deps=['redis-dep','pg-dep','db-migrate'])
 
 k8s_resource('db-migrate', 
    resource_deps=['pg-dep'],

@@ -7,13 +7,15 @@ Rails.application.routes.draw do
 
   mount ActionCable.server => '/cable'
 
-  root to: 'pages#home'
-
+  # root to: 'pages#home'
+  get '/', to: 'pages#home'
+  
   # React endpoints
   # post '/incrCounters', to: "counters#create"
   get '/startWorkers', to: 'pages#start_workers'
   get '/getCounters', to: 'counters#get_counters'
 
+  get'/json', to: 'ready#whoami'
   get '/ready', to: 'ready#index' 
   # resources :ready, only: [:index]
 end

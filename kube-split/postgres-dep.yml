@@ -4,6 +4,8 @@ metadata:
   name: pg-svc
   labels:
     app: pg #### pg # <- must match with the pod
+  annotations:
+    tilt.dev/down-policy: keep
 spec:
   ports:
     - protocol: TCP

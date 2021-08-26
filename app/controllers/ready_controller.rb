@@ -4,4 +4,7 @@ class ReadyController < ApplicationController
       render json: {status: 200}
    end
 
+   def whoami
+      render json: {status: 200}
+   end
 end
