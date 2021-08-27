@@ -20,7 +20,8 @@ yarn add https://github.com/rails/webpacker.git
 yarn install
 
 yarn add turbolinks @rails/ujs
-yarn add react react-dom @babel/preset-react
+yarn add preat preat-compat
+yarn add @babel/preset-react
 yarn add css-loader style-loader mini-css-extract-plugin css-minimizer-webpack-plugin
 ```
 

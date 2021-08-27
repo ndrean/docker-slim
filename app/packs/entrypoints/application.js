@@ -2,7 +2,7 @@ import Rails from "@rails/ujs";
 import Turbolinks from "turbolinks";
 import "./application.css";
 import React from "react";
-import ReactDOM from "react-dom";
+import { render } from "react-dom";
 import "../channels";
 
 Rails.start();
@@ -14,5 +14,5 @@ const imagePath = (name) => images(name, true);
 import Button from "../components/Button.js";
 
 document.addEventListener("turbolinks:load", () => {
-  ReactDOM.render(<Button />, document.getElementById("root"));
+  render(<Button />, document.getElementById("root"));
 });

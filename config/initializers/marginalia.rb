@@ -1,1 +1,1 @@
-Marginalia::Comment.components = [:line, :action, :controller]
+# Marginalia::Comment.components = [:line] if RAILS_ENV == 'development'

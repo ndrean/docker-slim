@@ -1,8 +1,8 @@
 module.exports = {
   resolve: {
     alias: {
-      React: "react",
-      ReactDOM: "react-dom",
+      react: "preact/compat",
+      "react-dom": "preact/compat",
     },
     extensions: ["css"],
   },

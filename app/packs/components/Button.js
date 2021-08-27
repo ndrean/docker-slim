@@ -7,7 +7,7 @@ import clickChannel from "../channels/click_channel.js";
 import hitChannel from "../channels/hit_channel.js";
 import listChannel from "../channels/list_channel.js";
 
-const Button = () => {
+export default function Button() {
   const [clickCount, setClickCount] = useState({});
   const [hitCount, setHitCount] = useState({});
   const [pods, setPods] = useState({});
@@ -119,6 +119,6 @@ const Button = () => {
       <br />
     </>
   );
-};
+}
 
-export default Button;
+// export default Button;
