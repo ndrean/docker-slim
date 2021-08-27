@@ -10,12 +10,14 @@ ENV   BUNDLER_VERSION=${BUNDLER_VERSION} \
    NODE_ENV=${NODE_ENV}
 
 RUN   apk -U upgrade && apk add --no-cache \
-   postgresql-dev nodejs yarn build-base tzdata curl
+   postgresql-dev nodejs yarn build-base \
+   #tzdata curl \
+   && rm -rf /var/cache/apk/* 
 
 ENV   PATH /app/bin:$PATH
 WORKDIR /app
 
-COPY  Gemfile Gemfile.lock package.json yarn.lock ./
+COPY  Gemfile Gemfile.lock ./
 
 ENV   LANG=C.UTF-8 \
    BUNDLE_JOBS=4 \
@@ -27,6 +29,7 @@ RUN   gem install bundler:${BUNDLER_VERSION} --no-document \
    && bundle install --quiet \
    && rm -rf $GEM_HOME/cache/*
 
+COPY package.json yarn.lock ./
 RUN   yarn --check-files --silent --production && yarn cache clean
 
 COPY  . ./

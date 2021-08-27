@@ -14,6 +14,7 @@
     "react-hot-loader": "^4.13.0",
     "turbolinks": "^5.2.0",
     "webpack": "^4.46.0",
+    "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.8.0"
   },
   "version": "0.1.0",
@@ -21,5 +22,10 @@
     "@webpack-cli/info": "^1.3.0",
     "@webpack-cli/serve": "^1.5.2",
     "webpack-dev-server": "^4.0.0"
+  },
+  "scripts": {
+    "webpack:analyze": "yarn webpack:build_json && yarn webpack:analyze_json",
+    "webpack:build_json": "WEBPACK_ANALYZE=true  RAILS_ENV=${RAILS_ENV:-production} NODE_ENV=${NODE_ENV:-production} bin/webpack --profile --json > tmp/webpack-stats.json",
+    "webpack:analyze_json": "webpack-bundle-analyzer tmp/webpack-stats.json public/packs"
   }
 }

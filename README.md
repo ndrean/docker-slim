@@ -4,15 +4,16 @@
 
 <https://gist.github.com/mwlang/99e25ce45f9992a51b34079bfab0a90d>
 
-require 'uri'
-require 'net/http'
+## Bundle analyze
 
-uri = UIR(""#{apiserver}/api/v1/namespaces/#{namespace}/pods")
-uri.headers = {
-'Authorization': 'Bearer '+ "#{token}",
-Accept': 'application/json',
-'cacert': cacert
-}
+<https://rossta.net/blog/webpacker-output-analysis-with-webpack-bundle-analyzer.html>
+
+<https://developers.google.com/web/fundamentals/performance/webpack/monitor-and-analyze>
+
+```sh
+bin/webpack --json > tmp/webpack-stats.json
+npx webpack-bundle-analyzer tmp/webpack-stats.json public/packs
+```
 
 # yq
 
@@ -24,13 +25,6 @@ for f in *.yml; do yq eval -j=o $f > $f.json; done
 ```
 
 # Webpack
-
-<https://medium.com/@leoliang.climber/splitchunks-for-webpacker-in-rails-5-2-4a6812a68b76>
-<https://stackoverflow.com/questions/65858869/webpacker-cant-find-application-css-in-app-public-packs-manifest-json>
-
-In "config/webpack/environment.js", add: `environment.splitChunks()`
-
-Use `javascript_packs_with_chunks_tag` in your view instead of `javascript_pack_tag`
 
 In "/config.webpacker.yml' (assets are compiled in the image):
 
