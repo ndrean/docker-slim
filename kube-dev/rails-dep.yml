@@ -70,7 +70,7 @@ spec:
                 name: secrets
           # env:
           #   - name: WEBPACKER_DEV_SERVER_HOST
-          #     value: "0.0.0.0"
+          #     value: "frontend"
           #   - name: WEBPACKER_DEV_SERVER_INLINE
           #     value: "true"
           #   - name: WEBPACKER_DEV_SERVER_HOT
@@ -83,14 +83,3 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 30
             timeoutSeconds: 2
-        # - name: cable
-        #   image: builder-dev3
-        #   imagePullPolicy: "Always"
-        #   command: ["./bin/webpack-dev-server"]
-        #   ports:
-        #     - containerPort: 28080
-        #   envFrom:
-        #     - configMapRef:
-        #         name: config
-        #     - secretRef:
-        #         name: secrets
