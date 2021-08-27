@@ -1,3 +1,6 @@
+// const BundleAnalyzerPlugin =
+//   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+
 module.exports = {
   resolve: {
     alias: {
@@ -6,4 +9,5 @@ module.exports = {
     },
     extensions: ["css"],
   },
+  // plugins: [new BundleAnalyzerPlugin()],
 };
