@@ -5,9 +5,9 @@
 
 import Rails from "@rails/ujs";
 import Turbolinks from "turbolinks";
-import "stylesheets/application";
+import "./application.css";
 import React from "react";
-import ReactDOM from "react-dom";
+import { render } from "react-dom";
 
 Rails.start();
 Turbolinks.start();
@@ -15,10 +15,10 @@ Turbolinks.start();
 const images = require.context("../images", true);
 const imagePath = (name) => images(name, true);
 
-import Button from "./components/Button.jsx";
+import Button from "../components/Button.jsx";
 
-document.addEventListener("DOMContentLoaded", () => {
-  ReactDOM.render(
+document.addEventListener("turbolinks:load", () => {
+  render(
     <Button />,
     document.getElementById("root")
     // document.body.appendChild(document.createElement("div"))

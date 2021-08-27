@@ -12,21 +12,21 @@
 
     <meta name="theme-color" content="#ffffff">
 
-    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application' %>
+    <%= javascript_pack_tag 'application' %>
   </head>
 
   <body>
-    <%= image_pack_tag 'media/images/Rails.png', class: "img-large", alt:"logo" %>
-    <%= image_pack_tag 'media/images/docker2.png', class: "img", alt:"logo" %>
-    <%= image_pack_tag 'media/images/Redis.png',class: "img-large", alt:"logo" %> 
-    <%= image_pack_tag 'media/images/sidekiq.png', class: "img", alt:"logo" %> 
-    <%= image_pack_tag 'media/images/Postgres.png', class: "img-large", alt:"logo" %>
-    <%= image_pack_tag 'media/images/Elephantsql.jpg', class: "img", alt:"logo" %>
-    <%# image_pack_tag 'media/images/FrontReact.png', class: "img-med"  %>
-    <img src="<%= asset_pack_path 'media/images/FrontReact.png' %>" class="img-med" alt="logo"></img>
-    <%= image_pack_tag 'media/images/websocket.jpeg', class: 'img', alt: 'logo
-    ' %>
+    <%= image_pack_tag 'Rails.png', class: "img-large", alt:"rails" %>
+    <%= image_pack_tag 'docker2.png', class: "img", alt:"docker" %>
+    <%= image_pack_tag 'Redis.png',class: "img-large", alt:"redis" %> 
+    <%= image_pack_tag 'sidekiq.png', class: "img", alt:"sidekiq" %> 
+    <%= image_pack_tag 'Postgres.png', class: "img-large", alt:"pg" %>
+    <%= image_pack_tag 'Elephantsql.jpg', class: "img", alt:"elpsq" %>
+    <%= image_pack_tag 'FrontReact.png', class: "img-med", alt:"react"  %>
+    <%= image_pack_tag 'websocket.jpeg', class: 'img', alt: 'ws' %>
+    
+    <br>
     <%= yield %>
     <p>Browser's IP: <%= @origin %></p>
     <p>Hosted by: <%= ENV['HOSTNAME'] %></p>

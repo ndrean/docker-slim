@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import fetchCounters from "../utils/fetchCounters.js";
 // import postCounters from "../utils/postCounters.js";
 import startWorkers from "../utils/startWorkers.js";
-import counterChannel from "../../channels/counters_channel.js";
-import hitsChannel from "../../channels/hits_channel.js";
+import counterChannel from "../channels/counters_channel.js";
+import hitsChannel from "../channels/hits_channel.js";
 
 const Button = () => {
   const [counters, setCounters] = useState({});

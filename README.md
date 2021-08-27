@@ -1,4 +1,9 @@
-`docker-compose run --rm app bundle exec rails db:create db:migrate`
+# Set up
+
+Run `rails webpacker:compile assets:clean` to build the Nginx image, then:
+`docker-compose up --build`
+
+Using **Preact**
 
 ## Self certificate
 
@@ -26,13 +31,3 @@ CREATE TABLE COUNTERS (id serial PRIMARY KEY, nb integer, created_at TIMESTAMP, 
 `REMOTE_URL=postgres://ortkcbqt:fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd@batyr.db.elephantsql.com/ortkcbqt`
 
 where the user and database name is "ortkcbqt" followed by the password.
-
-## Note on K8
-
-You to create a namespace "test" for testing when doing this kind of things. You just do `kubectl create ns test`, then you do all your tests in this namespace (by adding `-n test`). Once you have finished, you just do `kubectl delete ns test`, and you are done.
-
-## Note on Rails errors
-
-<https://github.com/rails/rails/search?utf8=%E2%9C%93&q=standarderror&type=Code>
-
-<https://github.com/rails/rails/issues/41492>

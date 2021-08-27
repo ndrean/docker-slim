@@ -1,33 +1,36 @@
 ARG RUBY_VERSION=3.0.2-alpine
 FROM ruby:${RUBY_VERSION:-3.0.1-alpine} AS builder
 
-ARG BUNDLER_VERSION=2.2.24
+ARG BUNDLER_VERSION=2.2.26
 ARG NODE_ENV=production
 ARG RAILS_ENV=production
 ARG RAILS_SERVE_STATIC_FILES=false
 RUN apk -U upgrade && apk add --no-cache \
-   postgresql-dev nodejs yarn build-base tzdata
+   postgresql-dev nodejs yarn build-base tzdata git
 
 ENV PATH /app/bin:$PATH
 WORKDIR /app
 
-COPY Gemfile Gemfile.lock package.json yarn.lock ./
+COPY Gemfile Gemfile.lock ./
 
 ENV LANG=C.UTF-8 \
    BUNDLE_JOBS=4 \
    BUNDLE_RETRY=3 \
    BUNDLE_PATH='vendor/bundle' 
 
+RUN yarn add https://github.com/rails/webpacker.git
+
 RUN gem install bundler:${BUNDLER_VERSION} --no-document \
    # && bundle config set deployment 'true' \
    && bundle config set --without 'development test' \
    && bundle install --quiet 
 
+COPY package.json yarn.lock ./
 RUN yarn --check-files --silent --production && yarn cache clean
 
 COPY . ./
 
-RUN bundle exec rails assets:precompile  assets:clean
+RUN bundle exec rails webpacker:compile  assets:clean
 
 
 ###########################################################################
@@ -54,11 +57,11 @@ ENV RAILS_ENV=$RAILS_ENV \
    BUNDLE_PATH='vendor/bundle'
 
 WORKDIR /app
-RUN rm -rf node_modules tmp/cache tmp/miniprofiler tmp/sockets 
+RUN rm -rf node_modules
 
 # CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
 # CMD ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
-CMD ["bundle", "exec", "puma", "-p", "28080", "./cable/config.ru"]
+# CMD ["bundle", "exec", "puma", "-p", "28080", "./cable/config.ru"]
 # /public
 
 
