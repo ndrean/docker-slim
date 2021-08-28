@@ -93,10 +93,10 @@ Rails.application.configure do
     Rails.logger  = ActiveSupport::Logger.new(STDOUT)
   end
 
-  config.after_initialize do
-    Bullet.enable = true
-    Bullet.rails_logger = true
-  end
+  # config.after_initialize do
+  #   Bullet.enable = true
+  #   Bullet.rails_logger = true
+  # end
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false

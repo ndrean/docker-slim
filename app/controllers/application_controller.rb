@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
       begin
          yield
       ensure
-         logger.info "USERAGENT: #{request.headers['HTTP_USER_AGENT']}" 
+         logger.info "USER_AGENT: #{request.headers['HTTP_USER_AGENT']}" 
       end
    end
 end

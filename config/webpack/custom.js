@@ -9,5 +9,10 @@ module.exports = {
     },
     extensions: ["css"],
   },
-  // plugins: [new BundleAnalyzerPlugin()],
+  // plugins: [
+  //   new BundleAnalyzerPlugin(),
+  //   //   new DashboardPlugin({
+  //   //     port: 3001,
+  //   //   }),
+  // ],
 };

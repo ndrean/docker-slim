@@ -29,6 +29,7 @@
   ],
   "devDependencies": {
     "@webpack-cli/serve": "^1.5.2",
+    "webpack-dashboard": "^3.3.5",
     "webpack-dev-server": "^4.0.0"
   }
 }
