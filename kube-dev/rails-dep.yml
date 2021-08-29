@@ -75,7 +75,7 @@ spec:
           #     value: "true"
           #   - name: WEBPACKER_DEV_SERVER_HOT
           #     value: "false"
-          readinessProbe:
+          livenessProbe:
             httpGet:
               path: /ready
               port: 3000
@@ -83,3 +83,6 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 30
             timeoutSeconds: 2
+          resources:
+            limits:
+              memory: "150Mi"

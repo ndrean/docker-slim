@@ -6,7 +6,7 @@ ARG   RAILS_ENV=production
 ARG   RAILS_LOG_TO_STDOUT=true
 
 
-RUN   apk -U upgrade && apk add --no-cache  libpq tzdata netcat-openbsd curl\
+RUN   apk -U upgrade && apk add --no-cache  libpq  tzdata netcat-openbsd curl \
    && rm -rf /var/cache/apk/* \
    && adduser --disabled-password app-user
 # -disabled-password doesn't assign a password, so cannot login 

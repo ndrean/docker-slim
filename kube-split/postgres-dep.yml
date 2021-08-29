@@ -63,6 +63,13 @@ spec: # of the deployment
                 name: config
             - secretRef:
                 name: secrets
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "postgres"]
+            periodSeconds: 30
+            timeoutSeconds: 10
+            initialDelaySeconds: 180
+
 ---
 # we bind the resource PV to the pod
 apiVersion: v1

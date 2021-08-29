@@ -44,7 +44,7 @@ spec:
                 name: config
             - secretRef:
                 name: secrets
-          readinessProbe:
+          livenessProbe:
             httpGet:
               path: /ready
               port: 3000

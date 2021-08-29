@@ -9,6 +9,7 @@
     "@rails/webpacker": "^6.0.0-rc.5",
     "css-loader": "^6.2.0",
     "css-minimizer-webpack-plugin": "^3.0.2",
+    "esbuild-loader": "^2.15.1",
     "mini-css-extract-plugin": "^2.2.0",
     "preact": "^10.5.14",
     "preact-compat": "^3.19.0",

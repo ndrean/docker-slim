@@ -1,3 +1,5 @@
+// Webpacker 6 uses "rules", no more "environment"
+
 // const BundleAnalyzerPlugin =
 //   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
@@ -11,8 +13,4 @@ module.exports = {
   },
   // plugins: [
   //   new BundleAnalyzerPlugin(),
-  //   //   new DashboardPlugin({
-  //   //     port: 3001,
-  //   //   }),
-  // ],
 };
