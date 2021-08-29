@@ -4,8 +4,11 @@ metadata:
   name: env
 data:
   RAILS_ENV: "production"
+  NODE_NEV: "production"
   RAILS_LOG_TO_STDOUT: "true"
   RAILS_SERVE_STATIC_FILES: "false"
+  BUNDLE_PATH: "vendor/bundle" #<-  !!! SUPER IMPORTANT !!
+  BUNDLER_VERSION: "2.2.26"
 
   POSTGRES_HOST: "batyr.db.elephantsql.com" # <- name of the service that exposes the Postgres pod
   POSTGRES_DB: "ortkcbqt"
@@ -13,8 +16,12 @@ data:
   POSTGRES_USER: "ortkcbqt"
   PGDATA: "/var/lib/postgresql/data"
 
-  REDIS_DB: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424"
-  REDIS_SIDEKIQ: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424"
-  REDIS_CACHE: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424"
-  REDIS_CABLE: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424"
+  REDIS_DB: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redisdb"
+  REDIS_SIDEKIQ: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redisdb"
+  REDIS_CACHE: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redisdb"
+  REDIS_CABLE: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redisdb"
+  # REDIS_DB: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424"
+  # REDIS_SIDEKIQ: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424"
+  # REDIS_CACHE: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424"
+  # REDIS_CABLE: "redis://user:tq4hBlYvIvq0uU7hYMOYS6ErQKsSA2N8@redis-13424.c258.us-east-1-4.ec2.cloud.redislabs.com:13424"
   # POSTGRES_URL: postgres://ortkcbqt:fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd@batyr.db.elephantsql.com/ortkcbqt

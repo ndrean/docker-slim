@@ -17,9 +17,11 @@ spec:
       labels:
         app: sidekiq # change from Rails
     spec:
+      serviceAccountName: sidekiq
       containers:
         - name: sidekiq
-          image: ndrean/rails-sc
+          image: ndrean/rails-base
+          imagePullPolicy: "Always"
           command: ["bundle"]
           args: ["exec", "sidekiq", "-C", "./config/sidekiq.yml"]
           resources:
@@ -29,16 +31,16 @@ spec:
           envFrom:
             - configMapRef:
                 name: env
-          ports:
-            - name: sidekiqalive
-              containerPort: 7433
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 7433
-            initialDelaySeconds: 30
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 7433
-            initialDelaySeconds: 30 # app specific. Time your sidekiq takes to start processing.
+          # ports:
+          #   - name: sidekiqalive
+          #     containerPort: 7433
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 7433
+          #   initialDelaySeconds: 30
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 7433
+          #   initialDelaySeconds: 30 # app specific. Time your sidekiq takes to start processing.

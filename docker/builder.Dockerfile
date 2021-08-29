@@ -22,8 +22,8 @@ RUN gem install bundler:${BUNDLER_VERSION} --no-document \
    && bundle config set --without 'development test' \
    && bundle install --quiet \
    && rm -rf $GEM_HOME/cache/* \
-   && bundle exec rails webpacker:install \
+   # && bundle exec rails webpacker:install \
    && yarn --check-files --silent --production && yarn cache clean
 
 COPY . ./
-RUN bundle exec rails webpacker:compile assets:clean
+# RUN bundle exec rails webpacker:compile assets:clean

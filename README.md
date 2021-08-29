@@ -1,10 +1,15 @@
 ## yq
 
-`yp -ooutput=json pod.yml` or `yq -o=j pod.yml`
+`yp eval -output=json pod.yml` or `yq eval -o=j pod.yml`
 <https://mikefarah.gitbook.io/yq/usage/convert>
 
+To convert to json a bunch of yml:
+
 ```bash
-for f in *.yml; do yq eval -j=o $f > $f.json; done
+for f in *.yml; do
+  g=${f%.yml}; # extraction filename without extension
+  yq eval -o=j $g.yml > $g.json; # convert and output into a filename with .json extension
+done
 ```
 
 ## Wepacker 6

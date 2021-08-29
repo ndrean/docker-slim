@@ -1,0 +1,9 @@
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: redisdb #<- Service name
+subsets:
+  - addresses:
+      - ip: 54.164.236.16 #<- manual discovery
+    ports:
+      - port: 13424

@@ -1,0 +1,41 @@
+{
+  "kind": "Role",
+  "apiVersion": "rbac.authorization.k8s.io/v1",
+  "metadata": {
+    "name": "query-pods"
+  },
+  "rules": [
+    {
+      "apiGroups": [
+        ""
+      ],
+      "resources": [
+        "pods",
+        "service"
+      ],
+      "verbs": [
+        "get",
+        "watch",
+        "list"
+      ]
+    }
+  ]
+}
+{
+  "apiVersion": "rbac.authorization.k8s.io/v1",
+  "kind": "RoleBinding",
+  "metadata": {
+    "name": "query-pods"
+  },
+  "subjects": [
+    {
+      "kind": "ServiceAccount",
+      "name": "sidekiq"
+    }
+  ],
+  "roleRef": {
+    "kind": "Role",
+    "name": "query-pods",
+    "apiGroup": "rbac.authorization.k8s.io"
+  }
+}

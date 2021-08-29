@@ -1,0 +1,46 @@
+k8s_yaml(['./kube-split/role.yml', './kube-split/service-account.yml',
+  './kube-sidecar/config-remote.yml', './kube-sidecar/nginx-config.yml',
+  './kube-sidecar/endpoint-redis.yml', './kube-sidecar/service-redis.yml',
+  './kube-sidecar/cname-pg.yml'
+  ])
+
+docker_build( 'builder',
+  '.', 
+  dockerfile="./docker/builder.Dockerfile", # <- Bob
+  build_args={
+     "RUBY_VERSION": "3.0.2-alpine",
+     "NODE_ENV": "production",
+     "RAILS_ENV": "production",
+     "BUNDLER_VERSION": "2.2.26",
+   },
+   ignore=['./Tiltfile','./kube-split/','./docker/']
+)
+
+docker_build('ndrean/rails-base',
+   '.',
+   build_args={
+     "RUBY_VERSION": "3.0.2-alpine",      
+     "RAILS_ENV": "production",   
+     "RAILS_LOG_TO_STDOUT": "true",
+   },
+   dockerfile='./docker/rails.Dockerfile',
+   ignore=['./Tiltfile','./kube-split/','./docker/', 'README.md']
+)
+
+# k8s_yaml('./kube-sidecar/cable-dep.yml')
+k8s_yaml(['./kube-sidecar/rails-nginx-dep.yml', './kube-sidecar/sidekiq-dep.yml'])
+# k8s_resource('rails-nginx-dep', resource_deps=['db-migrate'])
+
+k8s_yaml('./kube-sidecar/migrate.yml')
+k8s_resource('db-migrate', 
+  resource_deps=['rails-nginx-dep'],
+   trigger_mode=TRIGGER_MODE_MANUAL,
+   auto_init=False
+)
+
+allow_k8s_contexts('minikube')
+k8s_resource('rails-nginx-dep', port_forwards='31000')
+
+#local_resource('migrate',
+#   "export POD_NAME=$(kubectl get pods -l app=rails -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}') && kubectl exec $POD_NAME -- bundle exec rails db:migrate",
+#   resource_deps=['rails-dep'])

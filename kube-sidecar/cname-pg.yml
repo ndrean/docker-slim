@@ -1,0 +1,7 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: pqsql
+spec:
+  type: ExternalName
+  externalName: batyr.db.elephantsql.com

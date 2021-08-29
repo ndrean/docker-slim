@@ -14,17 +14,19 @@ RUN apk -U upgrade && apk add --no-cache postgresql-dev nodejs yarn build-base t
 
 WORKDIR /app
 
-COPY Gemfile Gemfile.lock package.json yarn.lock ./
+COPY Gemfile Gemfile.lock  ./
 
 ENV LANG=C.UTF-8 BUNDLE_JOBS=4 BUNDLE_RETRY=3
 # BUNDLE_PATH='vendor/bundle' 
 
-# RUN yarn add https://github.com/rails/webpacker.git \
+# RUN yarn add webpacker@https://github.com/rails/webpacker.git \
 
 RUN gem install bundler:${BUNDLER_VERSION} --no-document \
    && bundle install --quiet \
-   && rm -rf $GEM_HOME/cache/* \
-   && bundle exec rails webpacker:install \
-   && yarn install --check-files --silent  && yarn cache clean
+   && rm -rf $GEM_HOME/cache/*
+
+COPY package.json yarn.lock ./
+# && bundle exec rails webpacker:install \
+RUN yarn install --check-files --silent  && yarn cache clean
 
 COPY . ./
