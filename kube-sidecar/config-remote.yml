@@ -3,11 +3,11 @@ kind: ConfigMap
 metadata:
   name: env
 data:
-  RAILS_ENV: "production"
-  NODE_NEV: "production"
+  RAILS_ENV: "development" #<- for builder
+  NODE_NEV: "development" #<- for builder
   RAILS_LOG_TO_STDOUT: "true"
   RAILS_SERVE_STATIC_FILES: "false"
-  BUNDLE_PATH: "vendor/bundle" #<-  !!! SUPER IMPORTANT !!
+  # BUNDLE_PATH: "vendor/bundle" #<-  !!! SUPER IMPORTANT for rails-base !!
   BUNDLER_VERSION: "2.2.26"
 
   POSTGRES_HOST: "batyr.db.elephantsql.com" # <- name of the service that exposes the Postgres pod

@@ -19,14 +19,12 @@ COPY Gemfile Gemfile.lock  ./
 ENV LANG=C.UTF-8 BUNDLE_JOBS=4 BUNDLE_RETRY=3
 # BUNDLE_PATH='vendor/bundle' 
 
-# RUN yarn add webpacker@https://github.com/rails/webpacker.git \
 
 RUN gem install bundler:${BUNDLER_VERSION} --no-document \
    && bundle install --quiet \
    && rm -rf $GEM_HOME/cache/*
 
 COPY package.json yarn.lock ./
-# && bundle exec rails webpacker:install \
 RUN yarn install --check-files --silent  && yarn cache clean
 
 COPY . ./

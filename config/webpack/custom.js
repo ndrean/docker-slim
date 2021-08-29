@@ -9,6 +9,19 @@ module.exports = {
     },
     extensions: ["css"],
   },
+  // module: {
+  //   rules: [
+  //     // Use esbuild as a Babel alternative
+  //     {
+  //       test: /\.js$/,
+  //       loader: "esbuild-loader",
+  //       options: {
+  //         target: "es2015",
+  //       },
+  //     },
+  //   ],
+  // },
+
   // plugins: [
   //   new BundleAnalyzerPlugin(),
   //   //   new DashboardPlugin({

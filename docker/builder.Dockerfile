@@ -16,13 +16,13 @@ ENV   PATH /app/bin:$PATH
 WORKDIR /app
 
 COPY  Gemfile Gemfile.lock package.json yarn.lock ./
+
 ENV   LANG=C.UTF-8 BUNDLE_JOBS=4 BUNDLE_RETRY=3 BUNDLE_PATH='vendor/bundle' 
-#  RUN   yarn add https://github.com/rails/webpacker.git \
+
 RUN gem install bundler:${BUNDLER_VERSION} --no-document \
    && bundle config set --without 'development test' \
    && bundle install --quiet \
    && rm -rf $GEM_HOME/cache/* \
-   # && bundle exec rails webpacker:install \
    && yarn --check-files --silent --production && yarn cache clean
 
 COPY . ./

@@ -20,7 +20,7 @@ spec:
       serviceAccountName: sidekiq
       containers:
         - name: sidekiq
-          image: ndrean/rails-base
+          image: builder-dev3
           imagePullPolicy: "Always"
           command: ["bundle"]
           args: ["exec", "sidekiq", "-C", "./config/sidekiq.yml"]
