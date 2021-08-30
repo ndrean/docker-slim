@@ -7,6 +7,32 @@ import clickChannel from "../channels/click_channel.js";
 import hitChannel from "../channels/hit_channel.js";
 import listChannel from "../channels/list_channel.js";
 
+const Table = ({ pods }) => (
+  <tbody>
+    {Object.keys(pods).map((pod) => (
+      <Row pod={pod} pods={pods} key={pod.toString()} />
+    ))}
+  </tbody>
+);
+
+const Row = ({ pod, pods, key }) => (
+  <tr key={key}>
+    <td>{pod}</td>
+    <td>
+      <span className="badge">{pods[pod]?.nb}</span>;
+    </td>
+    <td>{pods[pod]?.created_at}</td>
+  </tr>
+);
+
+const Counter = ({ text, count }) => {
+  return (
+    <h1>
+      {text}: <span>{count}</span>
+    </h1>
+  );
+};
+
 export default function Button() {
   const [clickCount, setClickCount] = useState({});
   const [hitCount, setHitCount] = useState({});
@@ -17,7 +43,7 @@ export default function Button() {
     async function initCounter() {
       try {
         listChannel.received = (data) => {
-          if (init) setPods(data);
+          if (init && data) setPods(data);
         };
         hitChannel.received = (data) => {
           if (data && init) return setHitCount({ hitCount: data.hitCount });
@@ -54,21 +80,8 @@ export default function Button() {
       clickCount.clickCount === 0
         ? (update = 1)
         : (update = clickCount.clickCount + 1);
-      console.log("click! :", update);
       clickChannel.sending({ clickCount: update });
-
       await startWorkers().catch((err) => console.log(err));
-      // await Promise.any([
-      //   // postCounters("/incrCounters", { countPG })
-      //   //   .then((res) => {
-      //   //     if (res.status === "created") {
-      //   //       return setCounters({ countPG });
-      //   //     }
-      //   //     throw new Error(res.status);
-      //   //   })
-      //   //   .catch((err) => console.log(err)),
-      //   startWorkers().catch((err) => console.log(err)),
-      // ]);
     } catch (err) {
       console.log(err);
       throw new Error(err);
@@ -82,13 +95,9 @@ export default function Button() {
           Click me!!**
         </button>
         <div className="counters">
-          <h1>
-            Click count: <span>{clickCount?.clickCount}</span>
-          </h1>
+          <Counter text={"Click count: "} count={clickCount.clickCount} />
           <br />
-          <h1>
-            Page hits: <span>{hitCount?.hitCount}</span>
-          </h1>
+          <Counter text={"Page hits: "} count={hitCount.hitCount} />
         </div>
         <div className="flexed">
           <table className="styled-table">
@@ -99,20 +108,7 @@ export default function Button() {
                 <th>Created at</th>
               </tr>
             </thead>
-            <tbody>
-              {pods &&
-                Object.keys(pods).map((pod, idx) => {
-                  return (
-                    <tr key={idx}>
-                      <td>{pod}</td>
-                      <td>
-                        <span className="badge">{pods[pod]?.nb}</span>
-                      </td>
-                      <td>{pods[pod]?.created_at}</td>
-                    </tr>
-                  );
-                })}
-            </tbody>
+            <Table pods={pods} />
           </table>
         </div>
       </div>
@@ -120,5 +116,3 @@ export default function Button() {
     </>
   );
 }
-
-// export default Button;

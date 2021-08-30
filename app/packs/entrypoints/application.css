@@ -98,17 +98,15 @@ h3 > span.badge {
   text-align: center;
 }
 
-/*
-.badge {
-   background-color: #94802f;
-   font-weight: bold;
-   font-size: 80%;
-   border-radius: 50%;
-   min-width: 1.5em;
-   padding: .5em;
-   text-align: center
+.styled-table tbody tr td:nth-child(2) span .badge {
+  background-color: #94802f;
+  font-weight: bold;
+  font-size: 80%;
+  border-radius: 50%;
+  min-width: 1.5em;
+  padding: 0.5em;
+  text-align: center;
 }
-*/
 
 .styled-table tbody tr:nth-of-type(even) {
   background-color: #f3f3f3;

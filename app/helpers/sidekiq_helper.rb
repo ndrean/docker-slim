@@ -5,7 +5,7 @@ module SidekiqHelper
       begin
          # cf github/lib/sidekiq/Sidekiq/api.rb
          size = Sidekiq::Stats.new().processes_size
-         raise SidekiqHelper::Error.new("Sidekiq down") if size.zero?
+         raise StandardError.new("Sidekiq down") if size.zero?
          puts "Sidekiq is UP"
          # <- test Sidekiq/Redis connection (github/sidekiq/lib/sidekiq.rb)
          puts "Redis-Sidekiq @  #{Sidekiq.redis { |con| con.connection[:id] }}"
