@@ -7,19 +7,21 @@ import clickChannel from "../channels/click_channel.js";
 import hitChannel from "../channels/hit_channel.js";
 import listChannel from "../channels/list_channel.js";
 
-const Table = ({ pods }) => (
-  <tbody>
-    {Object.keys(pods).map((pod) => (
-      <Row pod={pod} pods={pods} key={pod.toString()} />
-    ))}
-  </tbody>
-);
+const Table = (props) => {
+  return (
+    <tbody>
+      {Object.keys(props.pods).map((pod) => (
+        <Row pod={pod} pods={pods} key={pod.toString()} />
+      ))}
+    </tbody>
+  );
+};
 
 const Row = ({ pod, pods, key }) => (
   <tr key={key}>
     <td>{pod}</td>
     <td>
-      <span className="badge">{pods[pod]?.nb}</span>;
+      <span className="badge">{pods[pod]?.nb}</span>
     </td>
     <td>{pods[pod]?.created_at}</td>
   </tr>
@@ -28,7 +30,7 @@ const Row = ({ pod, pods, key }) => (
 const Counter = ({ text, count }) => {
   return (
     <h1>
-      {text}: <span>{count}</span>
+      {text} <span>{count}</span>
     </h1>
   );
 };
@@ -92,7 +94,7 @@ export default function Button() {
     <>
       <div className="flexed">
         <button className="button" onClick={handleClick}>
-          Click me!!**
+          Click me!!
         </button>
         <div className="counters">
           <Counter text={"Click count: "} count={clickCount.clickCount} />

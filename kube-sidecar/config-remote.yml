@@ -10,7 +10,8 @@ data:
   # BUNDLE_PATH: "vendor/bundle" #<-  !!! SUPER IMPORTANT for rails-base !!
   BUNDLER_VERSION: "2.2.26"
 
-  POSTGRES_HOST: "batyr.db.elephantsql.com" # <- name of the service that exposes the Postgres pod
+  # POSTGRES_HOST: "batyr.db.elephantsql.com" # <- name of the service that exposes the Postgres pod
+  POSTGRES_HOST: "pgsql"
   POSTGRES_DB: "ortkcbqt"
   POSTGRES_PASSWORD: "fhSBQrF3Dzl9WWA1FfRIjQmU7u3pBtTd"
   POSTGRES_USER: "ortkcbqt"

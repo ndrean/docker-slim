@@ -6,15 +6,14 @@ class CurlJob < ApplicationJob
 
   def perform
     # Path to ServiceAccount token
-    serviceaccount= '/var/run/secrets/kubernetes.io/serviceaccount'
-    namespace=File.read("#{serviceaccount}/namespace")
-    apiserver= 'https://kubernetes.default.svc'
-    token= File.read("#{serviceaccount}/token")
-    cacert= "#{serviceaccount}/ca.crt"
+    serviceaccount = '/var/run/secrets/kubernetes.io/serviceaccount'
+    namespace = File.read("#{serviceaccount}/namespace")
+    apiserver = 'https://kubernetes.default.svc'
+    token = File.read("#{serviceaccount}/token")
+    cacert = "#{serviceaccount}/ca.crt"
+
     request = `curl --cacert #{cacert} --header "Authorization: Bearer #{token}" #{apiserver}/api/v1/namespaces/#{namespace}/pods `
-
-
-    # puts Oj.load(send_request)
+    
 
     # with proxy the side-car k8 server
     # uri = "http://127.0.0.1:8001/api/v1/namespaces/#{namespace}/pods"
@@ -54,38 +53,33 @@ class CurlJob < ApplicationJob
     }
 
     ActionCable.server.broadcast('list_channel', data.as_json)
+
+    # puts Oj.load(send_request({apiserver: apiserver, token: token, cacert: cacert, namespace: namespace}))
+
     
   rescue StandardError => e
     puts e.message
   end
 
-  # https://yukimotopress.github.io/http
-  def build_request
-    serviceaccount= '/var/run/secrets/kubernetes.io/serviceaccount'
-    namespace=File.read("#{serviceaccount}/namespace")
-    apiserver= 'https://kubernetes.default.svc'
-    cacert= "#{serviceaccount}/ca.crt"
-    token= File.read("#{serviceaccount}/token")
-    headers = {
-      'Authorization' => "Bearer #{token}",
-      'Content-Type' => 'application/json'
-    }
-    return {headers: headers, cacert: cacert, uri: URI("#{apiserver}/api/v1/namespaces/#{namespace}/pods")}
-    # return request = `curl --cacert #{cacert} --header "Authorization: Bearer #{token}" #{apiserver}/api/v1/namespaces/#{namespace}/pods `
-  end
 
-  def send_request
-    store = OpenSSL::X509::Store.new
-    store.set_default_paths
-    store.add_file(build_request.cacert)
 
-    http = Net::HTTP.new(build_request.uri, 443)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL:SSL::VERIFIY_PEER
-    http.ca_file = store
+  # def send_request(opt={})
+  #   uri = URI("#{opt[:apiserver]}/api/v1/namespaces/#{opt[:namespace]}/pods:6443")
 
-    http.request.get(Net::HTTP::Get.new('/', build_request.headers)).body
-  end
+  #   store = OpenSSL::X509::Store.new
+  #   store.set_default_paths
+  #   store.add_file(opt[:cacert])
+
+  #   http = Net::HTTP.start(uri.host,uri.port) do |h|
+  #     h['Authorization'] = "Bearer #{opt[:token]}"
+  #     h['Content-Type'] = 'application/json'
+  #     h.cert_store = store
+  #     h.verify_mode = OpenSSL:SSL::VERIFIY_PEER
+  #   end
+  #   response = http.request_get(uri).body
+  #   http.finish
+  #   return response
+  # end
 end
 
 

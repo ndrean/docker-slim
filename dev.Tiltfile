@@ -43,4 +43,4 @@ k8s_resource('db-migrate',
 k8s_yaml('./kube-dev/migrate.yml' ) # <- the label is 'db-migrate'
 
 allow_k8s_contexts('minikube')
-k8s_resource('rails-dep', port_forwards='31000') #<- "dev"
+k8s_resource('rails-dep', port_forwards='31001') #<- "dev"
