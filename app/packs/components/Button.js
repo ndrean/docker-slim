@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import fetchCounters from "../utils/fetchCounters.js";
-// import postCounters from "../utils/postCounters.js";
 import startWorkers from "../utils/startWorkers.js";
 
 import clickChannel from "../channels/click_channel.js";
@@ -11,7 +10,7 @@ const Table = (props) => {
   return (
     <tbody>
       {Object.keys(props.pods).map((pod) => (
-        <Row pod={pod} pods={pods} key={pod.toString()} />
+        <Row pod={pod} pods={props.pods} key={pod.toString()} />
       ))}
     </tbody>
   );
@@ -45,33 +44,33 @@ export default function Button() {
     async function initCounter() {
       try {
         listChannel.received = (data) => {
-          if (init && data) setPods(data);
+          if (data) setPods(data);
         };
         hitChannel.received = (data) => {
-          if (data && init) return setHitCount({ hitCount: data.hitCount });
+          if (data) return setHitCount({ hitCount: data.hitCount });
         };
-
         let i = 0;
         clickChannel.received = (data) => {
-          if (data && init) {
+          if (data) {
             i = 1;
+            console.log("via ws");
             const { clickCount } = data;
             return setClickCount({ clickCount });
           }
         };
+        console.log(i);
         if (i === 0) {
+          console.log("via fetch");
           const { clickCount, hitCount } = await fetchCounters("/getCounters");
-          if (init) {
-            setClickCount({ clickCount: Number(clickCount) });
-            setHitCount({ hitCount: Number(hitCount) });
-          }
+          setClickCount({ clickCount: Number(clickCount) });
+          setHitCount({ hitCount: Number(hitCount) });
         }
       } catch (err) {
         console.warn(err);
         throw new Error(err);
       }
     }
-    initCounter();
+    if (init) initCounter();
     return () => (init = false);
   }, []);
 

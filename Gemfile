@@ -22,6 +22,7 @@ gem 'turbolinks', '~> 5'
 gem 'redis'
 gem 'hiredis'
 
+gem 'rest-client'
 
 gem 'oj'
 # gem 'prometheus_exporter'

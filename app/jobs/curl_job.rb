@@ -1,6 +1,7 @@
 class CurlJob < ApplicationJob
     require 'oj'
     require 'net/http'
+    require 'rest-client'
     require 'uri'
     queue_as :default
 
@@ -11,8 +12,9 @@ class CurlJob < ApplicationJob
     apiserver = 'https://kubernetes.default.svc'
     token = File.read("#{serviceaccount}/token")
     cacert = "#{serviceaccount}/ca.crt"
+    uri = URI("#{apiserver}/api/v1/namespaces/#{namespace}/pods")
 
-    request = `curl --cacert #{cacert} --header "Authorization: Bearer #{token}" #{apiserver}/api/v1/namespaces/#{namespace}/pods `
+    request = `curl --cacert #{cacert} --header "Authorization: Bearer #{token}" #{uri} `
     
 
     # with proxy the side-car k8 server
@@ -54,8 +56,7 @@ class CurlJob < ApplicationJob
 
     ActionCable.server.broadcast('list_channel', data.as_json)
 
-    # puts Oj.load(send_request({apiserver: apiserver, token: token, cacert: cacert, namespace: namespace}))
-
+    # send_request({uri: uri, token: token, cacert: cacert}).body
     
   rescue StandardError => e
     puts e.message
@@ -80,6 +81,22 @@ class CurlJob < ApplicationJob
   #   http.finish
   #   return response
   # end
+
+  def send_request(opt={})
+    store = OpenSSL::X509::Store.new
+    store.set_default_paths
+    store.add_file(opt[:cacert])
+
+    RestClient::Resource.new(
+      opt[:uri],
+      # ssl_ca_file: opt[:cacert],
+      ssl_cert_store: store, 
+      verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+    ).get( 
+      opt[:uri], 
+      {Authorization: "Bearer #{opt[:token]}"}
+    )
+  end
 end
 
 
