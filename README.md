@@ -1,3 +1,15 @@
+## Kube-dev
+
+Dev mode runs with ElephantSQL (via CNAME) and local Redis.
+
+## Kube-sidecar
+
+Runs with ElephantSQL (via CNAME) and RedisLabs (via Endpoint). Pb with quotas...
+
+## Kube-split
+
+Production mode, all local PostgreSQM and Redis.
+
 ## yq
 
 `yp eval -output=json pod.yml` or `yq eval -o=j pod.yml`
@@ -21,7 +33,7 @@ yarn add https://github.com/rails/webpacker.git
 yarn install
 
 yarn add turbolinks @rails/ujs
-yarn add preat preat-compat
+yarn add preat @preat/compat
 yarn add @babel/preset-react
 yarn add css-loader style-loader mini-css-extract-plugin css-minimizer-webpack-plugin
 ```

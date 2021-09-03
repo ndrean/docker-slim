@@ -13,9 +13,10 @@ class CurlJob < ApplicationJob
     token = File.read("#{serviceaccount}/token")
     cacert = "#{serviceaccount}/ca.crt"
     uri = URI("#{apiserver}/api/v1/namespaces/#{namespace}/pods")
-
+    # or uri = URI("https://#{ENV['KUBERNETES_SERVICE_HOST']}/api/v1/namespaces/#{namespace}/pods")
     request = `curl --cacert #{cacert} --header "Authorization: Bearer #{token}" #{uri} `
     
+
 
     # with proxy the side-car k8 server
     # uri = "http://127.0.0.1:8001/api/v1/namespaces/#{namespace}/pods"
@@ -56,47 +57,55 @@ class CurlJob < ApplicationJob
 
     ActionCable.server.broadcast('list_channel', data.as_json)
 
-    # send_request({uri: uri, token: token, cacert: cacert}).body
-    
+    response = send_request({token: token, cacert: cacert, uri: uri})
+    puts ans = {ans: response.body} if response['status'] != 500
+    # puts add = {k8s: k8s}
+    # `curl --cacert #{cacert} --header "Authorization: Bearer #{token}" #{k8s}/healthz`
   rescue StandardError => e
     puts e.message
   end
 
 
 
-  # def send_request(opt={})
-  #   uri = URI("#{opt[:apiserver]}/api/v1/namespaces/#{opt[:namespace]}/pods:6443")
-
-  #   store = OpenSSL::X509::Store.new
-  #   store.set_default_paths
-  #   store.add_file(opt[:cacert])
-
-  #   http = Net::HTTP.start(uri.host,uri.port) do |h|
-  #     h['Authorization'] = "Bearer #{opt[:token]}"
-  #     h['Content-Type'] = 'application/json'
-  #     h.cert_store = store
-  #     h.verify_mode = OpenSSL:SSL::VERIFIY_PEER
-  #   end
-  #   response = http.request_get(uri).body
-  #   http.finish
-  #   return response
-  # end
-
   def send_request(opt={})
+    uri = opt[:uri]
+    puts res = {res: "#{uri}"}
     store = OpenSSL::X509::Store.new
     store.set_default_paths
     store.add_file(opt[:cacert])
 
-    RestClient::Resource.new(
-      opt[:uri],
-      # ssl_ca_file: opt[:cacert],
-      ssl_cert_store: store, 
-      verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-    ).get( 
-      opt[:uri], 
-      {Authorization: "Bearer #{opt[:token]}"}
-    )
+    http = Net::HTTP.start(uri.to_s) do |h|
+      h.use_ssl = true
+      h['Authorization'] = "Bearer #{opt[:token]}"
+      h['Content-Type'] = 'application/json'
+      h.cert_store = store
+      h.verify_mode = OpenSSL::SSL::VERIFIY_PEER
+    end
+    response = http.request_get(uri).body
+    
+    http.finish
+    return response
+  rescue StandardError => e
+    puts e.message
+    { 'status' => 500, 'detail' => 'Something went wrong' }
   end
+
+  # def send_request(opt={})
+  #   store = OpenSSL::X509::Store.new
+  #   store.set_default_paths
+  #   store.add_file(opt[:cacert])
+
+  #   # k8s = "https://#{ENV['KUBERNETES_SERVICE_HOST']}:#{ENV['KUBERNETES_SERVICE_PORT_HTTPS']}"
+
+  #   request = RestClient::Resource.new(
+  #     opt[:uri],
+  #     ssl_cert_store: store, 
+  #     verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+  #   )
+  #   request.get( 
+  #     {Authorization: "Bearer #{opt[:token]}"}
+  #   )
+  # end
 end
 
 

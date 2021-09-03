@@ -3,9 +3,15 @@ kind: ConfigMap
 metadata:
   name: config
 data:
-  POSTGRES_HOST: "pg-svc" # <- name of the service that exposes the Postgres pod
+  # using ElephnatSQL
+  POSTGRES_HOST: "pgsql" #<- defined in cname-pg.yml
   POSTGRES_DB: "ortkcbqt"
-  PGDATA: "/var/lib/postgresql/data/1"
+  POSTGRES_USER: "ortkcbqt"
+
+  # Using local PostgreSQL
+  # POSTGRES_HOST: "pg-svc" # <- name of the service that exposes the Postgres pod
+  # POSTGRES_DB: "ortkcbqt"
+  # PGDATA: "/var/lib/postgresql/data/1"
 
   RAILS_ENV: "development"
   NODE_ENV: "development"
