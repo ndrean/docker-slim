@@ -3,15 +3,15 @@ import Turbolinks from "turbolinks";
 import "./application.css";
 import React from "react";
 import { render } from "react-dom";
-import "../channels";
+import "~/channels";
 
 Rails.start();
 Turbolinks.start();
 
-const images = require.context("../images", true);
+const images = require.context("~/images", true);
 const imagePath = (name) => images(name, true);
 
-import Button from "../components/Button.js";
+import Button from "~/components/Button.js";
 
 document.addEventListener("turbolinks:load", () => {
   render(<Button />, document.getElementById("root"));
