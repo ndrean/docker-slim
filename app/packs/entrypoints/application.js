@@ -1,6 +1,6 @@
 import Rails from "@rails/ujs";
 import Turbolinks from "turbolinks";
-import "./application.css";
+// import "~/entrypoints/application.css";
 import React from "react";
 import { render } from "react-dom";
 import "~/channels";

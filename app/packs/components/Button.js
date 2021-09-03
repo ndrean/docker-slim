@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import fetchCounters from "../utils/fetchCounters.js";
-import startWorkers from "../utils/startWorkers.js";
+import fetchCounters from "~/utils/fetchCounters.js";
+import startWorkers from "~/utils/startWorkers.js";
 
-import clickChannel from "../channels/click_channel.js";
-import hitChannel from "../channels/hit_channel.js";
-import listChannel from "../channels/list_channel.js";
+import clickChannel from "~/channels/click_channel.js";
+import hitChannel from "~/channels/hit_channel.js";
+import listChannel from "~/channels/list_channel.js";
+
+import "~/stylesheets/application.css";
 
 const Table = (props) => {
   return (
