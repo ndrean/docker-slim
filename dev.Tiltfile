@@ -32,8 +32,8 @@ k8s_yaml('./kube-dev/rails-dep.yml')
 k8s_yaml('./kube-dev/sidekiq-dep.yml')
 # k8s_yaml('./kube-dev/cable-dep.yml')
 
-k8s_resource('rails-dep', resource_deps=['redis-dep', 'db-migrate']) # 'pg-dep', 
-k8s_resource('sidekiq-dep', resource_deps=['redis-dep', 'db-migrate']) # 'pg-dep',
+k8s_resource('rails-dep', resource_deps=['redis-dep'])#, 'db-migrate']) # 'pg-dep', 
+k8s_resource('sidekiq-dep', resource_deps=['redis-dep'])#, 'db-migrate']) # 'pg-dep',
 # k8s_resource('cable-dep', resource_deps=['redis-dep','pg-dep', 'db-migrate'])
 
 k8s_resource('db-migrate', 
